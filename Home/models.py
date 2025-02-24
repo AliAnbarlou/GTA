@@ -5,8 +5,8 @@ class IPAddress(models.Model):
     ipAddr = models.GenericIPAddressField()
 
     class Meta:
-        verbose_name = "IP Address"
-        verbose_name_plural = "IP Addresses"
+        verbose_name = "آدرس IP"
+        verbose_name_plural = "آدرس های IP"
 
     def __str__(self) -> str:
         return self.ipAddr
