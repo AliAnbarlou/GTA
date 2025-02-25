@@ -1,7 +1,7 @@
 from django.shortcuts import render
 #from articles.models import Article
 def HomePage(request):
-    return render(request,"home/Home.html")
+    return render(request,"Home/Home.html")
 
 """
 def Search_View(request):
