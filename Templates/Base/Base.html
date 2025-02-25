@@ -43,7 +43,11 @@
 </head>
 <body>
     <header>
-
+        <form method="GET" action="{% url 'search_words' %}">
+            <input type="text" name="q" placeholder="جستجوی کلمه..." value="{{ query }}">
+            <button type="submit">جستجو</button>
+        </form>
+        
     </header>
     <main>
         {% block main %}{% endblock main %}

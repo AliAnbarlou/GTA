@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'Authentication',
     'Home',
     'Word',
+    'Translate',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Authentication.User'
 
 SITE_NAME = "Zabanzad"
+
+# statics
+STATIC_URL = '/Static/'
+STATICFILES_DIRS = [BASE_DIR / "Static"]
+
+# medias
+MEDIA_URL = '/Media/'
+MEDIA_ROOT = BASE_DIR / 'Media'  # باید از / به جای کاما استفاده کنید
+
+
 
 #LOGIN_REDIRECT_URL = 'authentication:UserHome'
 #LOGIN_URL = 'authentication:login'

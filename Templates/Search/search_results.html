@@ -1,0 +1,12 @@
+{% extends "Base/Base.html" %}
+
+{% block main %}
+    <h2>نتایج جستجو برای "{{ query }}"</h2>
+    <ul>
+        {% for word in results %}
+            <li>{{ word.word }} - {{ word.meaning }}</li>
+        {% empty %}
+            <li>هیچ نتیجه‌ای یافت نشد.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
