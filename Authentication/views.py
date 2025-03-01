@@ -12,13 +12,25 @@ class DidYouLoginOrNotView(LoginView):
         if request.user.is_authenticated:
             return redirect('UserHome')
         return super().dispatch(request, *args, **kwargs)
-
+def UserProfile(request,username):
+    user = get_object_or_404(User,username=username)
+    ip_address = request.user.ip_address
+    if ip_address not in user.hits.all():
+        user.hits.add(ip_address)
+    
+    return render(request, 'registration/profile.html',context={
+        'site_name':settings.SITE_NAME,
+        'avatar': get_gravatar_url(user.email),
+        'user':user,
+    })
 @login_required
 def UserHome(request):
-    return render(request, 'registration/home.html',context={'site_name':settings.SITE_NAME})
+    return render(request, 'registration/home.html',context={
+        'site_name':settings.SITE_NAME,
+        'avatar': get_gravatar_url(request.user.email),
+})
 @login_required
 def UserAccount(request):
-    # تعریف context اصلی
     con = {
         'avatar': get_gravatar_url(request.user.email),
         'site_name': settings.SITE_NAME,
@@ -58,3 +70,13 @@ def UserAccount(request):
 
     # بازگشت به قالب با اطلاعات موجود در context
     return render(request, 'registration/account.html', context=con)
+def UserWords(request):
+    pass
+def UserAnswers(request):#Response
+    pass
+def UserQuestions(request):#Asks
+    pass
+def Charging(request):
+    pass
+def Discussion(request):
+    pass

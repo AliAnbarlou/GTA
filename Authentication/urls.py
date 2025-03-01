@@ -7,6 +7,12 @@ app_name = "Authentication"
 urlpatterns = [
     path("", UserHome, name="UserHome"),
     path("details/",UserAccount,name="UserAccount"),
+    path("user/<str:username>/",view=UserProfile,name="UserProfile"),
+    path("user/<str:username>/words/",view=UserWords,name="UserWords"),
+    path("user/<str:username>/answers/",view=UserAnswers,name="UserAnswers"),
+    path("user/<str:username>/questions/",view=UserQuestions,name="UserQuestions"),
+    path("charging/",view=Charging,name="Charging"),
+    path("discussion/",view=Discussion,name="AskQuestion"),
 ]
 urlpatterns += [
     path('login/', auth_views.LoginView.as_view(), name='login'),  # صفحه ورود

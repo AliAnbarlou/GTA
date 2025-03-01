@@ -1,0 +1,29 @@
+{% extends "../Base/UserBase.html" %}
+{% load static %}
+{% block title %}
+زبانزد | صفحه کاربری
+{% endblock title %}
+{% block main %}
+{{site_name}}
+<h1>وقت بخیر {{ request.user.get_full_name }} عزیز</h1>
+<img src="{{ avatar|default:'/static/images/default-avatar.jpg' }}" alt="Author Photo">
+
+<p>نام کاربری : {{request.user.username}}</p>
+<p>ایمیل : {{request.user.email}}</p>
+<p>تاریخ عضویت : {{request.user.date_joined}}</p>
+<p>بیوگرافی : {{request.user.bio}}</p>
+
+<p>امتیاز : {{request.user.score}}</p>
+<p>تعداد بازدید : {{request.user.hits.count}}</p>
+
+<p>موجودی : {{request.user.balance}}</p>
+<a href="">مشاهده کلمات</a>
+<a href="">مشاهده سوالات</a>
+<a href="">مشاهده پاسخ ها</a>
+
+<h2><a href="">تغییر پسورد</a></h2>
+<h2><a href="">به روزرسانی پروفایل</a></h2>
+
+<h2><a href="">Reset Password</a></h2>
+<h2><a href="">Delete Account</a></h2>
+{% endblock main %} 
