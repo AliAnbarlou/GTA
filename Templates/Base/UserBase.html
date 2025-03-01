@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- تگ های سئو -->
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+        <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+        <meta name="author" content="نام نویسنده یا برند">
+        <meta name="robots" content="index, follow">
+        
+        <!-- تگ های Open Graph برای شبکه‌های اجتماعی -->
+        <meta property="og:title" content="ssss">
+        <meta property="og:description" content="توضیح کوتاه برای شبکه‌های اجتماعی">
+        <meta property="og:image" content="URL تصویر شاخص">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:type" content="website">
+
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        <header>
+        </header>
+        <main>
+            {% block main %}{% endblock main %}
+        </main>
+        <footer>
+
+        </footer>
+    </body>
+</html>

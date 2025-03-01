@@ -22,4 +22,5 @@ urlpatterns = [
     path('',include('Home.urls')),
     path('word/',include('Word.urls')),
     path('translate/',include('Translate.urls')),
+    path('profile/',include('Authentication.urls'))
 ]
