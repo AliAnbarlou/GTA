@@ -20,6 +20,16 @@ class Words(models.Model):
         verbose_name = 'کلمه'
         verbose_name_plural = 'کلمه‌ها'
 
+class Suggestion(models.Model):
+    suggested_to = models.ForeignKey(Words, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # اینجا تغییر کرد
+    question = models.TextField()
+
+    def __str__(self):
+        return self.question
+    class Meta:
+        verbose_name = 'پیشنهاد'
+        verbose_name_plural = 'پیشنهادات '
 
 class Ask(models.Model):
     ask_to = models.ForeignKey(Words, on_delete=models.CASCADE, null=True, blank=True)
