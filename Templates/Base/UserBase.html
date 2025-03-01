@@ -22,6 +22,10 @@
     </head>
     <body>
         <header>
+            <form action="{% url 'Authentication:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">خروج</button>
+            </form>
         </header>
         <main>
             {% block main %}{% endblock main %}

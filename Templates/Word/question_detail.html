@@ -1,0 +1,30 @@
+{% extends '../Base/Base.html' %}
+{% load static %}
+{% block title %}{{ question.user.username }} - جزئیات{% endblock %}
+
+{% block main %}
+<h1>{{ question.ask_to.word }}</h1>
+<p>پرسیده شده توسط: {{ question.user.username }}</p>
+<p>{{ question.question }}</p>
+
+<h3>پاسخ‌ها:</h3>
+<ul>
+    {% for response in responses %}
+        <li>{{ response.response }}</li>
+    {% empty %}
+        <li>پاسخی ثبت نشده است</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h3>افزودن پاسخ:</h3>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="response" rows="4" cols="50" placeholder="پاسخ خود را بنویسید..."></textarea>
+        <br>
+        <button type="submit">ارسال پاسخ</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'Authentication:login' %}">وارد شوید</a> تا بتوانید پاسخ دهید.</p>
+{% endif %}
+{% endblock main %}

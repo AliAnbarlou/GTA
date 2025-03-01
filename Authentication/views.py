@@ -5,7 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .utils import get_gravatar_url
 from django.utils import timezone
-
+from django.db.models import Prefetch
+from Word.models import Ask, Response
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from .models import User , Subscription , Plan
 class DidYouLoginOrNotView(LoginView):
     def dispatch(self, request, *args, **kwargs):
@@ -78,5 +82,35 @@ def UserQuestions(request):#Asks
     pass
 def Charging(request):
     pass
-def Discussion(request):
+def UserSuggestions(request):
     pass
+
+
+def QuestionDetail(request, username, question_id):
+    # دریافت کاربر (اگر نام کاربری اشتباه باشد، خطای 404 می‌دهد)
+    user = get_object_or_404(User, username=username)
+
+    # دریافت سوال مورد نظر (اگر سوال متعلق به این کاربر نباشد، باز هم 404 می‌دهد)
+    question = get_object_or_404(Ask, id=question_id, user=user)
+
+    # دریافت تمام پاسخ‌های مربوط به این سوال
+    responses = Response.objects.filter(response_to=question).order_by('id')
+
+    # پردازش فرم ارسال پاسخ
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden("برای پاسخ دادن باید وارد حساب خود شوید.")
+
+        response_text = request.POST.get("response")
+        if response_text:  # بررسی که پاسخ خالی نباشد
+            Response.objects.create(
+                user=request.user, 
+                response_to=question, 
+                response=response_text
+            )
+            return redirect('Authentication:QuestionDetail', username=username, question_id=question_id)  # بازگشت به همان صفحه
+
+    return render(request, 'Word/question_detail.html', {
+        'question': question,
+        'responses': responses
+    })

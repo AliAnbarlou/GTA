@@ -1,0 +1,14 @@
+{% for question in questions %}
+    <h3>
+        <a href="{% url 'Authentication:QuestionDetail' question.user.username question.id %}">{{ question.question }}</a>
+    </h3>
+    <p>پرسیده شده توسط: {{ question.user.username }}</p>
+    
+    <ul>
+        {% for response in question.responses %}
+            <li>{{ response.response }}</li>
+        {% empty %}
+            <li>پاسخی ثبت نشده است</li>
+        {% endfor %}
+    </ul>
+{% endfor %}

@@ -38,8 +38,13 @@
         </form>
         {% if request.user.is_authenticated %}
             <a href="{% url 'Authentication:UserHome' %}" class="btn btn-primary">مدیریت حساب</a>
+            <form action="{% url 'Authentication:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">خروج</button>
+            </form>
+            
         {% else %}
-            <a href="{% url 'login' %}" class="btn btn-secondary">ورود</a>
+            <a href="{% url 'Authentication:login' %}" class="btn btn-secondary">ورود</a>
         {% endif %}
 
     </header>

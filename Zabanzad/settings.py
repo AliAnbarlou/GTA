@@ -96,6 +96,7 @@ MEDIA_URL = '/Media/'
 MEDIA_ROOT = BASE_DIR / 'Media'  # باید از / به جای کاما استفاده کنید
 
 
+LOGOUT_REDIRECT_URL = '/'  # یا هر صفحه‌ای که می‌خواهید بعد از خروج بروید
 
-#LOGIN_REDIRECT_URL = 'authentication:UserHome'
-#LOGIN_URL = 'authentication:login'
+LOGIN_REDIRECT_URL = 'Authentication:UserHome'
+LOGIN_URL = 'Authentication:login'

@@ -10,9 +10,10 @@ urlpatterns = [
     path("user/<str:username>/",view=UserProfile,name="UserProfile"),
     path("user/<str:username>/words/",view=UserWords,name="UserWords"),
     path("user/<str:username>/answers/",view=UserAnswers,name="UserAnswers"),
-    path("user/<str:username>/questions/",view=UserQuestions,name="UserQuestions"),
+    path("user/<str:username>/questions/",view=UserQuestions,name="UserQuestions"), #سوالات یک کاربر
+    path("user/<str:username>/suggestions/",view=UserSuggestions,name="UserSuggestions"), #پیشنهادات یک کاربر
+    path('user/<str:username>/question/<int:question_id>/',view=QuestionDetail,name="QuestionDetail"), #جزئیات یک سوال
     path("charging/",view=Charging,name="Charging"),
-    path("discussion/",view=Discussion,name="AskQuestion"),
 ]
 urlpatterns += [
     path('login/', auth_views.LoginView.as_view(), name='login'),  # صفحه ورود
