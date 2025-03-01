@@ -100,3 +100,17 @@ LOGOUT_REDIRECT_URL = '/'  # یا هر صفحه‌ای که می‌خواهید 
 
 LOGIN_REDIRECT_URL = 'Authentication:UserHome'
 LOGIN_URL = 'Authentication:login'
+
+"""
+# جلوگیری از ایندکس شدن صفحات
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'  # جلوگیری از بارگذاری صفحه در iframe
+SECURE_SSL_REDIRECT = True  # اجباری کردن HTTPS
+SESSION_COOKIE_SECURE = True  # فقط ارسال کوکی‌های جلسه از طریق HTTPS
+CSRF_COOKIE_SECURE = True  # فقط ارسال کوکی CSRF از طریق HTTPS
+SECURE_HSTS_SECONDS = 3600  # فعال کردن HSTS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # شامل زیر دامنه‌ها در HSTS
+SECURE_HSTS_PRELOAD = True  # اجازه به مرورگرها برای پیش‌بارگذاری HSTS
+
+"""

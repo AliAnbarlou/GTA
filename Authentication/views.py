@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required ,user_passes_test
 from django.conf import settings
 from .utils import get_gravatar_url
 from django.utils import timezone
@@ -29,6 +29,8 @@ def UserProfile(request,username):
     })
 @login_required
 def UserHome(request):
+    if request.user.is_superuser:
+        return redirect('AdminDashboard')
     return render(request, 'registration/home.html',context={
         'site_name':settings.SITE_NAME,
         'avatar': get_gravatar_url(request.user.email),

@@ -8,5 +8,5 @@ urlpatterns = [
     path('translate/',include('Translate.urls')),
     path('profile/',include('Authentication.urls')),
     path("discussion/",view=Discussion,name="AskQuestion"),
-
+    path("root/admin/",view=AdminDashboard,name="AdminDashboard"),
 ]
