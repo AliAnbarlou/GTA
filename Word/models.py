@@ -23,10 +23,10 @@ class Words(models.Model):
 class Suggestion(models.Model):
     suggested_to = models.ForeignKey(Words, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # اینجا تغییر کرد
-    question = models.TextField()
+    text = models.TextField()
 
     def __str__(self):
-        return self.question
+        return self.text
     class Meta:
         verbose_name = 'پیشنهاد'
         verbose_name_plural = 'پیشنهادات '
