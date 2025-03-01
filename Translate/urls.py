@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import *
+from .views import translate_text
+
 urlpatterns = [
-    path('',view=Translator,name="Translate"),
+    path("", translate_text, name="translate"),
 ]

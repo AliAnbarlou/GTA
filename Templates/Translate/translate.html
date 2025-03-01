@@ -1,0 +1,17 @@
+<form method="POST">
+    {% csrf_token %}
+    <textarea type="text" name="text" placeholder="متن را وارد کنید">
+        {{text}}
+    </textarea>
+    <select name="lang">
+        <option value="en">انگلیسی</option>
+        <option value="fr">فرانسوی</option>
+        <option value="de">آلمانی</option>
+        <!-- زبان‌های دیگر -->
+    </select>
+    <button type="submit">ترجمه</button>
+</form>
+
+{% if translated_text %}
+    <p>ترجمه: {{ translated_text }}</p>
+{% endif %}

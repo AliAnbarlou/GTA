@@ -19,3 +19,7 @@ def search_words(request):
     results = Words.objects.filter(word__icontains=query)
     
     return render(request, 'Search/search_results.html', {'results': results, 'query': query})
+def search_word_list(request):
+    query = request.GET.get('q', '').strip()
+    results = Words.objects.filter(word__icontains=query)
+    return render(request, 'Search/search_results.html', {'results': results, 'query': query})

@@ -19,7 +19,7 @@
         </div>
         
         <div class="text-center mt-4">
-            <a href="{% url 'search_words' %}" class="btn btn-primary">بازگشت به جستجو</a>
+            <a href="{% url 'search_word' %}?q={{ word.word }}" class="btn btn-primary">بازگشت به جستجو</a>
         </div>
     </div>
 </div>
