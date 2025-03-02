@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمودار بازدیدهای روزانه</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- لود کتابخانه چارت -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .chart-container {
+            width: 80%;  /* کوچک کردن چارت */
+            max-width: 600px;  /* حداکثر اندازه چارت */
+            margin: auto;
+        }
+        canvas {
+            width: 100% !important;
+            height: 400px !important; /* کاهش ارتفاع */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>نمودار بازدیدهای هفتگی</h2>
+    <div class="chart-container">
+        <canvas id="visitsChart"></canvas>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch("{% url 'daily_visits' %}")  // دریافت داده‌های بازدید
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById("visitsChart").getContext("2d");
+            new Chart(ctx, {
+                type: "line",  // تغییر نوع چارت به "خطی"
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: "تعداد بازدیدها",
+                        data: data.data,
+                        borderColor: "blue",
+                        backgroundColor: "rgba(0, 0, 255, 0.2)",
+                        fill: true,
+                        tension: 0.3  // صاف‌تر کردن خطوط چارت
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,  // فقط اعداد صحیح نمایش داده شود
+                                callback: function(value) {
+                                    return Number.isInteger(value) ? value : "";  // حذف اعشار
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    });
+    </script>
+
+</body>
+</html>

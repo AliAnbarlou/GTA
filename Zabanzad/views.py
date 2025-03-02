@@ -25,3 +25,38 @@ def admin_required(user):
 @login_required
 def AdminDashboard(request):
     return render(request, 'Admin/Home.html', {})
+from django.utils.timezone import now
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+from django.http import JsonResponse
+from Home.models import IPAddress
+from datetime import timedelta
+
+def daily_visits(request):
+    today = now().date()
+    # محاسبه روز اول هفته (7 روز گذشته)
+    last_week = today - timedelta(days=6)
+
+    # گرفتن تمامی روزهای هفته حتی با صفر بازدید
+    visits = (
+        IPAddress.objects
+        .filter(last_seen__date__gte=last_week)  # فقط بازدیدهای 7 روز اخیر
+        .annotate(day=TruncDate('last_seen'))  # گروه‌بندی بر اساس روز
+        .values('day')
+        .annotate(count=Count('id'))  # شمارش بازدیدهای هر روز
+        .order_by('day')
+    )
+
+    # لیست روزهای هفته (حتی روزهایی که بازدید نداشتند)
+    labels = [(last_week + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(7)]
+
+    # جمع‌آوری داده‌ها و قرار دادن صفر برای روزهایی که بازدید نداشتند
+    data = []
+    for label in labels:
+        count = next((v['count'] for v in visits if v['day'].strftime('%Y-%m-%d') == label), 0)
+        data.append(count)
+
+    return JsonResponse({"labels": labels, "data": data})
+
+def visit_chart_view(request):
+    return render(request, "visits_chart.html")  # صفحه‌ای که نمودار داره

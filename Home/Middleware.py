@@ -1,7 +1,10 @@
+from django.utils.timezone import now
 from .models import IPAddress
+
 class SaveIPMiddleware:
     def __init__(self , get_response):
         self.get_response = get_response
+
     def __call__(self, request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -9,13 +12,12 @@ class SaveIPMiddleware:
         else:
             ip = request.META.get('REMOTE_ADDR')
 
+        ip_address, created = IPAddress.objects.update_or_create(
+            ipAddr=ip,
+            defaults={"last_seen": now()}  # به‌روزرسانی زمان آخرین بازدید
+        )
 
-        try:
-            ip_address = IPAddress.objects.get(ipAddr=ip)
-        except IPAddress.DoesNotExist:
-            ip_address = IPAddress(ipAddr=ip)
-            ip_address.save()
-        request.user.ip_address = ip_address
+        request.user.ip_address = ip_address  # اتصال IP به کاربر
         response = self.get_response(request)
 
         return response
