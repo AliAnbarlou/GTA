@@ -24,17 +24,31 @@ class DidYouLoginOrNotView(LoginView):
         if request.user.is_authenticated:
             return redirect('UserHome')
         return super().dispatch(request, *args, **kwargs)
-def UserProfile(request,username):
-    user = get_object_or_404(User,username=username)
+def UserProfile(request, username):
+    user = get_object_or_404(User, username=username)
     ip_address = request.user.ip_address
     if ip_address not in user.hits.all():
         user.hits.add(ip_address)
-    
-    return render(request, 'registration/profile.html',context={
-        'site_name':settings.SITE_NAME,
+
+    # گرفتن کلمات کاربر
+    words = Words.objects.filter(user=user)
+
+    # گرفتن پیشنهادات کاربر
+    suggestions = Suggestion.objects.filter(user=user)
+
+    # گرفتن سوالات کاربر
+    questions = Ask.objects.filter(user=user)
+
+    # آماده کردن داده‌ها برای ارسال به قالب
+    return render(request, 'registration/profile.html', context={
+        'site_name': settings.SITE_NAME,
         'avatar': get_gravatar_url(user.email),
-        'user':user,
+        'user': user,
+        'words': words,
+        'suggestions': suggestions,
+        'questions': questions,
     })
+
 @login_required
 def UserHome(request):
     if request.user.is_superuser:

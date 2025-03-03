@@ -2,22 +2,48 @@
 {% load static %}
 {% block main %}
 
-<h1>{{user.get_full_name}}</h1>
+<h1>{{ user.get_full_name }}</h1>
 <img src="{{ avatar|default:'/static/images/default-avatar.jpg' }}" alt="Author Photo">
+<h1>پروفایل {{ user.username }}</h1>
 
-<p>نام کاربری : {{user.username}}</p>
-<p>ایمیل : {{user.email}}</p>
-<p>تاریخ عضویت : {{user.date_joined}}</p>
-<p> امتیاز : {{user.score}}</p>
-<p>تعداد بازدید : {{user.hits.count}}</p>
-{% if user.bio %}
-<p>بیوگرافی : {{user.bio}}</p>
+<h2>کلمات ثبت‌شده:</h2>
+{% if words %}
+    <ul>
+        {% for word in words %}
+            <li><a href="{% url 'Word:word_detail' word.slug %}">{{ word.word }}</a>: {{ word.meaning }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هیچ کلمه‌ای ثبت نشده است.</p>
 {% endif %}
-<p>پاسخ ها</p>
-for
-<p>کلمات</p>
-for
-<p>سوالات</p>
-for
+<h2>پیشنهادات:</h2>
+{% if suggestions %}
+    <ul>
+        {% for suggestion in suggestions %}
+            {% if suggestion.status != "d" %}
+                <li>
+                    <strong>{{ suggestion.text }}</strong>
+                    <a href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}">مشاهده کلمه: {{ suggestion.suggested_to.word }}</a> |
+                    <a href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}">مشاهده پیشنهاد</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هیچ پیشنهادی ثبت نشده است.</p>
+{% endif %}
 
+<h2>سوالات:</h2>
+{% if questions %}
+    <ul>
+        {% for question in questions %}
+            <li>
+                {{ question.question }}
+                - مربوط به کلمه: <a href="{% url 'Word:word_detail' question.ask_to.slug %}">{{ question.ask_to.word }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هیچ سوالی ثبت نشده است.</p>
+{% endif %}
 {% endblock main %}
