@@ -15,7 +15,7 @@ def validate_email_domain(value):
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, validators=[validate_email_domain])
-    bio = models.TextField(blank=True)
+    bio = models.TextField(blank=True , max_length=100)
     hits = models.ManyToManyField(IPAddress, related_name="hits", blank=True, editable=False)
     score = models.IntegerField(default=0, editable=False)
     balance = models.DecimalField(max_digits=12, decimal_places=0, default=0)
