@@ -1,14 +1,22 @@
-{% for question in questions %}
-    <h3>
-        <a href="{% url 'Authentication:QuestionDetail' question.user.username question.id %}">{{ question.question }}</a>
-    </h3>
-    <p>پرسیده شده توسط: {{ question.user.username }}</p>
-    
-    <ul>
-        {% for response in question.responses %}
-            <li>{{ response.response }}</li>
-        {% empty %}
-            <li>پاسخی ثبت نشده است</li>
-        {% endfor %}
-    </ul>
+{% for question_item in questions %}
+    <div class="question-item">
+        <!-- نمایش گراواتار کاربر -->
+        <img src="{{ question_item.avatar }}" alt="Gravatar of {{ question_item.question.user.username }}" class="gravatar">
+
+        <h3>
+            <a href="{% url 'Authentication:QuestionDetail' question_item.question.user.username question_item.question.id %}">{{ question_item.question.question }}</a>
+        </h3>
+        <p>پرسیده شده توسط: {{ question_item.question.user.username }}</p>
+
+        <!-- نمایش لینک کلمه‌ای که در مورد آن سوال پرسیده شده -->
+        <p>کلمه مرتبط: <a href="{% url 'Word:word_detail' question_item.word_link.slug %}">{{ question_item.word_link.word }}</a></p>
+        
+        <ul>
+            {% for response in question_item.question.responses %}
+                <li>{{ response.response }}</li>
+            {% empty %}
+                <li>پاسخی ثبت نشده است</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endfor %}

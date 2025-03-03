@@ -3,6 +3,8 @@ from django.db.models import Prefetch
 from django.urls import reverse
 from Word.models import Ask, Response
 from django.contrib.auth.decorators import login_required ,user_passes_test
+from Authentication.utils import get_gravatar_url
+
 
 def Discussion(request):
     # دریافت 50 سوال آخر
@@ -17,7 +19,19 @@ def Discussion(request):
         )
     )
 
-    return render(request, 'Word/discussion.html', {'questions': questions_with_responses})
+    # ارسال گراواتار و کلمه مرتبط برای هر سوال
+    questions_with_avatars_and_words = []
+    for question in questions_with_responses:
+        avatar_url = get_gravatar_url(question.user.email)
+        word_link = question.ask_to  # فرض بر این است که هر سوال به یک کلمه مرتبط است
+        questions_with_avatars_and_words.append({
+            'question': question,
+            'avatar': avatar_url,
+            'word_link': word_link
+        })
+
+    return render(request, 'Word/discussion.html', {'questions': questions_with_avatars_and_words})
+
 def admin_required(user):
     return user.is_superuser
 
