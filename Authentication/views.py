@@ -218,8 +218,41 @@ def UserSuggestions(request , username):
     }
     
     return render(request, 'registration/user_suggestion.html', context)
-def UserQuestions(request):#Asks
-    pass
+def UserQuestions(request, username):
+    # گرفتن کاربر از نام کاربری
+    user = get_object_or_404(User, username=username)
+
+    # گرفتن سوالات کاربر
+    questions = Ask.objects.filter(user=user)
+
+    # برای هر سوال، پاسخ‌های آن را هم دریافت می‌کنیم
+    questions_with_responses = []
+    for question in questions:
+        responses = Response.objects.filter(response_to=question)
+        questions_with_responses.append({
+            'question': question,
+            'responses': responses
+        })
+
+    return render(request, 'registration/user_questions.html', {
+        'questions_with_responses': questions_with_responses,
+        'site_name': settings.SITE_NAME,
+        'avatar': get_gravatar_url(user.email),
+    })
+
+def QuestionDetail(request, username, question_id):
+    # گرفتن سوال از ID آن
+    question = get_object_or_404(Ask, id=question_id)
+
+    # گرفتن پاسخ‌ها به این سوال
+    responses = Response.objects.filter(response_to=question)
+
+    return render(request, 'registration/question_detail.html', {
+        'question': question,
+        'responses': responses,
+        'site_name': settings.SITE_NAME,
+    })
+
 @login_required
 def Charging(request):
     plans = Plan.objects.exclude(price=0)  # فقط پلن‌های غیر رایگان را نمایش بده

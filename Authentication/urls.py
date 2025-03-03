@@ -10,13 +10,13 @@ urlpatterns = [
     path("user/<str:username>/",view=UserProfile,name="UserProfile"),
     path('user/<str:username>/words/', UserWords, name='UserWords'),
     #path("user/<str:username>/answers/",view=UserAnswers,name="UserAnswers"),
-    path("user/<str:username>/questions/",view=UserQuestions,name="UserQuestions"), #سوالات یک کاربر
     path("user/<str:username>/suggestions/", UserSuggestions, name="UserSuggestions"),  # ✅ درست
-    path('user/<str:username>/question/<int:question_id>/',view=QuestionDetail,name="QuestionDetail"), #جزئیات یک سوال
     path("charging/",view=Charging,name="Charging"),
     path("delete-account/", delete_account, name="delete_account"),
     path("update-profile/", update_profile, name="update_profile"),
     path('add/', AddWord, name="AddWord"),  # مسیر اضافه کردن کلمه
+    path("user/<str:username>/questions/", view=UserQuestions, name="UserQuestions"),
+    path('user/<str:username>/question/<int:question_id>/', view=QuestionDetail, name="QuestionDetail"),
 
 
 

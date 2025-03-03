@@ -1,0 +1,15 @@
+<h1>جزئیات سوال</h1>
+<p><strong>{{ question.text }}</strong></p>
+
+{% if responses %}
+    <h2>پاسخ‌ها:</h2>
+    <ul>
+        {% for response in responses %}
+            <li>{{ response.response }} - <em>توسط {{ response.user.username }}</em></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هیچ پاسخی به این سوال داده نشده است.</p>
+{% endif %}
+
+<a href="{% url 'Word:UserQuestions' username=question.user.username %}">بازگشت به لیست سوالات</a>

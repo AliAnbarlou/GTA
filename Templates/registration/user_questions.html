@@ -1,0 +1,24 @@
+<h1>سوالات و پاسخ‌های {{ user.username }}</h1>
+
+{% if questions_with_responses %}
+    <ul>
+        {% for item in questions_with_responses %}
+            <li>
+                <strong>{{ item.question.question }}</strong><br>
+                {% if item.responses %}
+                    <strong>پاسخ‌ها:</strong>
+                    <ul>
+                        {% for response in item.responses %}
+                            <li>{{ response.response }} - <em>توسط {{ response.user.username }}</em></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>هیچ پاسخی به این سوال داده نشده است.</p>
+                {% endif %}
+                <a href="{% url 'Authentication:QuestionDetail' username=user.username question_id=item.question.id %}">مشاهده جزئیات</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هیچ سوالی برای نمایش وجود ندارد.</p>
+{% endif %}
