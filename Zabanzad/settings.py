@@ -114,3 +114,6 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # شامل زیر دامنه‌ها در 
 SECURE_HSTS_PRELOAD = True  # اجازه به مرورگرها برای پیش‌بارگذاری HSTS
 
 """
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # احراز هویت پیش‌فرض
+]

@@ -31,9 +31,10 @@ def UserProfile(request,username):
 def UserHome(request):
     if request.user.is_superuser:
         return redirect('AdminDashboard')
-    return render(request, 'registration/home.html',context={
-        'site_name':settings.SITE_NAME,
-        'avatar': get_gravatar_url(request.user.email),
+    else:
+        return render(request, 'registration/home.html',context={
+            'site_name':settings.SITE_NAME,
+            'avatar': get_gravatar_url(request.user.email),
 })
 @login_required
 def UserAccount(request):
