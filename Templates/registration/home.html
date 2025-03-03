@@ -16,6 +16,12 @@
 <p>امتیاز : {{request.user.score}}</p>
 <p>تعداد بازدید : {{request.user.hits.count}}</p>
 
+
+
+<!--مهراب این دکمه پایین کار نمیکنه درستش کن-->
+</a href="{% url 'Authentication:AddWord' %}"><input type="button" value="افزودن کلمه جدید"></a>
+
+
 <p>موجودی : {{request.user.balance}}</p>
 <a href="{% url 'Authentication:UserWords' request.user.username %}">مشاهده کلمات</a>
 <a href="{% url 'Authentication:UserQuestions' request.user.username%}">مشاهده سوالات</a>
