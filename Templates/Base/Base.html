@@ -32,7 +32,7 @@
 </head>
 <body>
     <header>
-        <form method="GET" action="{% url 'search_words' %}">
+        <form method="GET" action="{% url 'Home:search_words' %}">
             <input type="text" name="q" placeholder="جستجوی کلمه..." value="{{ query }}">
             <button type="submit">جستجو</button>
         </form>

@@ -14,6 +14,8 @@ urlpatterns = [
     path("user/<str:username>/suggestions/",view=UserSuggestions,name="UserSuggestions"), #پیشنهادات یک کاربر
     path('user/<str:username>/question/<int:question_id>/',view=QuestionDetail,name="QuestionDetail"), #جزئیات یک سوال
     path("charging/",view=Charging,name="Charging"),
+    path("delete-account/", delete_account, name="delete_account"),
+
 ]
 urlpatterns += [
     path('login/', auth_views.LoginView.as_view(), name='login'),  # صفحه ورود

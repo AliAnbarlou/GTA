@@ -1,0 +1,25 @@
+{% load static %}
+
+{% block content %}
+  <h2>حذف حساب کاربری</h2>
+  <p style="color: red;">⚠ این عمل غیرقابل بازگشت است. در صورت تأیید، حساب شما برای همیشه حذف خواهد شد.</p>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
+          {{ message }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="password">رمز عبور خود را وارد کنید:</label>
+    <input type="password" name="password" id="password" required>
+    <br><br>
+    <button type="submit" style="background-color: red; color: white;">بله، حساب من را حذف کن</button>
+    <a href="{% url 'Home:Home' %}" style="margin-left: 10px;">لغو</a>
+  </form>
+{% endblock %}

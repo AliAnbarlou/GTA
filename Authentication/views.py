@@ -11,6 +11,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .models import User , Subscription , Plan
+from django.contrib.auth import logout
+from django.contrib import messages
+from django.contrib.auth import authenticate
 class DidYouLoginOrNotView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -36,6 +39,33 @@ def UserHome(request):
             'site_name':settings.SITE_NAME,
             'avatar': get_gravatar_url(request.user.email),
 })
+    from django.contrib.auth.decorators import login_required
+
+
+"""
+Delete Account
+"""
+@login_required
+def delete_account(request):
+    if request.method == "POST":
+        password = request.POST.get("password")
+        
+        if not password:
+            messages.error(request, "لطفاً رمز عبور خود را وارد کنید.")
+            return redirect("Authentication:delete_account")
+
+        user = request.user
+        if user.check_password(password):  # بررسی صحت رمز عبور
+            user.delete()
+            logout(request)
+            messages.success(request, "حساب کاربری شما با موفقیت حذف شد. این عمل غیرقابل بازگشت است.")
+            return redirect("home")  # تغییر مسیر به صفحه اصلی یا هر جای دیگر
+        else:
+            messages.error(request, "رمز عبور اشتباه است. لطفاً دوباره امتحان کنید.")
+            return redirect("Authentication:delete_account")
+
+    return render(request, "registration/delete_account.html")
+
 @login_required
 def UserAccount(request):
     con = {
