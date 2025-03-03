@@ -41,3 +41,4 @@ class ResponseAdmin(admin.ModelAdmin):
 admin.site.register(Words ,WordAdmin)
 admin.site.register(Ask , AskAdmin)
 admin.site.register(Response , ResponseAdmin)
+admin.site.register(Suggestion)

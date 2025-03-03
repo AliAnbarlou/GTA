@@ -23,4 +23,53 @@
         </div>
     </div>
 </div>
+<hr>
+<h2>پیشنهادات مرتبط:</h2>
+{% if suggestions %}
+    <ul>
+        {% for suggestion in suggestions %}
+            <li>{{ suggestion.text }} - وضعیت: {{ suggestion.get_status_display }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هنوز پیشنهادی ثبت نشده است.</p>
+{% endif %}
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li class="alert alert-info">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- بخش ارسال پیشنهاد -->
+<h3>پیشنهاد دهید:</h3>
+<form method="POST" action="{% url 'Word:add_suggestion' word_slug=word.slug %}">
+    {% csrf_token %}
+    <textarea name="suggestion_text" rows="3" placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
+    <button type="submit">ارسال پیشنهاد</button>
+</form>
+
+<hr>
+
+<!-- بخش سوالات مرتبط -->
+<h2>سوالات مرتبط:</h2>
+{% if questions %}
+    <ul>
+        {% for question in questions %}
+            <li>{{ question.question }} - توسط {{ question.user }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>هنوز سوالی ثبت نشده است.</p>
+{% endif %}
+
+<!-- بخش ارسال سوال -->
+<h3>سوال بپرسید:</h3>
+<form method="POST" action="{% url 'Word:add_question' word_slug=word.slug %}">
+    {% csrf_token %}
+    <textarea name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
+    <button type="submit">ارسال سوال</button>
+</form>
 {% endblock %}
