@@ -55,15 +55,30 @@
 
 <!-- بخش سوالات مرتبط -->
 <h2>سوالات مرتبط:</h2>
-{% if questions %}
-    <ul>
-        {% for question in questions %}
-            <li>{{ question.question }} - توسط {{ question.user }}</li>
+<!-- سوالات -->
+{% for question in word.ask_set.all %}
+    <div class="question">
+        <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
+        <p>{{ question.question }}</p>
+        
+        <!-- نمایش پاسخ‌ها -->
+        <h4>پاسخ‌ها:</h4>
+        {% for response in question.response_set.all %}
+            <p>{{ response.user.username }}: {{ response.response }}</p>
+        {% empty %}
+            <p>هنوز پاسخی به این سوال داده نشده است.</p>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>هنوز سوالی ثبت نشده است.</p>
-{% endif %}
+
+        <!-- فرم ارسال پاسخ -->
+        <h5>پاسخ دهید:</h5>
+        <form method="POST" action="{% url 'Word:add_response' question.id %}">
+            {% csrf_token %}
+            <textarea name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
+            <button type="submit">ارسال پاسخ</button>
+        </form>
+    </div>
+{% endfor %}
+
 
 <!-- بخش ارسال سوال -->
 <h3>سوال بپرسید:</h3>

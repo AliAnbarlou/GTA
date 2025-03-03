@@ -1,5 +1,5 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from Word.models import Words , Suggestion , Ask
+from Word.models import Words , Suggestion , Ask , Response
 from django.contrib import messages
 
 # Create your views here.
@@ -38,3 +38,23 @@ def add_question(request, word_slug):
                 question=text
             )
         return redirect('Word:word_detail', word_slug=word.slug) 
+def add_response(request, question_id):
+    if request.method == "POST":
+        question = get_object_or_404(Ask, id=question_id)
+        response_text = request.POST.get('response_text')
+        user = request.user
+
+        if response_text:
+            # ذخیره پاسخ جدید
+            response = Response.objects.create(
+                response_to=question,
+                user=user,
+                response=response_text
+            )
+            # ارسال پیام موفقیت
+            messages.success(request, 'پاسخ شما با موفقیت ارسال شد.')
+        else:
+            # در صورتی که متنی وارد نشده باشد
+            messages.error(request, 'لطفاً یک پاسخ وارد کنید.')
+
+        return redirect('Word:word_detail', word_slug=question.ask_to.slug)
