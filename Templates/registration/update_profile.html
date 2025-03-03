@@ -1,0 +1,50 @@
+{% load static %}
+
+{% block content %}
+  <h2>ویرایش پروفایل</h2>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
+          {{ message }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <!-- نمایش عکس پروفایل از Gravatar -->
+  <div style="text-align: center;">
+    <img src="https://www.gravatar.com/avatar/{{ user.email|lower|slugify|default:'00000000000000000000000000000000' }}?s=150&d=identicon" 
+         alt="عکس پروفایل گراواتار" style="border-radius: 50%; width: 150px; height: 150px;">
+    <br>
+    <a href="https://gravatar.com" target="_blank" style="color: blue;">ویرایش عکس پروفایل در Gravatar</a>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <label for="first_name">نام:</label>
+    <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" required>
+    <br><br>
+
+    <label for="last_name">نام خانوادگی:</label>
+    <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" required>
+    <br><br>
+
+    <label for="username">نام کاربری:</label>
+    <input type="text" name="username" id="username" value="{{ user.username }}" required>
+    <br><br>
+
+    <label for="email">ایمیل:</label>
+    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+    <br><br>
+
+    <label for="bio">بیوگرافی:</label>
+    <textarea name="bio" id="bio">{{ user.bio }}</textarea>
+    <br><br>
+
+    <button type="submit">ذخیره تغییرات</button>
+    <a href="{% url 'Authentication:UserHome' %}">بازگشت</a>
+  </form>
+{% endblock %}

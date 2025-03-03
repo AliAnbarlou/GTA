@@ -14,6 +14,9 @@ from .models import User , Subscription , Plan
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth import authenticate
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 class DidYouLoginOrNotView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -65,7 +68,44 @@ def delete_account(request):
             return redirect("Authentication:delete_account")
 
     return render(request, "registration/delete_account.html")
+"""
+User profile update
+"""
+@login_required
+def update_profile(request):
+    user = request.user  # کاربر فعلی
 
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        bio = request.POST.get("bio")
+
+        # اعتبارسنجی ایمیل
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, "ایمیل وارد شده معتبر نیست.")
+            return redirect("Authentication:update_profile")
+
+        # بررسی اینکه ایمیل تکراری نباشد (اگر تغییر کرده باشد)
+        if User.objects.exclude(id=user.id).filter(email=email).exists():
+            messages.error(request, "این ایمیل قبلاً استفاده شده است.")
+            return redirect("Authentication:update_profile")
+
+        # ذخیره اطلاعات جدید
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.email = email
+        user.bio = bio
+        user.save()
+
+        messages.success(request, "پروفایل شما با موفقیت بروزرسانی شد.")
+        return redirect("Authentication:update_profile")
+
+    return render(request, "registration/update_profile.html", {"user": user})
 @login_required
 def UserAccount(request):
     con = {

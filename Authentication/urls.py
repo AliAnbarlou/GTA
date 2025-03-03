@@ -15,6 +15,8 @@ urlpatterns = [
     path('user/<str:username>/question/<int:question_id>/',view=QuestionDetail,name="QuestionDetail"), #جزئیات یک سوال
     path("charging/",view=Charging,name="Charging"),
     path("delete-account/", delete_account, name="delete_account"),
+    path("update-profile/", update_profile, name="update_profile"),
+
 
 ]
 urlpatterns += [
