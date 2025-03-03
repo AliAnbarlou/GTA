@@ -20,7 +20,21 @@
 <a href="">مشاهده کلمات</a>
 <a href="">مشاهده سوالات</a>
 <a href="">مشاهده پاسخ ها</a>
+<h3>وضعیت اشتراک</h3>
+{% if subscription %}
+<p>پلن فعلی: <strong>{{ subscription.plan.name }}</strong></p>
+<p>تاریخ شروع: {{ subscription.start_date }}</p>
+{% if subscription.end_date %}
+    <p>تاریخ پایان: {{ subscription.end_date }}</p>
+{% else %}
+    <p>اشتراک رایگان (بدون محدودیت زمانی)</p>
+{% endif %}
+<p>وضعیت: {% if subscription.is_active %}فعال ✅{% else %}غیرفعال ❌{% endif %}</p>
+{% else %}
+<p>شما هیچ اشتراکی ندارید!</p>
+{% endif %}
 
+<a href="{% url 'Authentication:Charging' %}">مشاهده پلن‌ها</a>
 <h2><a href="{% url 'Authentication:password_change' %}">تغییر پسورد</a></h2>
 <h2><a href="{% url 'Authentication:update_profile' %}">به روزرسانی پروفایل</a></h2>
 

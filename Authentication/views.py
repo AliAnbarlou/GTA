@@ -37,13 +37,38 @@ def UserProfile(request,username):
 def UserHome(request):
     if request.user.is_superuser:
         return redirect('AdminDashboard')
-    else:
-        return render(request, 'registration/home.html',context={
-            'site_name':settings.SITE_NAME,
-            'avatar': get_gravatar_url(request.user.email),
-})
-    from django.contrib.auth.decorators import login_required
+    context = {
+        'avatar': get_gravatar_url(request.user.email),
+        'site_name': settings.SITE_NAME,
+    }
 
+    # دریافت اشتراک کاربر (اگر وجود داشته باشد)
+    subscription, created = Subscription.objects.get_or_create(user=request.user)
+
+    # اگر اشتراک تازه ایجاد شده باشد (یعنی هیچ اشتراکی نداشته) یا پلن آن تنظیم نشده باشد
+    if created or not subscription.plan:
+        free_plan = Plan.objects.filter(price=0).first()
+        if free_plan:
+            subscription.plan = free_plan
+            subscription.start_date = timezone.now()
+            subscription.end_date = None  # بدون تاریخ پایان برای پلن رایگان
+            subscription.is_active = True
+            subscription.save()
+        else:
+            context['error_message'] = 'No free plan available.'
+            return render(request, 'registration/home.html', context)
+
+    # بررسی وضعیت اشتراک
+    subscription.deactive_subscription()
+    is_free_subscription = subscription.free_subscription()
+
+    # اضافه کردن اطلاعات به context
+    context.update({
+        'subscription': subscription,
+        'is_free_subscription': is_free_subscription,
+    })
+
+    return render(request, 'registration/home.html', context)
 
 """
 Delete Account
