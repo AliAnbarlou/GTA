@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from Word.models import Words
+from Word.models import Words , Suggestion , Ask , Response
 from .forms import WordForm
 
 class DidYouLoginOrNotView(LoginView):
@@ -205,8 +205,19 @@ def AddWord(request):
         'site_name': settings.SITE_NAME,
         'avatar': get_gravatar_url(request.user.email),
     })
-def UserAnswers(request):#Response
-    pass
+
+
+def UserSuggestions(request , username):
+    user = get_object_or_404(User, username=username)
+    suggestions = user.suggestion_set.all()  # بهینه‌تر از filter()
+    
+    context = {
+        'suggestions': suggestions,
+        'site_name': getattr(settings, "SITE_NAME", "MySite"),  # مقدار پیش‌فرض در صورت نبود تنظیمات
+        'avatar': get_gravatar_url(user.email),
+    }
+    
+    return render(request, 'registration/user_suggestion.html', context)
 def UserQuestions(request):#Asks
     pass
 @login_required
@@ -245,8 +256,6 @@ def Charging(request):
         return redirect("Authentication:UserHome")
 
     return render(request, "registration/charging.html", {"plans": plans})
-def UserSuggestions(request):
-    pass
 
 
 def QuestionDetail(request, username, question_id):

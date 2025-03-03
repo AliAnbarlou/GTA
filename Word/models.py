@@ -43,9 +43,15 @@ class Words(models.Model):
         verbose_name_plural = 'کلمه‌ها'
 
 class Suggestion(models.Model):
+    STATUS_CHOICES = [
+        ('d', 'پیش نویس'),
+        ('p', 'منتشر شده'),
+        ('r', 'رد شده'),  # اضافه کردن وضعیت رد شده
+    ]
     suggested_to = models.ForeignKey(Words, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # اینجا تغییر کرد
     text = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='d')
 
     def __str__(self):
         return self.text

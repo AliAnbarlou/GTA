@@ -1,0 +1,18 @@
+{% load static %}
+
+<h1>پیشنهادات من</h1>
+
+{% if suggestions %}
+    <ul>
+        {% for suggestion in suggestions %}
+            <li>
+                <strong>{{ suggestion.text }}</strong> - وضعیت: {{ suggestion.get_status_display }}
+                {% if suggestion.suggested_to %}
+                    (برای کلمه: <a href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}">{{ suggestion.suggested_to.word }}</a>)
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>شما هیچ پیشنهادی ندارید.</p>
+{% endif %}

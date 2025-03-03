@@ -19,7 +19,7 @@
 <p>موجودی : {{request.user.balance}}</p>
 <a href="{% url 'Authentication:UserWords' request.user.username %}">مشاهده کلمات</a>
 <a href="">مشاهده سوالات</a>
-<a href="">مشاهده پاسخ ها</a>
+<a href="{% url 'Authentication:UserSuggestions' request.user.username %}">مشاهده پیشنهادات</a>
 <h3>وضعیت اشتراک</h3>
 {% if subscription %}
 <p>پلن فعلی: <strong>{{ subscription.plan.name }}</strong></p>
