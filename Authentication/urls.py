@@ -8,7 +8,7 @@ urlpatterns = [
     path("", UserHome, name="UserHome"),
     path("details/",UserAccount,name="UserAccount"),
     path("user/<str:username>/",view=UserProfile,name="UserProfile"),
-    path("user/<str:username>/words/",view=UserWords,name="UserWords"),
+    path('user/<str:username>/words/', UserWords, name='UserWords'),
     path("user/<str:username>/answers/",view=UserAnswers,name="UserAnswers"),
     path("user/<str:username>/questions/",view=UserQuestions,name="UserQuestions"), #سوالات یک کاربر
     path("user/<str:username>/suggestions/",view=UserSuggestions,name="UserSuggestions"), #پیشنهادات یک کاربر
@@ -16,6 +16,8 @@ urlpatterns = [
     path("charging/",view=Charging,name="Charging"),
     path("delete-account/", delete_account, name="delete_account"),
     path("update-profile/", update_profile, name="update_profile"),
+    path('add/', AddWord, name="AddWord"),  # مسیر اضافه کردن کلمه
+
 
 
 ]

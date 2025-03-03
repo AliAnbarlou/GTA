@@ -4,7 +4,10 @@
     <h2>نتایج جستجو برای "{{ query }}"</h2>
     <ul>
         {% for word in results %}
-            <li>{{ word.word }} - {{ word.meaning }}</li>
+            {% if word.status == "p" %}
+            <a href="{% url 'Word:word_detail' word.slug %}"><li>{{ word.word }} - {{ word.meaning }}</li></a>
+        {% endif %}
+
         {% empty %}
             <li>هیچ نتیجه‌ای یافت نشد.</li>
         {% endfor %}

@@ -16,6 +16,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from Word.models import Words
+from .forms import WordForm
 
 class DidYouLoginOrNotView(LoginView):
     def dispatch(self, request, *args, **kwargs):
@@ -172,8 +174,37 @@ def UserAccount(request):
 
     # بازگشت به قالب با اطلاعات موجود در context
     return render(request, 'registration/account.html', context=con)
-def UserWords(request):
-    pass
+"""
+USER WORDS  
+"""
+
+def UserWords(request, username):
+    user = get_object_or_404(User, username=username)
+    words = Words.objects.filter(user=user)
+
+    return render(request, 'registration/user_words.html', {
+        'words': words,
+        'site_name': settings.SITE_NAME,
+        'avatar': get_gravatar_url(user.email),
+        'can_add_word': request.user == user,  # فقط خود کاربر بتواند کلمه اضافه کند
+    })
+@login_required
+def AddWord(request):
+    if request.method == 'POST':
+        form = WordForm(request.POST)
+        if form.is_valid():
+            word = form.save(commit=False)
+            word.user = request.user  # کاربر را به کلمه اضافه می‌کنیم
+            word.save()
+            return redirect('Authentication:UserWords', username=request.user.username)  # به صفحه کلمات کاربر هدایت می‌شود
+    else:
+        form = WordForm()
+
+    return render(request, 'registration/add_word.html', {
+        'form': form,
+        'site_name': settings.SITE_NAME,
+        'avatar': get_gravatar_url(request.user.email),
+    })
 def UserAnswers(request):#Response
     pass
 def UserQuestions(request):#Asks

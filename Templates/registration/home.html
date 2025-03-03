@@ -17,7 +17,7 @@
 <p>تعداد بازدید : {{request.user.hits.count}}</p>
 
 <p>موجودی : {{request.user.balance}}</p>
-<a href="">مشاهده کلمات</a>
+<a href="{% url 'Authentication:UserWords' request.user.username %}">مشاهده کلمات</a>
 <a href="">مشاهده سوالات</a>
 <a href="">مشاهده پاسخ ها</a>
 <h3>وضعیت اشتراک</h3>
