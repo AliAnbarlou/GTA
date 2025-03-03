@@ -18,7 +18,7 @@ class User(AbstractUser):
     bio = models.TextField(blank=True , max_length=100)
     hits = models.ManyToManyField(IPAddress, related_name="hits", blank=True, editable=False)
     score = models.IntegerField(default=0, editable=False)
-    balance = models.DecimalField(max_digits=12, decimal_places=0, default=0)
+    #balance = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     is_banned = models.BooleanField(default=False, editable=False)
 
     def __str__(self):

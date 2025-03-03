@@ -178,8 +178,42 @@ def UserAnswers(request):#Response
     pass
 def UserQuestions(request):#Asks
     pass
+@login_required
 def Charging(request):
-    pass
+    plans = Plan.objects.exclude(price=0)  # فقط پلن‌های غیر رایگان را نمایش بده
+
+    if request.method == "POST":
+        plan_id = request.POST.get("plan_id")
+        selected_plan = Plan.objects.filter(id=plan_id).first()
+
+        if not selected_plan:
+            messages.error(request, "پلن انتخابی معتبر نیست.")
+            return redirect("Authentication:Charging")
+
+        # بررسی اینکه آیا کاربر از قبل پلن غیررایگان دارد یا نه
+        user_subscription = Subscription.objects.filter(user=request.user).first()
+        if user_subscription and not user_subscription.free_subscription():
+            messages.warning(request, "شما از قبل یک اشتراک فعال دارید و نمی‌توانید مجدداً خرید کنید.")
+            return redirect("Authentication:Charging")
+
+        # در اینجا باید پرداخت را پردازش کنید (بسته به سیستم پرداختی که استفاده می‌کنید)
+        # به عنوان مثال، فرض می‌کنیم پرداخت موفق بوده است
+
+        # ثبت اشتراک جدید برای کاربر
+        Subscription.objects.update_or_create(
+            user=request.user,
+            defaults={
+                "plan": selected_plan,
+                "start_date": timezone.now(),
+                "end_date": timezone.now() + timezone.timedelta(days=30),  # ۳۰ روز اعتبار
+                "is_active": True,
+            }
+        )
+
+        messages.success(request, f"پلن {selected_plan.name} با موفقیت برای شما فعال شد!")
+        return redirect("Authentication:UserHome")
+
+    return render(request, "registration/charging.html", {"plans": plans})
 def UserSuggestions(request):
     pass
 
