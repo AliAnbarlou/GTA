@@ -58,3 +58,18 @@ def add_response(request, question_id):
             messages.error(request, 'لطفاً یک پاسخ وارد کنید.')
 
         return redirect('Word:word_detail', word_slug=question.ask_to.slug)
+    
+import requests
+from django.http import JsonResponse
+from urllib.parse import quote  # استفاده از urllib.parse.quote
+
+def get_suggestion(request, word):
+    encoded_query = quote(word)  # encode کردن کلمه
+    api_url = f"https://engine2.vajehyab.com/suggestion?q={encoded_query}"
+
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        return JsonResponse(data)  # بازگرداندن پاسخ API به‌صورت JSON
+    except requests.RequestException:
+        return JsonResponse({"error": "خطا در ارتباط با واژه‌یاب"}, status=500)

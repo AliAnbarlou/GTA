@@ -117,3 +117,4 @@ SECURE_HSTS_PRELOAD = True  # اجازه به مرورگرها برای پیش�
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # احراز هویت پیش‌فرض
 ]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
