@@ -1,0 +1,408 @@
+@font-face {
+  font-family: 'Vazirmatn';
+  src: local('Vazirmatn-Black'),
+    local('Vazir-Black'),
+    url('fonts/vazirmatn-black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: local('Vazirmatn-Medium'),
+    local('Vazir-Medium'),
+    url('fonts/vazirmatn-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --dark: #222;
+  --gray: #9f9f9f;
+  --white: #fff;
+  --app-fill-clr: var(--white);
+  --app-bg-clr: var(--dark);
+  --font-family: 'Vazirmatn',
+    Helvetica Neue Arabic-Arabic,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  display: block;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+a {
+  background-color: transparent;
+}
+
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+img {
+  border-style: none;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+progress {
+  vertical-align: baseline;
+}
+
+textarea {
+  overflow: auto;
+}
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+details {
+  display: block;
+}
+
+summary {
+  display: list-item;
+}
+
+template {
+  display: none;
+}
+
+[hidden] {
+  display: none;
+}
+
+button,
+input {
+  appearance: none;
+  border: none;
+  outline: none;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--app-fill-clr);
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  font-family: var(--font-family);
+  text-wrap: balance;
+  background-color: var(--app-bg-clr);
+}
+
+.h1-title {
+  font-weight: 900;
+  text-align: center;
+}
+
+.search-container {
+  --gap-size: .75rem;
+  --width: 39.75rem;
+  position: relative;
+  max-width: var(--width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-form {
+  position: relative;
+  display: flex;
+  gap: var(--gap-size);
+  padding: 0 var(--gap-size);
+  margin: var(--gap-size) auto;
+  border: .0625rem solid var(--gray);
+  border-radius: 8px;
+}
+
+.search-container.showing-results>.search-form {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.search-form>* {
+  background-color: transparent;
+}
+
+.search-form__input {
+  flex-grow: 1;
+  height: 4rem;
+  color: var(--gray);
+}
+
+.search-form__input:focus {
+  color: #fff;
+}
+
+.search-form__input::placeholder {
+  color: var(--gray);
+}
+
+/* 09192124054 */
+.search-form__button {
+  padding: 0;
+}
+
+.search-form__icon {
+  width: 2rem;
+  fill: var(--gray);
+}
+
+.search-container.showing-results>.suggestions {
+  list-style-type: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-height: 40rem;
+  overflow-y: auto;
+  background-color: var(--app-bg-clr);
+  border: .0625rem solid var(--gray);
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.suggestions {
+  padding: 0;
+  margin: 0;
+  height: 0;
+  overflow-y: hidden;
+}
+
+.suggestions__loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: .25rem solid var(--white);
+  border-right-color: transparent;
+  margin: var(--gap-size) auto;
+  border-radius: 50%;
+  animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.suggestions__item:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.suggestions__item {
+  padding: var(--gap-size);
+  cursor: pointer;
+  background-color: #111;
+}
+
+.suggestions__item.active,
+.suggestions__item:hover {
+  background-color: #161616;
+}
+
+.container {
+  width: 100%;
+  padding-inline: 1rem;
+  margin-inline: auto;
+}
+
+@media (prefers-reduce-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+@media (min-width: 475px) {
+  .container {
+    max-width: 475px;
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
