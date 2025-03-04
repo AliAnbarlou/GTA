@@ -18,12 +18,9 @@
     controller = new AbortController();
 
     try {
-      const response = await fetch(
-        `https://engine2.vajehyab.com/suggestion?q=${encodeURIComponent(
-          query
-        )}`,
-        { signal: controller.signal }
-      );
+      const response = await fetch(`/word/api/${query}`, {
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error('خطا در دریافت داده');
@@ -47,9 +44,13 @@
     const fragment = document.createDocumentFragment();
 
     suggestions.forEach(({ title }) => {
-      const item = document.createElement('li');
+      const item = document.createElement('li'),
+        suggestionLink = document.createElement('a');
+
+      suggestionLink.textContent = title;
+      suggestionLink.href;
       item.classList.add('suggestions__item');
-      item.textContent = title;
+      item.appendChild(suggestionLink);
       fragment.appendChild(item);
     });
 
@@ -100,9 +101,16 @@
       return;
     }
 
-    const loadingSppiner = document.createElement('span');
-    loadingSppiner.classList.add('suggestions__loading-spinner');
-    suggestionsList.appendChild(loadingSppiner);
+    const hasLoadingSppiner =
+      !!suggestionsList.querySelector('.suggestions__loading-spinner') || false;
+
+    if (!hasLoadingSppiner) {
+      removeChildren(suggestionsList);
+      const loadingSppiner = document.createElement('span');
+
+      loadingSppiner.classList.add('suggestions__loading-spinner');
+      suggestionsList.appendChild(loadingSppiner);
+    }
 
     searchContainer.classList.add('showing-results');
 
