@@ -19,7 +19,14 @@ def search_words(request):
     results = Words.objects.filter(word__icontains=query)
     
     return render(request, 'Search/search_results.html', {'results': results, 'query': query})
+from django.shortcuts import render
+
 def search_word_list(request):
     query = request.GET.get('q', '').strip()
     results = Words.objects.filter(word__icontains=query)
+
+    # اگر هیچ نتیجه‌ای پیدا نشد، صفحه‌ی دیگری نمایش داده می‌شود.
+    if not results.exists():
+        return render(request, 'Search/no_results.html', {'query': query})  # صفحه‌ی دیگری که می‌خواهید نمایش داده شود
+
     return render(request, 'Search/search_results.html', {'results': results, 'query': query})
