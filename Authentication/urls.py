@@ -1,9 +1,11 @@
-from django.urls import path
+from django.urls import path , re_path
 from .views import *
-from django.urls import path
 from django.contrib.auth import views as auth_views
 app_name = "Authentication"
-
+"""
+re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', 
+    activate, name='activate'),
+"""
 urlpatterns = [
     path("", UserHome, name="UserHome"),
     path("details/",UserAccount,name="UserAccount"),
@@ -17,6 +19,9 @@ urlpatterns = [
     path('add/', AddWord, name="AddWord"),  # مسیر اضافه کردن کلمه
     path("user/<str:username>/questions/", view=UserQuestions, name="UserQuestions"),
     path('user/<str:username>/question/<int:question_id>/', view=QuestionDetail, name="QuestionDetail"),
+    path('signup/', signup, name='signup'),
+    path('activate/<uidb64>/<token>/', activate, name='activate'),
+
 
 
 
