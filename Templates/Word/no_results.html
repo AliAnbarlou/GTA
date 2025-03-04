@@ -1,0 +1,29 @@
+{% extends '../Base/Base.html' %}
+
+{% block title %}{{ word.word }} - جزئیات{% endblock %}
+
+{% block main %}
+این کلمه در سیستم ثبت نشده است ، با ثبت آن به گسترش سیستم کمک کنید
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h1 class="text-center mb-3">{{ word.word }}</h1>
+        <h4 class="text-muted text-center">{{ word.get_status_display }}</h4>
+        
+        <div class="mt-4">
+            <h3>معنی:</h3>
+            <p class="lead">{{ word.meaning }}</p>
+        </div>
+        
+        <div class="mt-4">
+            <h3>مثال:</h3>
+            <blockquote class="blockquote">{{ word.example }}</blockquote>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'Home:search_word' %}?q={{ word.word }}" class="btn btn-primary">بازگشت به جستجو</a>
+        </div>
+    </div>
+</div>
+<hr>
+
+{% endblock %}
