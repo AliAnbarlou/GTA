@@ -327,6 +327,10 @@ body {
   overflow-y: hidden;
 }
 
+.suggestions__error {
+  text-align: center;
+}
+
 .suggestions__loading-spinner {
   display: block;
   width: 2rem;
@@ -344,20 +348,21 @@ body {
   }
 }
 
-.suggestions__item:last-child {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-.suggestions__item {
+.suggestions__link {
+  display: block;
   padding: var(--gap-size);
   cursor: pointer;
   background-color: #111;
 }
 
-.suggestions__item.active,
-.suggestions__item:hover {
+.suggestions__item.active>.suggestions__link,
+.suggestions__link:hover {
   background-color: #161616;
+}
+
+.suggestions__link:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .container {

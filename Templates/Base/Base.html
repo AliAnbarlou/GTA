@@ -32,6 +32,7 @@
     <h1 class="h1-title">زبان زد</h1>
     <div class="search-container">
       <form class="search-form" action="{% url 'Home:search_words' %}" method="GET" novalidate>
+
         <input class="search-form__input" type="text" placeholder="واژه خود را وارد کنید" autocomplete="off"
           inputmode="search">
         <button class="search-form__button" type="submit">
@@ -54,8 +55,8 @@
       <ul class="suggestions">
       </ul>
     </div>
-    <!-- 
-    {% block main %}{% endblock main %} -->
+
+    {% block main %}{% endblock main %}
   </main>
 </body>
 <!-- {% if request.user.is_authenticated %}
