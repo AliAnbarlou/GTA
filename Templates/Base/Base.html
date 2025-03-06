@@ -33,7 +33,7 @@
     <div class="search-container">
       <form class="search-form" action="{% url 'Home:search_words' %}" method="GET" novalidate>
 
-        <input class="search-form__input" type="text" placeholder="واژه خود را وارد کنید" autocomplete="off"
+        <input class="search-form__input" name="q" type="text" placeholder="واژه خود را وارد کنید" autocomplete="off"
           inputmode="search">
         <button class="search-form__button" type="submit">
           <svg class="search-form__icon" fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
