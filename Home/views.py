@@ -18,18 +18,25 @@ def GrandTheftAPI(word):
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException:
-        result = {"error": "Failed to fetch data"}
+        result = {"خطا": "خطا در دریافت اطلاعات"}
         DICTIONARY_CACHE[word] = result
         return result
     
     dictionary_sections = data.get("wordbox", {}).get("sections", [])
 
     if not dictionary_sections:
-        result = {"error": "No definition found"}
+        result = {"خطا": "تعریفی یافت نشد"}
         DICTIONARY_CACHE[word] = result
         return result
 
-    result = {item.get("section", "unknown"): item.get("description", "") for item in dictionary_sections}
+    section_mapping = {
+        "meaning": "معنی",
+        "alternative": "برابر پارسی",
+        "synonym": "مترادف",
+        "dictionary": "دیکشنری",
+    }
+
+    result = {section_mapping.get(item.get("section"), item.get("section")): item.get("description", "") for item in dictionary_sections}
 
     DICTIONARY_CACHE[word] = result
     return result
