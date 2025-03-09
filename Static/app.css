@@ -365,9 +365,21 @@ body {
   background-color: #161616;
 }
 
-.suggestions__link:last-child {
+.suggestions__item:last-child {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.meaning {
+  padding: .75rem 1.5rem;
+  margin-block: 1.5rem;
+  border: .0625rem solid var(--gray);
+  border-radius: 8px;
+}
+
+.meaning > * {
+  padding: 0;
+  margin: 0;
 }
 
 .container {

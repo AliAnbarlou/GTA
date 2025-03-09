@@ -30,18 +30,21 @@
 
 {% if word %}
     <div class="meaning">
-        <h2 class="text-center mb-3">{{ word.word }}</h2>
-        <p class="lead">{{ word.meaning }}</p>
-        <h2>معنا</h2>
-    
-    
-    
+        <h2>{{ word.word }}</h2>
+        {% if not dict.error %}
+        <ul class="meaning__list">
+            <p>{{ word.meaning }}</p>
+        </ul>
+        {% endif %}
         <h3>مثال:</h3>
         <blockquote class="blockquote">{{ word.example }}</blockquote>
     
         <div class="text-center mt-4">
         </div>
     </div>
+    <hr>
+    dict
+
     <hr>
     <h2>پیشنهادات مرتبط:</h2>
     {% if suggestions %}

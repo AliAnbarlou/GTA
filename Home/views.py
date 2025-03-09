@@ -1,25 +1,40 @@
 from django.shortcuts import render , get_object_or_404
 from Word.models import Words , Suggestion, Ask , NewWords
 import requests
+
+DICTIONARY_CACHE = {}
+
 def HomePage(request):
     return render(request, "Home/Home.html")
 
 def GrandTheftAPI(word):
+    if word in DICTIONARY_CACHE:
+        return DICTIONARY_CACHE[word]
+    
     url = f"https://engine2.vajehyab.com/search?q={word}"
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        data = response.json()
-        dictionary_sections = data.get("wordbox", {}).get("sections", [])
 
-        if (len(dictionary_sections) == 0):
-            return {"error": "Failed to fetch data"}
-        
-        return {
-            item["section"]: item["description"] for item in dictionary_sections
-        }
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException:
+        result = {"error": "Failed to fetch data"}
+        DICTIONARY_CACHE[word] = result
+        return result
     
-    return {"error": "Failed to fetch data"}
+    dictionary_sections = data.get("wordbox", {}).get("sections", [])
+
+    if not dictionary_sections:
+        result = {"error": "No definition found"}
+        DICTIONARY_CACHE[word] = result
+        return result
+
+    result = {item.get("section", "unknown"): item.get("description", "") for item in dictionary_sections}
+
+    DICTIONARY_CACHE[word] = result
+    return result
+
+
 def search_words(request):
     query = request.GET.get('q', '').strip()
     context = {
