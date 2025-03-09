@@ -1,54 +1,51 @@
 {% extends '../Base/Base.html' %}
 
+{% block extra_head %}
+<script>var __CURRENT_WORD__ = "{{word.word}}";</script>
+{% endblock %}
 {% block title %}{{ word.word }} - جزئیات{% endblock %}
 
 {% block main %}
-<div class="container mt-5">
-    <div class="card shadow-lg p-4">
-        <h1 class="text-center mb-3">{{ word.word }}</h1>
-        <h4 class="text-muted text-center">{{ word.get_status_display }}</h4>
-        
-        <div class="mt-4">
-            <h3>معنی:</h3>
-            <p class="lead">{{ word.meaning }}</p>
-        </div>
-        
-        <div class="mt-4">
-            <h3>مثال:</h3>
-            <blockquote class="blockquote">{{ word.example }}</blockquote>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="{% url 'Home:search_word' %}?q={{ word.word }}" class="btn btn-primary">بازگشت به جستجو</a>
-        </div>
-    </div>
+<div class="meaning">
+  <h2 class="text-center mb-3">{{ word.word }}</h2>
+  <p class="lead">{{ word.meaning }}</p>
+  <h2>معنا</h2>
+
+
+
+  <h3>مثال:</h3>
+  <blockquote class="blockquote">{{ word.example }}</blockquote>
+
+  <div class="text-center mt-4">
+    <a href="{% url 'Home:search_word' %}?q={{ word.word }}" class="btn btn-primary">بازگشت به جستجو</a>
+  </div>
 </div>
 <hr>
 <h2>پیشنهادات مرتبط:</h2>
 {% if suggestions %}
-    <ul>
-        {% for suggestion in suggestions %}
-            <li>{{ suggestion.text }} - وضعیت: {{ suggestion.get_status_display }}</li>
-        {% endfor %}
-    </ul>
+<ul>
+  {% for suggestion in suggestions %}
+  <li>{{ suggestion.text }} - وضعیت: {{ suggestion.get_status_display }}</li>
+  {% endfor %}
+</ul>
 {% else %}
-    <p>هنوز پیشنهادی ثبت نشده است.</p>
+<p>هنوز پیشنهادی ثبت نشده است.</p>
 {% endif %}
 
 {% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li class="alert alert-info">{{ message }}</li>
-        {% endfor %}
-    </ul>
+<ul>
+  {% for message in messages %}
+  <li class="alert alert-info">{{ message }}</li>
+  {% endfor %}
+</ul>
 {% endif %}
 
 <!-- بخش ارسال پیشنهاد -->
 <h3>پیشنهاد دهید:</h3>
 <form method="POST" action="{% url 'Word:add_suggestion' word_slug=word.slug %}">
-    {% csrf_token %}
-    <textarea name="suggestion_text" rows="3" placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
-    <button type="submit">ارسال پیشنهاد</button>
+  {% csrf_token %}
+  <textarea name="suggestion_text" rows="3" placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
+  <button type="submit">ارسال پیشنهاد</button>
 </form>
 
 <hr>
@@ -57,34 +54,34 @@
 <h2>سوالات مرتبط:</h2>
 <!-- سوالات -->
 {% for question in word.ask_set.all %}
-    <div class="question">
-        <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
-        <p>{{ question.question }}</p>
-        
-        <!-- نمایش پاسخ‌ها -->
-        <h4>پاسخ‌ها:</h4>
-        {% for response in question.response_set.all %}
-            <p>{{ response.user.username }}: {{ response.response }}</p>
-        {% empty %}
-            <p>هنوز پاسخی به این سوال داده نشده است.</p>
-        {% endfor %}
+<div class="question">
+  <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
+  <p>{{ question.question }}</p>
 
-        <!-- فرم ارسال پاسخ -->
-        <h5>پاسخ دهید:</h5>
-        <form method="POST" action="{% url 'Word:add_response' question.id %}">
-            {% csrf_token %}
-            <textarea name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
-            <button type="submit">ارسال پاسخ</button>
-        </form>
-    </div>
+  <!-- نمایش پاسخ‌ها -->
+  <h4>پاسخ‌ها:</h4>
+  {% for response in question.response_set.all %}
+  <p>{{ response.user.username }}: {{ response.response }}</p>
+  {% empty %}
+  <p>هنوز پاسخی به این سوال داده نشده است.</p>
+  {% endfor %}
+
+  <!-- فرم ارسال پاسخ -->
+  <h5>پاسخ دهید:</h5>
+  <form method="POST" action="{% url 'Word:add_response' question.id %}">
+    {% csrf_token %}
+    <textarea name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
+    <button type="submit">ارسال پاسخ</button>
+  </form>
+</div>
 {% endfor %}
 
 
 <!-- بخش ارسال سوال -->
 <h3>سوال بپرسید:</h3>
 <form method="POST" action="{% url 'Word:add_question' word_slug=word.slug %}">
-    {% csrf_token %}
-    <textarea name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
-    <button type="submit">ارسال سوال</button>
+  {% csrf_token %}
+  <textarea name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
+  <button type="submit">ارسال سوال</button>
 </form>
 {% endblock %}

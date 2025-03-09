@@ -227,6 +227,11 @@ input {
   outline: none;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 *,
 *::before,
 *::after {
@@ -255,7 +260,8 @@ body {
   --gap-size: .75rem;
   --width: 39.75rem;
   position: relative;
-  max-width: var(--width);
+  width: var(--width);
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -294,7 +300,6 @@ body {
   color: var(--gray);
 }
 
-/* 09192124054 */
 .search-form__button {
   padding: 0;
 }

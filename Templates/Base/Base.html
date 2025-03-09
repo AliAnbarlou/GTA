@@ -56,7 +56,9 @@
       </ul>
     </div>
 
-    {% block main %}{% endblock main %}
+    <div id="root">
+      {% block main %}{% endblock main %}
+    </div>
   </main>
 </body>
 <!-- {% if request.user.is_authenticated %}

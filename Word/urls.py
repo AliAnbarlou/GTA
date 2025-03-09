@@ -8,5 +8,4 @@ urlpatterns = [
     path('word/<slug:word_slug>/add-question/', add_question, name='add_question'),
     path('response/<int:question_id>/', add_response, name='add_response'),
     path("api/<str:word>/", get_suggestion, name="vajehyab"),
-
 ]

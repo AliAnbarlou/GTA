@@ -1,15 +1,117 @@
 {% extends "Base/Base.html" %}
 
-{% block main %}
-    <h2>نتایج جستجو برای "{{ query }}"</h2>
-    <ul>
-        {% for word in results %}
-            {% if word.status == "p" %}
-            <a href="{% url 'Word:word_detail' word.slug %}"><li>{{ word.word }} - {{ word.meaning }}</li></a>
-        {% endif %}
+{% block extra_head %}
+{% if word %}
+<script>var __CURRENT_WORD__ = "{{ word.word }}";</script>
+{% endif %}
+{% endblock %}
 
-        {% empty %}
-            <li>هیچ نتیجه‌ای یافت نشد.</li>
-        {% endfor %}
-    </ul>
+{% block title %}
+{% if word %}
+{{ word.word }} - جزئیات
+{% else %}
+نتایج جستجو برای "{{ query }}"
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{% if word %}
+<!-- نمایش جزئیات کلمه (در صورت وجود exact match) -->
+<div class="meaning">
+    <h2 class="text-center mb-3">{{ word.word }}</h2>
+    <p class="lead">{{ word.meaning }}</p>
+    <h2>معنا</h2>
+
+    <h3>مثال:</h3>
+    <blockquote class="blockquote">{{ word.example }}</blockquote>
+
+    <div class="text-center mt-4">
+        <!-- لینک بازگشت به نتایج جستجو -->
+        <a href="{% url 'Home:search_words' %}?q={{ word.word }}" class="btn btn-primary">بازگشت به جستجو</a>
+    </div>
+</div>
+<hr>
+
+<!-- بخش پیشنهادات مرتبط -->
+<h2>پیشنهادات مرتبط:</h2>
+{% if suggestions %}
+<ul>
+    {% for suggestion in suggestions %}
+    <li>{{ suggestion.text }} - وضعیت: {{ suggestion.get_status_display }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>هنوز پیشنهادی ثبت نشده است.</p>
+{% endif %}
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li class="alert alert-info">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!-- بخش ارسال پیشنهاد -->
+<h3>پیشنهاد دهید:</h3>
+<form method="POST" action="{% url 'Word:add_suggestion' word_slug=word.slug %}">
+    {% csrf_token %}
+    <textarea name="suggestion_text" rows="3" placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
+    <button type="submit">ارسال پیشنهاد</button>
+</form>
+
+<hr>
+
+<!-- بخش سوالات مرتبط -->
+<h2>سوالات مرتبط:</h2>
+{% for question in word.ask_set.all %}
+<div class="question">
+    <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
+    <p>{{ question.question }}</p>
+
+    <!-- نمایش پاسخ‌ها -->
+    <h4>پاسخ‌ها:</h4>
+    {% for response in question.response_set.all %}
+    <p>{{ response.user.username }}: {{ response.response }}</p>
+    {% empty %}
+    <p>هنوز پاسخی به این سوال داده نشده است.</p>
+    {% endfor %}
+
+    <!-- فرم ارسال پاسخ -->
+    <h5>پاسخ دهید:</h5>
+    <form method="POST" action="{% url 'Word:add_response' question.id %}">
+        {% csrf_token %}
+        <textarea name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
+        <button type="submit">ارسال پاسخ</button>
+    </form>
+</div>
+{% endfor %}
+
+<!-- بخش ارسال سوال -->
+<h3>سوال بپرسید:</h3>
+<form method="POST" action="{% url 'Word:add_question' word_slug=word.slug %}">
+    {% csrf_token %}
+    <textarea name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
+    <button type="submit">ارسال سوال</button>
+</form>
+
+{% else %}
+<!-- نمایش نتایج جستجو (در صورت عدم وجود exact match) -->
+<h2>نتایج جستجو برای "{{ query }}"</h2>
+{% if results %}
+<ul>
+    {% for item in results %}
+    {% if item.status == "p" %}
+    <li>
+        <a href="{% url 'Word:word_detail' item.slug %}">
+            {{ item.word }} - {{ item.meaning }}
+        </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% else %}
+<p>هیچ نتیجه‌ای یافت نشد.</p>
+{% endif %}
+{% endif %}
 {% endblock %}

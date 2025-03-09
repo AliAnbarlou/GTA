@@ -1,32 +1,28 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render
 from Word.models import Words
 
-#from articles.models import Article
 def HomePage(request):
-    return render(request,"Home/Home.html")
+    return render(request, "Home/Home.html")
+
 def search_words(request):
     query = request.GET.get('q', '').strip()
-    
+
+    # در صورتی که ورودی خالی باشد، تمپلیت نتایج با مقدار None نمایش داده شود
     if not query:
-        return render(request, 'Search/search_results.html', {'results': None, 'query': query})
+        return render(request, 'Search/search_results.html', {
+            'results': None,
+            'query': query,
+            'exact_match': None
+        })
 
-    # بررسی وجود کلمه به‌صورت دقیق
+    # بررسی وجود دقیق کلمه در دیتابیس
     exact_match = Words.objects.filter(word__exact=query).first()
-    if exact_match:
-        return redirect('Word:word_detail', word_slug=exact_match.slug)  # فرض می‌کنیم صفحه جزئیات کلمه دارید
-
-    # جستجوی کلماتی که شامل این کلمه هستند
-    results = Words.objects.filter(word__icontains=query)
-    
-    return render(request, 'Search/search_results.html', {'results': results, 'query': query})
-from django.shortcuts import render
-
-def search_word_list(request):
-    query = request.GET.get('q', '').strip()
+    # جستجو برای کلماتی که شامل query هستند
     results = Words.objects.filter(word__icontains=query)
 
-    # اگر هیچ نتیجه‌ای پیدا نشد، صفحه‌ی دیگری نمایش داده می‌شود.
-    if not results.exists():
-        return render(request, 'Search/no_results.html', {'query': query})  # صفحه‌ی دیگری که می‌خواهید نمایش داده شود
-
-    return render(request, 'Search/search_results.html', {'results': results, 'query': query})
+    # نمایش تمپلیت نتایج جستجو در هر دو حالت وجود یا عدم وجود کلمه در دیتابیس
+    return render(request, 'Search/search_results.html', {
+        'results': results,
+        'query': query,
+        'exact_match': exact_match
+    })
