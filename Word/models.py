@@ -80,3 +80,10 @@ class Response(models.Model):
     class Meta:
         verbose_name = 'پاسخ'
         verbose_name_plural = 'پاسخ‌ها'
+class NewWords(models.Model):
+    word = models.CharField(max_length=50, verbose_name="کلمه")
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.word
+    
