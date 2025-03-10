@@ -5,6 +5,7 @@ class WordForm(forms.ModelForm):
     class Meta:
         model = Words
         fields = ['word', 'meaning', 'example']  # فیلد status حذف شده تا کاربر عادی تغییر ندهد
+        exclude = ['slug']  # اضافه کردن این خط برای جلوگیری از تداخل با فیلد slug
 
     def save(self, commit=True):
         word = super().save(commit=False)
