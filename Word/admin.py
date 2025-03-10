@@ -2,17 +2,22 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import *
+# In your WordAdmin class:
 class WordAdmin(admin.ModelAdmin):
-    list_display = ('user','word','status',)
-    list_filter = ('word','user','status',)
+    list_display = ('user', 'word', 'status',)
+    list_filter = ('word', 'user', 'status',)
     search_fields = ('word',)
     ordering = ('word',)
-    prepopulated_fields = {"slug": ("word",)}
-    exclude = ("user",)
+    exclude = ("user",)  # Exclude 'user' field if not needed in form
     actions = ['make_published']
-    def make_published(modeladmin , request , queryset):
+    
+    # Remove prepopulated_fields
+    # prepopulated_fields = {"slug": ("word",)}  # Remove this line
+
+    def make_published(self, modeladmin, request, queryset):
         queryset.update(status='p')
     make_published.short_description = "موارد انتخاب شده را منتشر کنید"
+
     def save_model(self, request, obj, form, change):
         if not obj.user_id:  # بررسی می‌کنیم که مقuser` تنظیم شده یا نه
             obj.user = request.user  # تنظیم نویسنده به کاربر لاگین شده
