@@ -17,106 +17,119 @@
 {% endblock %}
 
 {% block main %}
-{% if results %}
-<h2>نتایج جستجو برای "{{ query }}"</h2>
-<ul>
-    {% for result in results %}
-    <li><a href="{% url 'Home:search_words' %}?q={{ result.word }}">{{ result.word }}</a></li>
-    {% endfor %}
-</ul>
-<div class="text-center">
-</div>
-{% else %}
-
-{% if word %}
-<section class="section">
-    <h2>{{ word.word }}</h2>
-    <p>{{ word.meaning }}</p>
-    <div class="meaning">
-        {% if not dict.خطا %}
-        {% for key, value in dict.items %}
-        <div class="meaning__section">
-            <h3 class="meaning__title">{{ key }}</h3>
-            <p>{{ value|safe }}</p>
+    {% if results %}
+        <h2>نتایج جستجو برای "{{ query }}"</h2>
+        <ul>
+            {% for result in results %}
+                <li><a href="{% url 'Home:search_words' %}?q={{ result.word }}">{{ result.word }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="text-center">
         </div>
-        {% endfor %}
-        {% else %}
-        <p>{{ dict.خطا }}</p>
-        {% endif %}
-        {% endif %}
-
-        <div class="meaning__section">
-            <h3 class="meaning__title">مثال:</h3>
-            <p class="meaning__example">{{ word.example }}</p>
-        </div>
-    </div>
-</section>
-<section class="section">
-    <h2>پیشنهادات مرتبط:</h2>
-    {% if suggestions %}
-    <ul>
-        {% for suggestion in suggestions %}
-        <li>{{ suggestion.text }} - وضعیت: {{ suggestion.get_status_display }}</li>
-        {% endfor %}
-    </ul>
     {% else %}
-    <p>هنوز پیشنهادی ثبت نشده است.</p>
+
+        {% if word %}
+        <section class="section">
+            <h2>{{ word.word }}</h2>
+            <p>{{ word.meaning }}</p>
+            <div class="meaning">
+                {% if not dict.خطا %}
+                {% for key, value in dict.items %}
+                <div class="meaning__section">
+                    <h3 class="meaning__title">{{ key }}</h3>
+                    <p>{{ value|safe }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>{{ dict.خطا }}</p>
+                {% endif %}
+                {% endif %}
+
+                <div class="meaning__section">
+                    <h3 class="meaning__title">مثال:</h3>
+                    <p class="meaning__example">{{ word.example }}</p>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h2>پیشنهادات مرتبط:</h2>
+            {% if suggestions %}
+            <ul>
+                {% for suggestion in suggestions %}
+                    {% if suggestion.status == "p" %}
+                        <li>{{ suggestion.text }} - توسط: {{ suggestion.user }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>هنوز پیشنهادی ثبت نشده است.</p>
+            {% endif %}
+
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li class="alert alert-info">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if user.is_anonymous %}
+                <p>برای ارسال پیشنهاد باید <a href="{% url 'Authentication:login' %}?next={{ request.path }}">وارد شوید</a>.</p>
+            {% else %}
+                <!-- بخش ارسال پیشنهاد -->
+                <h3>پیشنهاد دهید:</h3>
+                <form method="POST" action="{% url 'Home:add_suggestion' word_slug=word.slug %}">
+                    {% csrf_token %}
+                    <textarea class="textarea" name="suggestion_text" rows="3"
+                        placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
+                    <button type="submit">ارسال پیشنهاد</button>
+                </form>
+
+                <hr>
+            {% endif %}
+            <!-- بخش سوالات مرتبط -->
+            <h2>سوالات مرتبط:</h2>
+            <!-- سوالات -->
+            {% for question in word.ask_set.all %}
+                <div class="question">
+                    <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
+                    <p>{{ question.question }}</p>
+            
+                    <!-- نمایش پاسخ‌ها -->
+                    <h4>پاسخ‌ها:</h4>
+                    {% for response in question.response_set.all %}
+                        <p>{{ response.user.username }}: {{ response.response }}</p>
+                    {% empty %}
+                        <p>هنوز پاسخی به این سوال داده نشده است.</p>
+                    {% endfor %}
+            
+                    <!-- فرم ارسال پاسخ (فقط برای کاربران لاگین‌شده) -->
+                    {% if user.is_authenticated %}
+                        <h5>پاسخ دهید:</h5>
+                        <form method="POST" action="{% url 'Home:add_response' question.id %}">
+                            {% csrf_token %}
+                            <textarea class="textarea" name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
+                            <button type="submit">ارسال پاسخ</button>
+                        </form>
+                    {% else %}
+                        <p>برای ارسال پاسخ <a href="{% url 'Authentication:login' %}">وارد حساب کاربری</a> شوید.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        
+
+
+            <!-- بخش ارسال سوال -->
+            {% if user.is_authenticated %}
+            <h3>سوال بپرسید:</h3>
+            <form method="POST" action="{% url 'Home:add_question' word_slug=word.slug %}">
+                {% csrf_token %}
+                <textarea class="textarea" name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
+                <button type="submit">ارسال سوال</button>
+            </form>
+            {% else %}
+                <p>برای ارسال سوال <a href="{% url 'Authentication:login' %}">وارد حساب کاربری</a> شوید.</p>
+            {% endif %}
+        
+        </section>
     {% endif %}
-
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li class="alert alert-info">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    <!-- بخش ارسال پیشنهاد -->
-    <h3>پیشنهاد دهید:</h3>
-    <form method="POST" action="{% url 'Word:add_suggestion' word_slug=word.slug %}">
-        {% csrf_token %}
-        <textarea class="textarea" name="suggestion_text" rows="3"
-            placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
-        <button type="submit">ارسال پیشنهاد</button>
-    </form>
-
-    <hr>
-
-    <!-- بخش سوالات مرتبط -->
-    <h2>سوالات مرتبط:</h2>
-    <!-- سوالات -->
-    {% for question in word.ask_set.all %}
-    <div class="question">
-        <p><strong>{{ question.user.username }} پرسیده است:</strong></p>
-        <p>{{ question.question }}</p>
-
-        <!-- نمایش پاسخ‌ها -->
-        <h4>پاسخ‌ها:</h4>
-        {% for response in question.response_set.all %}
-        <p>{{ response.user.username }}: {{ response.response }}</p>
-        {% empty %}
-        <p>هنوز پاسخی به این سوال داده نشده است.</p>
-        {% endfor %}
-
-        <!-- فرم ارسال پاسخ -->
-        <h5>پاسخ دهید:</h5>
-        <form method="POST" action="{% url 'Word:add_response' question.id %}">
-            {% csrf_token %}
-            <textarea class="textarea" name="response_text" rows="3"
-                placeholder="متن پاسخ خود را بنویسید..."></textarea>
-            <button type="submit">ارسال پاسخ</button>
-        </form>
-    </div>
-    {% endfor %}
-
-
-    <!-- بخش ارسال سوال -->
-    <h3>سوال بپرسید:</h3>
-    <form method="POST" action="{% url 'Word:add_question' word_slug=word.slug %}">
-        {% csrf_token %}
-        <textarea class="textarea" name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
-        <button type="submit">ارسال سوال</button>
-    </form>
-</section>
-{% endif %}
 {% endblock %}

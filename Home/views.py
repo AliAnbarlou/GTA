@@ -1,7 +1,14 @@
-from django.shortcuts import render , get_object_or_404
-from Word.models import Words , Suggestion, Ask , NewWords
+from django.shortcuts import render , get_object_or_404 , redirect
+from django.urls import reverse
+from Word.models import(
+    Words ,
+    Suggestion,
+    Ask ,
+    NewWords ,
+    Response
+)
 import requests
-
+from django.contrib import messages
 DICTIONARY_CACHE = {}
 
 def HomePage(request):
@@ -41,6 +48,57 @@ def GrandTheftAPI(word):
     DICTIONARY_CACHE[word] = result
     return result
 
+def add_suggestion(request, word_slug):
+    if request.method == "POST":
+        word = get_object_or_404(Words, slug=word_slug)
+        text = request.POST.get('suggestion_text')
+        user = request.user
+
+        if text:
+            # ایجاد پیشنهاد جدید
+            Suggestion.objects.create(
+                suggested_to=word,
+                user=user,
+                text=text,
+                status='d'  # وضعیت پیشنهادی پیش‌فرض 'د'
+            )
+        messages.success(request, 'پیشنهاد شما ثبت شد. پس از تایید مدیر منتشر خواهد شد.')
+        return redirect(f"{reverse('Home:search_words')}?q={word.word}")
+  # بازگشت به صفحه جزئیات کلمه
+def add_question(request, word_slug):
+    if request.method == "POST":
+        word = get_object_or_404(Words, slug=word_slug)
+        text = request.POST.get('question_text')
+        user = request.user
+
+        if text:
+            # ایجاد سوال جدید
+            Ask.objects.create(
+                ask_to=word,
+                user=user,
+                question=text
+            )
+        return redirect(f"{reverse('Home:search_words')}?q={word.word}")
+def add_response(request, question_id):
+    if request.method == "POST":
+        question = get_object_or_404(Ask, id=question_id)
+        response_text = request.POST.get('response_text')
+        user = request.user
+
+        if response_text:
+            # ذخیره پاسخ جدید
+            response = Response.objects.create(
+                response_to=question,
+                user=user,
+                response=response_text
+            )
+            # ارسال پیام موفقیت
+            messages.success(request, 'پاسخ شما با موفقیت ارسال شد.')
+        else:
+            # در صورتی که متنی وارد نشده باشد
+            messages.error(request, 'لطفاً یک پاسخ وارد کنید.')
+
+        return redirect(f"{reverse('Home:search_words')}?q={question.ask_to.word}")
 
 def search_words(request):
     query = request.GET.get('q', '').strip()
