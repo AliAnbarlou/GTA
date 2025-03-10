@@ -31,6 +31,7 @@
 {% if word %}
 <section class="section">
     <h2>{{ word.word }}</h2>
+    <p>{{ word.meaning }}</p>
     <div class="meaning">
         {% if not dict.خطا %}
         {% for key, value in dict.items %}
@@ -74,7 +75,8 @@
     <h3>پیشنهاد دهید:</h3>
     <form method="POST" action="{% url 'Word:add_suggestion' word_slug=word.slug %}">
         {% csrf_token %}
-        <textarea name="suggestion_text" rows="3" placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
+        <textarea class="textarea" name="suggestion_text" rows="3"
+            placeholder="متن پیشنهاد خود را بنویسید..."></textarea>
         <button type="submit">ارسال پیشنهاد</button>
     </form>
 
@@ -100,7 +102,8 @@
         <h5>پاسخ دهید:</h5>
         <form method="POST" action="{% url 'Word:add_response' question.id %}">
             {% csrf_token %}
-            <textarea name="response_text" rows="3" placeholder="متن پاسخ خود را بنویسید..."></textarea>
+            <textarea class="textarea" name="response_text" rows="3"
+                placeholder="متن پاسخ خود را بنویسید..."></textarea>
             <button type="submit">ارسال پاسخ</button>
         </form>
     </div>
@@ -111,7 +114,7 @@
     <h3>سوال بپرسید:</h3>
     <form method="POST" action="{% url 'Word:add_question' word_slug=word.slug %}">
         {% csrf_token %}
-        <textarea name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
+        <textarea class="textarea" name="question_text" rows="3" placeholder="سوال خود را بنویسید..."></textarea>
         <button type="submit">ارسال سوال</button>
     </form>
 </section>

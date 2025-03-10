@@ -76,6 +76,7 @@
       suggestionsError.textContent = `هیچ گونه پیشنهادی با عنوان "${query}" یافت نشد.`;
       suggestionsError.classList.add('suggestions__error');
       suggestionsList.appendChild(suggestionsError);
+      return;
     }
 
     suggestions.unshift({ title: query });
@@ -203,7 +204,26 @@
       cleanUp() {},
     },
     '/search:q': {
+      HANDLE_INPUT(element) {
+        element.style.height = 'auto';
+        element.style.height = `${element.scrollHeight}px`;
+      },
+
       async onRoute() {
+        const self = this;
+
+        self.textAreas = document.querySelectorAll('.textarea');
+
+        if (self.textAreas.length > 0) {
+          self.textAreas.forEach((textArea) => {
+            self.HANDLE_INPUT(textArea);
+
+            textArea.addEventListener('input', function () {
+              self.HANDLE_INPUT(textArea);
+            });
+          });
+        }
+
         const results = await fetchData(
           `https://engine2.vajehyab.com/search?q=${__CURRENT_WORD__}`
         );

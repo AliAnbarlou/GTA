@@ -38,6 +38,7 @@
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
+  --width: 39.75rem;
 }
 
 html {
@@ -301,9 +302,29 @@ h6 {
   margin: .575rem auto;
 }
 
+input,
+textarea {
+  appearance: none;
+  display: block;
+  outline: none;
+  color: var(--gray);
+  font: inherit;
+  background-color: transparent;
+  transition: 150ms color ease;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+input:focus,
+textarea:focus {
+  color: var(--app-fill-clr);
+}
+
 .search-container {
   --gap-size: .75rem;
-  --width: 39.75rem;
   position: relative;
   max-width: var(--width);
 }
@@ -438,6 +459,7 @@ h6 {
 }
 
 .section {
+  padding: 2rem 0;
   padding: max(3vw, 2rem) 0;
 }
 
@@ -445,6 +467,15 @@ h6 {
   width: 100%;
   padding-inline: 1rem;
   margin-inline: auto;
+}
+
+.textarea {
+  width: 100%;
+  max-width: var(--width);
+  padding: .75rem;
+  border: .0625rem solid var(--gray);
+  margin: 1.5rem 0 1.5rem auto;
+  border-radius: 8px;
 }
 
 @media (prefers-reduce-motion: reduce) {
