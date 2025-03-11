@@ -99,8 +99,13 @@
 
   const router = {
     type: 'layout',
+    rootElement: document,
     onLoad() {
       const themeToggler = document.querySelector('.header__theme-toggler');
+
+      function handleClick() {}
+
+      themeToggler.addEventListener('click', handleClick);
     },
     children: [
       {
