@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-theme="dark" dir="rtl" lang="fa">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="John Doe">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'imgs/favicons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'imgs/favicons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'imgs/favicons/favicon-16x16.png' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'imgs/favicons/favicon.ico' %}">
+  <link rel="manifest" href="{% static 'site.webmanifest' %}">
+  <link rel="preload" href="{% static 'fonts/vazirmatn-black.woff2' %}" as="font" type="font/woff2"
+    crossorigin="anonymous">
+  <link rel="preload" href="{% static 'fonts/vazirmatn-medium.woff2' %}" as="font" type="font/woff2"
+    crossorigin="anonymous">
+  <link rel="preload" href="{% static 'app.css' %}" as="style">
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <script src="{% static 'index.js' %}" defer></script>
+  {% block head %}
+  {% endblock %}
+</head>
+
+<body>
+  <header class="header">
+    <div class="container header__wrapper">
+      <div class="header__brand">
+        <img class="header__logo" src="{% static 'imgs/logo.png' %%}" width="200" height="200" alt="لوگوی زبانزد">
+        <h1>زبانزد</h1>
+      </div>
+      <button class="header__theme-toggler">
+        <svg class="header__theme-toggler-icon" viewBox="0 0 24 24" version="1.1">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="ic_fluent_dark_theme_24_regular" fill-rule="nonzero">
+                <path d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20.5 L12,3.5 C16.6944204,3.5 20.5,7.30557963 20.5,12 C20.5,16.6944204 16.6944204,20.5 12,20.5 Z" id="🎨-Color"></path>
+              </g> 
+            </g> 
+          </g>
+        </svg>
+      </button>
+    </div>
+  </header>
+  <main>
+    <div class="root container">
+      {% block main-content %}
+      {% endblock %}
+    </div>
+  </main>
+</body>
+
+</html>

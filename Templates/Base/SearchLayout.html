@@ -1,4 +1,43 @@
-{% load static %}
+{% extends "Base/RootLayout.html" %}
+{% block head %}
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="ssss">
+  <meta property="og:description" content="توضیح کوتاه برای شبکه‌های اجتماعی">
+  <meta property="og:image" content="URL تصویر شاخص">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:type" content="website">
+{% endblock head %}
+
+{% block main-content %}
+  <section class="search-container center">
+    <form class="search-form" action="{% url 'Home:search_words' %}" method="GET" novalidate>  
+      <input class="search-form__input" name="q" type="text" placeholder="واژه خود را وارد کنید" autocomplete="off"
+        inputmode="search">
+      <button class="search-form__button" type="submit">
+        <svg class="search-form__icon" fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 488.4 488.4">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <g>
+              <g>
+                <path
+                  d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z">
+                </path>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </button>
+    </form>
+    <ul class="suggestions">
+    </ul>
+  </section>
+  {% block route-content %}
+  {% endblock route-content %}
+{% endblock main-content %}
+
+<!--  
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 
@@ -16,14 +55,6 @@
   <meta property="og:image" content="URL تصویر شاخص">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:type" content="website">
-  <link rel="icon" href="/static/Img/fake-logo.png" type="image/x-png">
-  <link rel="preload" href="{% static 'fonts/vazirmatn-black.woff2' %}" as="font" type="font/woff2"
-    crossorigin="anonymous">
-  <link rel="preload" href="{% static 'fonts/vazirmatn-medium.woff2' %}" as="font" type="font/woff2"
-    crossorigin="anonymous">
-  <link rel="preload" href="{% static 'app.css' %}" as="style">
-  <link rel="stylesheet" href="{% static 'app.css' %}">
-  <script src="{% static 'index.js' %}" defer></script>
   {% block extra_head %}{% endblock %}
 </head>
 
@@ -65,7 +96,7 @@
     </div>
   </main>
 </body>
-<!-- {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
 <a href="{% url 'Authentication:UserHome' %}" class="btn btn-primary">مدیریت حساب</a>
 <form action="{% url 'Authentication:logout' %}" method="post">
   {% csrf_token %}
@@ -75,4 +106,4 @@
 <a href="{% url 'Authentication:login' %}" class="btn btn-secondary">ورود</a>
 {% endif %} -->
 
-</html>
+<!-- </html> -->
