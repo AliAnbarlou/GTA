@@ -1,5 +1,16 @@
 {% extends "Base/Base.html" %}
 
 {% block main %}
-
+  {% if not dict.خطا %}
+    {% for key, value in dict.items %}
+      <div class="meaning__section">
+        <h3 class="meaning__title">{{ key }}</h3>
+        <p>{{ value|safe }}</p>
+      </div>
+      {% empty %}
+      <h2 class="text-center">کلمه مورد نظر یافت نشد.</h2>
+    {% endfor %}
+  {% else %}
+    <p>{{ dict.خطا }}</p>
+  {% endif %}
 {% endblock %}

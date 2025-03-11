@@ -9,6 +9,7 @@ from Word.models import(
 )
 import requests
 from django.contrib import messages
+
 DICTIONARY_CACHE = {}
 
 def HomePage(request):
@@ -17,8 +18,8 @@ def HomePage(request):
 def GrandTheftAPI(word):
     if word in DICTIONARY_CACHE:
         return DICTIONARY_CACHE[word]
-    
-    url = f"https://engine2.vajehyab.com/search?q={word}"
+
+    url = f"https://engine2.vajehyab.com/search?q={word}&type=exact&filter=dehkhoda,moein,amid,sareh,name,en2fa,fa2en"
 
     try:
         response = requests.get(url, timeout=5)
@@ -28,25 +29,42 @@ def GrandTheftAPI(word):
         result = {"خطا": "خطا در دریافت اطلاعات"}
         DICTIONARY_CACHE[word] = result
         return result
-    
+
+    # پردازش wordbox
     dictionary_sections = data.get("wordbox", {}).get("sections", [])
-
-    if not dictionary_sections:
-        result = {"خطا": "تعریفی یافت نشد"}
-        DICTIONARY_CACHE[word] = result
-        return result
-
+    
     section_mapping = {
         "meaning": "معنی",
         "alternative": "برابر پارسی",
         "synonym": "مترادف",
-        "dictionary": "دیکشنری",
+        "dictionary": "لغت نامه انگلیسی"
     }
+
 
     result = {section_mapping.get(item.get("section"), item.get("section")): item.get("description", "") for item in dictionary_sections}
 
+
+    dictionary_name_mapping = {
+        "dehkhoda": "لغت نامه دهخدا",
+        "moein": "فرهنگ فارسی معین",
+        "amid": "فرهنگ فارسی عمید",
+        "sareh": "واژگان فارسی سره",
+        "name": "فرهنگ نام ها",
+    }
+
+    allowed_dictionaries = set(dictionary_name_mapping.keys())
+
+    for res in data.get("results", []):
+        if res.get("scope") == "exact":
+            for hit in res.get("hits", []):
+                dictionary_slug = hit.get("dictionarySlug", "")
+                if dictionary_slug in allowed_dictionaries:
+                    dictionary_name = dictionary_name_mapping[dictionary_slug]
+                    result[dictionary_name] = hit.get("summary", "")
+
     DICTIONARY_CACHE[word] = result
     return result
+
 
 def add_suggestion(request, word_slug):
     if request.method == "POST":
