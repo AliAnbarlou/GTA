@@ -1,7 +1,12 @@
 (() => {
-  const HTML_ELEMENT = document.documentElement;
-  let currentRoute = "";
+  function removeChildren(element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
 
+    element.textContent = "";
+  }
+  
   async function fetchData(url = ".", options) {
     try {
       const response = await fetch(url, options);
@@ -33,70 +38,8 @@
       return null;
     }
   }
-
-  function parseStringToHtml(data) {
-    if (typeof data !== "string") {
-      return { parsedRoute: [], hasError: true };
-    }
-
-    const parsedDocument = new DOMParser().parseFromString(data, "text/html"),
-      parsedDocumentRootElement = parsedDocument.querySelector("#root");
-
-    if (!parsedDocumentRootElement) {
-      console.log("Shit");
-
-      return { parsedRoute: [], hasError: true };
-    }
-
-    return {
-      parsedRoute: Array.from(parsedDocumentRootElement.children),
-      hasError: false,
-    };
-  }
-
-  function removeChildren(element) {
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
-    }
-
-    element.textContent = "";
-  }
-
-  // const router = {
-
-  //   '/': {
-  //     regexPattern: /^\/$/,
-  //     get parentRoot() {
-  //       return document.querySelector('#root');
-  //     },
-  //     onParentRootLoad() {}
-  //   },
-  //   '/search': {
-  //     regexPattern: /^\/search\/?$/,
-  //     get parentRoot() {
-  //       return document.querySelector('#root');
-  //     },
-  //     HANDLE_TEXTAREA({ target: textAreaElement }) {
-  //       textAreaElement.style.height = 'auto';
-  //       textAreaElement.style.height = `${textAreaElement.scrollHeight}px`;
-  //     },
-  //     onRouteLoad() {
-  //       __CURRENT_WORD__ = new URLSearchParams(location.search).get('q');
-
-  //       const textAreas = document.querySelectorAll('.textarea');
-
-  //       textAreas.forEach((textArea) => {
-  //         textArea.addEventListener('input', this.HANDLE_TEXTAREA);
-  //       });
-  //     },
-  //   },
-  //   404: {},
-  //   onRootLayoutLoad() {
-
-  //   },
-  // };
-
-  function onSearchLoad() {
+  
+  function onSearchLayoutLoad() {
     let controller = new AbortController(),
       debounceTimer;
 
@@ -126,8 +69,6 @@
         /^(?:[\u0600-\u06FF\s]+|[a-zA-Z\s]+)$/.test(suggestion.title)
       );
 
-      console.log(suggestions);
-
       if (suggestions.length === 0) {
         const suggestionsError = document.createElement("p");
 
@@ -136,6 +77,8 @@
         suggestionsList.appendChild(suggestionsError);
         return;
       }
+
+      suggestions.unshift({ title: query });
 
       const fragment = document.createDocumentFragment();
 
@@ -258,10 +201,28 @@
     document.addEventListener("keydown", handleKeyDown);
   }
 
+  function setPaths(router) {
+    if (router.type === 'route') {
+      return [router.path];
+    }
+
+    if (router.type === 'layout') {
+      router.paths = router.children.flatMap((child) => {
+        return setPaths(child);
+      });
+    }
+
+    if (router.type === 'root-layout') {
+      router.children.forEach((child) => {
+        setPaths(child);
+      });
+    }
+  }
+
+  const HTML_ELEMENT = document.documentElement;
+
   const router = {
-    type: "layout",
-    path: "/",
-    rootElement: document,
+    type: "root-layout",
     onLoad() {
       const themeToggler = document.querySelector(".header__theme-toggler");
 
@@ -288,90 +249,112 @@
     },
     children: [
       {
-        type: "route",
-        path: "/",
-        onLoad: onSearchLoad,
-      },
-      {
+        onLoad: onSearchLayoutLoad,
         type: "layout",
-        get rootElement() {
-          return document.querySelector(".root");
-        },
-        path: "/search/",
-        onLoad() {
-          onSearchLoad();
-        },
-        children: [],
+        children: [
+          {
+            type: "route",
+            path: /^\/$/,
+            rootElementCssSelector: '.root',
+          },
+          {
+            type: "route",
+            path: /^\/search\/$/,
+            rootElementCssSelector: '.root',
+          },
+        ]
       },
-      {
-        type: "layout",
-        path: "/profile/",
-        onLoad() {},
-        children: [],
-      },
-    ],
+    ]
   };
+
+  setPaths(router);
+
+  const ERROR_ROUTE = {
+    type: 'route',
+    path: /^\/404\/$/,
+    onLoad() {},
+  };
+
+  let currentRoute = "";
+
+  function getRouteDetails(router, consideredRoute) {
+    if (router.type === 'route' && router.path.test(location.pathname)) {
+      return router;
+    }
+
+    if (router.type === 'layout' && router.paths.some((path) => path.test(location.pathname))) {
+      for (let child of router.children) {
+        const result = getRouteDetails(child, consideredRoute);
+        
+        if (result !== ERROR_ROUTE) {
+          return result;
+        }
+      }
+    }
+
+    if (router.type === 'root-layout') {
+      for (let child of router.children) {
+        const result = getRouteDetails(child, consideredRoute);
+
+        if (result !== ERROR_ROUTE) {
+          return result;
+        }
+      }
+    }
+
+    return ERROR_ROUTE;
+  }
+
+
+  function parseStringToHtml(data) {    
+    if (typeof data !== "string") {
+      return { parsedRoute: [], hasError: true };
+    }
+
+    const parsedDocument = new DOMParser().parseFromString(data, "text/html"),
+      parsedDocumentRootElement = parsedDocument.querySelector(".root");
+
+    if (!parsedDocumentRootElement) {
+      console.log("Shit");
+
+      return { parsedRoute: [], hasError: true };
+    }
+
+    return {
+      parsedRoute: Array.from(parsedDocumentRootElement.children),
+      hasError: false,
+    };
+  }
 
   function handleRoute() {
     const layoutCallbacks = [];
 
     function collectOnLoadCallbacks(router) {
       if (
-        router.type === "route" &&
-        location.pathname.startsWith(router.path)
+        router.type === 'root-layout' || 
+        (router.type === 'layout' && router.paths.some(path => path.test(location.pathname)))
       ) {
-        if (typeof router.onLoad === "function") {
+        layoutCallbacks.push(router.onLoad);
+        router.children.forEach(collectOnLoadCallbacks);
+      } else if (router.type === 'route' && router.path.test(location.pathname)) {
+        if (typeof router.onLoad === 'function') {
           layoutCallbacks.push(router.onLoad);
-        }
-
-        return { FOUNDED_ROUTE: true };
-      }
-
-      if (
-        router.type === "layout" &&
-        location.pathname.startsWith(router.path)
-      ) {
-        if (typeof router.onLoad === "function") {
-          layoutCallbacks.push(router.onLoad);
-        }
-
-        for (const slug of router.children) {
-          collectOnLoadCallbacks(slug);
         }
       }
     }
 
     collectOnLoadCallbacks(router);
 
-    layoutCallbacks.forEach((callback) => {
-      callback();
+    layoutCallbacks.forEach(callback => {
+      if (typeof callback === 'function') {
+        callback();
+      }
     });
   }
 
-  function getCurrentRouteDetails(router) {
-    for (const key in router) {
-      const route = router[key];
-
-      if (route.path === location.pathname) {
-        return route;
-      }
-
-      const found = getCurrentRouteDetails(router.children);
-
-      if (found) {
-        return found;
-      }
-    }
-
-    return {
-      type: "route",
-      path: "/404",
-      children: [],
-    };
-  }
-
   async function navigate(url) {
-    const parsedDocument = await fetchData(url);
+    history.pushState(null, '', url);
+    console.log(getRouteDetails(router));
   }
 
   function handleDocumentClick({ target: targetElement }) {
@@ -379,7 +362,7 @@
       targetElement.matches('a[href][data-spa-link="true"]') &&
       targetElement.origin === window.location.origin
     ) {
-      
+      navigate(targetElement.href);
     }
   }
 
