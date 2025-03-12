@@ -1,6 +1,56 @@
-<form method="post">
-    {% csrf_token %}    
-    {{form.as_p}}
+{% extends '../Base/UserBase.html' %}
+
+{% block route-head %}
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زبانزد - ورود</title>
+{% endblock route-head %}
+
+{% block route-content %}
+  <form class="form center" method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-field">
+      <label class="form-field__label" for="username">
+        نام کاربری
+      </label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        class="form-field__input"
+        placeholder="نام کاربری خود را وارد نمایید"
+        pattern="^[a-zA-Z]{3,16}$"
+        minlength="3"
+        maxlength="16"
+        required>
+      <span class="form-field__err-msg">
+        نام کاربری حتما باید انگلیسی و بین ۳ تا ۱۶ کاراکتر باشد
+      </span>
+    </div>
+    <div class="form-field">
+      <label class="form-field__label" for="user-password">
+        گذرواژه
+      </label>
+      <input
+        type="password"
+        name="password"
+        id="user-password"
+        class="form-field__input"
+        placeholder="رمز عبور خود را وارد نمایید"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}"
+        autocomplete="new-password"
+        spellcheck="false"
+        minlength="8"
+        maxlength="32"
+        required>
+      <span class="form-field__err-msg">
+        نام کاربری حتما باید انگلیسی و بین ۳ تا ۱۶ کاراکتر باشد
+      </span>
+    </div>
+    span
     <input type="submit" value="login">
-</form>
-<a href="{% url 'Authentication:signup' %}" class="btn btn-primary">ثبت نام</a>
+  </form>
+  <a href="{% url 'Authentication:signup' %}" class="btn btn-primary">ثبت نام</a>
+{% endblock route-content %}
