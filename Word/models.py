@@ -1,8 +1,8 @@
 from django.db import models
 from Authentication.models import User
 from django.utils.text import slugify
-import random
-import string
+from unidecode import unidecode  # تبدیل حروف فارسی به لاتین
+
 from django.utils.text import slugify
 class Words(models.Model):
     STATUS_CHOICES = [
@@ -19,8 +19,9 @@ class Words(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='d')
 
     def save(self, *args, **kwargs):
-        if not self.slug:  # فقط در صورتی که مقدار نداشته باشد مقداردهی شود
-            self.slug = slugify(self.word)
+        if not self.slug:  # فقط اگر مقدار نداشته باشد مقداردهی شود
+            self.slug = slugify(unidecode(self.word))  # تبدیل فارسی به لاتین قبل از slugify
+        
         # جلوگیری از تغییر وضعیت به "منتشر شده" توسط کاربران عادی
         if self.pk and not self.user.is_superuser and self.status == 'p':
             self.status = 'd'

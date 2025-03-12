@@ -1,9 +1,8 @@
 (() => {
-  let currentRoute = '';
+  const HTML_ELEMENT = document.documentElement;
+  let currentRoute = "";
 
-  const rootElement = document.querySelector('#root');
-
-  async function fetchData(url = '.', options) {
+  async function fetchData(url = ".", options) {
     try {
       const response = await fetch(url, options);
 
@@ -11,21 +10,21 @@
         return null;
       }
 
-      const contentType = response.headers.get('Content-Type');
+      const contentType = response.headers.get("Content-Type");
 
-      if (contentType.startsWith('application/json')) {
+      if (contentType.startsWith("application/json")) {
         return await response.json();
       }
 
-      if (contentType.startsWith('text/')) {
+      if (contentType.startsWith("text/")) {
         return await response.text();
       }
 
-      if (contentType.startsWith('image/')) {
+      if (contentType.startsWith("image/")) {
         return await response.blob();
       }
 
-      if (contentType.startsWith('application/octet-stream')) {
+      if (contentType.startsWith("application/octet-stream")) {
         return await response.arrayBuffer();
       }
 
@@ -36,15 +35,15 @@
   }
 
   function parseStringToHtml(data) {
-    if (typeof data !== 'string') {
+    if (typeof data !== "string") {
       return { parsedRoute: [], hasError: true };
     }
 
-    const parsedDocument = new DOMParser().parseFromString(data, 'text/html'),
-      parsedDocumentRootElement = parsedDocument.querySelector('#root');
+    const parsedDocument = new DOMParser().parseFromString(data, "text/html"),
+      parsedDocumentRootElement = parsedDocument.querySelector("#root");
 
     if (!parsedDocumentRootElement) {
-      console.log('Shit');
+      console.log("Shit");
 
       return { parsedRoute: [], hasError: true };
     }
@@ -60,7 +59,7 @@
       element.removeChild(element.firstChild);
     }
 
-    element.textContent = '';
+    element.textContent = "";
   }
 
   // const router = {
@@ -97,91 +96,294 @@
   //   },
   // };
 
+  function onSearchLoad() {
+    let controller = new AbortController(),
+      debounceTimer;
+
+    const searchContainer = document.querySelector(".search-container"),
+      searchForm = document.querySelector(".search-form"),
+      searchInput = document.querySelector(".search-form__input"),
+      suggestionsList = document.querySelector(".suggestions");
+
+    async function fetchSuggestions(query) {
+      controller.abort();
+
+      const data = await fetchData(
+        `https://engine2.vajehyab.com/suggestion?q=${query}`
+      );
+
+      if (Object.prototype.toString.call(data) !== "[object Object]") {
+        throw new Error("خطا در دریافت داده");
+      }
+
+      return [query, data.hits] || [query, []];
+    }
+
+    function renderSuggestions([query, suggestions]) {
+      removeChildren(suggestionsList);
+
+      suggestions = suggestions.filter((suggestion) =>
+        /^(?:[\u0600-\u06FF\s]+|[a-zA-Z\s]+)$/.test(suggestion.title)
+      );
+
+      console.log(suggestions);
+
+      if (suggestions.length === 0) {
+        const suggestionsError = document.createElement("p");
+
+        suggestionsError.textContent = `هیچ گونه پیشنهادی با عنوان "${query}" یافت نشد.`;
+        suggestionsError.classList.add("suggestions__error");
+        suggestionsList.appendChild(suggestionsError);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      suggestions.forEach(({ title }) => {
+        const suggestionItem = document.createElement("li"),
+          suggestionLink = document.createElement("a");
+
+        suggestionLink.textContent = title;
+        suggestionItem.dataset.content = title;
+        suggestionLink.dataset.spaLink = true;
+        suggestionLink.href = `/search/?q=${title}`;
+        suggestionLink.classList.add("suggestions__link");
+        suggestionItem.classList.add("suggestions__item");
+        suggestionItem.appendChild(suggestionLink);
+        fragment.appendChild(suggestionItem);
+      });
+
+      suggestionsList.append(fragment);
+    }
+
+    function handleBlur() {
+      setTimeout(() => {
+        searchContainer.classList.remove("showing-results");
+      }, 0);
+    }
+
+    function handleFocus() {
+      if (suggestionsList.childElementCount > 0) {
+        searchContainer.classList.add("showing-results");
+      }
+    }
+
+    function handleInput() {
+      const inputValue = searchInput.value;
+
+      if (inputValue.length <= 1) {
+        removeChildren(suggestionsList);
+        searchContainer.classList.remove("showing-results");
+        return;
+      }
+
+      const hasLoadingSppiner =
+        !!suggestionsList.querySelector(".suggestions__loading-spinner") ||
+        false;
+
+      if (!hasLoadingSppiner) {
+        removeChildren(suggestionsList);
+        const loadingSppiner = document.createElement("span");
+
+        loadingSppiner.classList.add("suggestions__loading-spinner");
+        suggestionsList.appendChild(loadingSppiner);
+      }
+
+      searchContainer.classList.add("showing-results");
+
+      debounceTimer = setTimeout(async () => {
+        const suggestions = await fetchSuggestions(inputValue);
+        renderSuggestions(suggestions);
+      }, 600);
+    }
+
+    function handleKeyDown({ key: pressedKeyboardKey }) {
+      if (
+        pressedKeyboardKey !== "ArrowUp" &&
+        pressedKeyboardKey !== "ArrowDown"
+      ) {
+        return;
+      }
+
+      const hasSuggestionsItem =
+        !!suggestionsList.querySelector(".suggestions__item") || false;
+
+      if (!hasSuggestionsItem) {
+        return;
+      }
+
+      const activeSuggestion = suggestionsList.querySelector(
+        ".suggestions__item.active"
+      );
+
+      if (!activeSuggestion) {
+        suggestionsList.firstChild.classList.add("active");
+        return;
+      }
+
+      activeSuggestion.classList.remove("active");
+
+      let nextActiveSuggestion;
+
+      if (pressedKeyboardKey === "ArrowUp") {
+        nextActiveSuggestion =
+          activeSuggestion === suggestionsList.firstElementChild
+            ? suggestionsList.lastElementChild
+            : activeSuggestion.previousElementSibling;
+      }
+
+      if (pressedKeyboardKey === "ArrowDown") {
+        nextActiveSuggestion =
+          activeSuggestion === suggestionsList.lastElementChild
+            ? suggestionsList.firstElementChild
+            : activeSuggestion.nextElementSibling;
+      }
+
+      nextActiveSuggestion.classList.add("active");
+      searchInput.value = nextActiveSuggestion.dataset.content;
+    }
+
+    async function handleSubmit(ev) {
+      ev.preventDefault();
+
+      const selectedSuggestion = searchInput.value;
+      // navigate(`/search/?q=${selectedSuggestion}`);
+      searchContainer.classList.remove("showing-results");
+    }
+
+    searchInput.addEventListener("blur", handleBlur);
+    searchInput.addEventListener("focus", handleFocus);
+    searchInput.addEventListener("input", handleInput);
+    searchForm.addEventListener("submit", handleSubmit);
+    document.addEventListener("keydown", handleKeyDown);
+  }
+
   const router = {
-    type: 'layout',
+    type: "layout",
+    path: "/",
     rootElement: document,
     onLoad() {
-      const themeToggler = document.querySelector('.header__theme-toggler');
+      const themeToggler = document.querySelector(".header__theme-toggler");
 
-      function handleClick() {}
+      HTML_ELEMENT.dataset.theme =
+        JSON.parse(localStorage.getItem("current-theme")) || "light";
 
-      themeToggler.addEventListener('click', handleClick);
+      function handleClick(ev) {
+        ev.stopPropagation();
+
+        const currentTheme =
+          JSON.parse(localStorage.getItem("current-theme")) ||
+          HTML_ELEMENT.dataset.theme;
+
+        HTML_ELEMENT.dataset.theme =
+          currentTheme === "light" ? "dark" : "light";
+
+        localStorage.setItem(
+          "current-theme",
+          JSON.stringify(HTML_ELEMENT.dataset.theme)
+        );
+      }
+
+      themeToggler.addEventListener("click", handleClick);
     },
     children: [
       {
-        type: 'layout',
-        onLoad() {},
+        type: "route",
+        path: "/",
+        onLoad: onSearchLoad,
+      },
+      {
+        type: "layout",
+        get rootElement() {
+          return document.querySelector(".root");
+        },
+        path: "/search/",
+        onLoad() {
+          onSearchLoad();
+        },
         children: [],
       },
       {
-        type: 'layout',
+        type: "layout",
+        path: "/profile/",
         onLoad() {},
         children: [],
       },
     ],
   };
 
-  const routes = Object.keys(router).filter(
-    (route) => route !== 'onLoad' && route !== '404'
-  );
+  function handleRoute() {
+    const layoutCallbacks = [];
 
-  function handleRoutes() {
-    const matchedRoute =
-      router[
-        routes.find((route) =>
-          router[route].regexPattern.test(location.pathname)
-        )
-      ] || router[404];
+    function collectOnLoadCallbacks(router) {
+      if (
+        router.type === "route" &&
+        location.pathname.startsWith(router.path)
+      ) {
+        if (typeof router.onLoad === "function") {
+          layoutCallbacks.push(router.onLoad);
+        }
 
-    if (typeof matchedRoute === 'function') {
-      matchedRoute();
-      return;
+        return { FOUNDED_ROUTE: true };
+      }
+
+      if (
+        router.type === "layout" &&
+        location.pathname.startsWith(router.path)
+      ) {
+        if (typeof router.onLoad === "function") {
+          layoutCallbacks.push(router.onLoad);
+        }
+
+        for (const slug of router.children) {
+          collectOnLoadCallbacks(slug);
+        }
+      }
     }
 
-    if (typeof matchedRoute.onRouteLoad === 'function') {
-      matchedRoute.onRouteLoad();
-      return;
+    collectOnLoadCallbacks(router);
+
+    layoutCallbacks.forEach((callback) => {
+      callback();
+    });
+  }
+
+  function getCurrentRouteDetails(router) {
+    for (const key in router) {
+      const route = router[key];
+
+      if (route.path === location.pathname) {
+        return route;
+      }
+
+      const found = getCurrentRouteDetails(router.children);
+
+      if (found) {
+        return found;
+      }
     }
+
+    return {
+      type: "route",
+      path: "/404",
+      children: [],
+    };
   }
 
   async function navigate(url) {
-    const { parsedRoute, hasError } = parseStringToHtml(await fetchData(url));
-
-    if (hasError && url === '/404') {
-      return;
-    }
-
-    if (hasError) {
-      navigate('/404');
-      return;
-    }
-
-    removeChildren(rootElement);
-    rootElement.append(...parsedRoute);
-    history.pushState(null, '', url);
-    handleRoutes();
+    const parsedDocument = await fetchData(url);
   }
 
-  function handleMouseDown({ target: targetElement }) {
-    if (targetElement.matches('a[data-spa-link="true"][href]')) {
-      navigate(targetElement.href);
-      return;
-    }
-
-    if (targetElement.matches('.question__answers-toggler')) {
-      const closestQuestionAnswers = targetElement.nextElementSibling;
-
-      if (!closestQuestionAnswers.matches('.question__answers')) {
-        return;
-      }
-
-      closestQuestionAnswers.classList.toggle('show');
+  function handleDocumentClick({ target: targetElement }) {
+    if (
+      targetElement.matches('a[href][data-spa-link="true"]') &&
+      targetElement.origin === window.location.origin
+    ) {
+      
     }
   }
 
-  router.onLoad();
-  handleRoutes();
+  handleRoute();
 
-  window.addEventListener('popstate', handleRoutes);
-  document.addEventListener('mousedown', handleMouseDown);
+  document.addEventListener("mousedown", handleDocumentClick);
 })();
