@@ -1,20 +1,93 @@
-{% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
+{% extends '../Base/UserBase.html' %}
+
+{% block route-head %}
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زیانزد - ثبت نام</title>
+{% endblock route-head %}
+
+{% block route-content %}
+  <form class="form center" method="post" novalidate>
+    <h2 class="text-center">ثبت نام</h2>
+    <a class="form__link" href="{% url 'Authentication:login' %}">حساب دارید؟ ورود</a>
     {% csrf_token %}
+    <fieldset class="form__field">
+      <label class="form__label" for="username">
+        نام کاربری
+      </label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        class="form__input"
+        placeholder="نام کاربری خود را وارد نمایید"
+        pattern="^[a-zA-Z]{3,16}$"
+        autocomplete="username"
+        minlength="3"
+        maxlength="16"
+        required>
+        <span class="form__err-hint">
+          نام کاربری فقط باید شامل حروف انگلیسی و بین ۲ تا ۱۷ حرف باشد
+        </span>
+    </fieldset>
+    <fieldset class="form__field">
+      <label class="form__label" for="user-email">
+        ایمیل
+      </label>
+      <input
+        type="email"
+        name="email"
+        id="user-email"
+        class="form__input"
+        placeholder="ایمیل خود را وارد کنید" 
+        autocomplete="email"
+        pattern="^(?!.*\.\.)[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,253}\.[a-zA-Z]{2,63}$"
+        required>
+        <span class="form__err-hint">
+          ایمیل معیتبر وارد نمایید
+        </span>
+    </fieldset>
+    <fieldset class="form__field">
+      <label class="form__label" for="user-password">
+        گذرواژه
+      </label>
+      <input
+        type="password"
+        name="password1"
+        id="user-password"
+        class="form__input"
+        placeholder="گذرواژه خود را وارد نمایید" 
+        autocomplete="new-password"
+        minlength="8"
+        maxlength="32"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$"
+        required>
+        <span class="form__err-hint">
+          گذرواژه باید انگلیسی، دارای حروف بزرگ و کوچک، حروف خاص مانند $ و حداقل بین ۸ تا ۳۲ حرف باشد
+        </span>
+    </fieldset>
+    <fieldset class="form__field">
+      <label class="form__label" for="confirm-password">
+        تایید گذرواژه
+      </label>
+      <input
+        type="password"
+        name="password2"
+        id="confirm-password"
+        class="form__input"
+        placeholder="گذرواژه خود را دوباره وارد نمایید" 
+        autocomplete="new-password"
+        minlength="8"
+        maxlength="32"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$"
+        required>
+    </fieldset>
       {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: none">{{ field.help_text }}</small>
-        {% endif %}
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
-      </p>
       {% endfor %}
-    <button type="submit">Sign up</button>
+    <button type="submit" class="form__submitter">ارسال</button>
   </form>
-  <a href="{% url 'Authentication:login' %}">ورود</a>
-{% endblock %}
+{% endblock route-content %}
