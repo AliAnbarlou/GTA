@@ -56,7 +56,7 @@
           گذرواژه باید انگلیسی، دارای حروف بزرگ و کوچک، حروف خاص مانند $ و حداقل بین ۸ تا ۳۲ حرف باشد
         </span>
     </fieldset>
-    <button class="form__submitter">
+    <button type="submit" class="form__submitter">
       ارسال
     </button>
   </form>
@@ -67,10 +67,4 @@
       {% endfor %}
   </ul>
 {% endif %}
-
-  <script>
-    document.querySelector('form').addEventListener('submit', function(ev) {
-      ev.preventDefault();
-    })
-  </script>
 {% endblock route-content %}

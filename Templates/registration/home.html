@@ -1,49 +1,161 @@
 {% extends "../Base/UserBase.html" %}
-{% load static %}
-{% block title %}
-زبانزد | صفحه کاربری
-{% endblock title %}
-{% block main %}
-{{site_name}}
-<h1>وقت بخیر {{ request.user.get_full_name }} عزیز</h1>
-<img src="{{ avatar|default:'/static/images/default-avatar.jpg' }}" alt="Author Photo">
 
-<p>نام کاربری : {{request.user.username}}</p>
-<p>ایمیل : {{request.user.email}}</p>
-<p>تاریخ عضویت : {{request.user.date_joined}}</p>
-<p>بیوگرافی : {{request.user.bio}}</p>
+{% block route-head %}
+  <meta name="robots" content="index, follow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زبانزد - پروفایل کاربر</title>
+{% endblock route-head %}
 
-<p>امتیاز : {{request.user.score}}</p>
-<p>تعداد بازدید : {{request.user.hits.count}}</p>
+{% block route-content %}
+  <div class="user-profile">
+    <img
+      class="user-profile__avatar"
+      src="{{ avatar|default:'/static/images/default-avatar.jpg' }}"
+      alt="Author Photo">
 
+    <h2 class="user-profile__username">
+      {{ request.user.get_full_name }}
+    </h2>
+    <h2 class="user-profile__username">
+      {{request.user.username}}
+    </h2>
 
+    <p class="user-profile__bio">
+      {{request.user.bio}}
+    </p>
+    <p class="user-profile__joined-date">
+      شروع فعالیت از {{request.user.date_joined}}
+    </p>
+    <p class="user-profile__email">
+      anbarloo2@protonmail.com    
+    </p>
 
-<!--مهراب این دکمه پایین کار نمیکنه درستش کن-->
-</a href="{% url 'Authentication:AddWord' %}"><input type="button" value="افزودن کلمه جدید"></a>
+    <div class="user-profile__inline-details">
+      <div class="user-profile__inline-details">
+        <svg class="user-profile__icon" viewBox="0 0 512 512">
+          <g stroke-width="0"></g>
+          <g stroke-linecap="round" stroke-linejoin="round"></g>
+          <g>
+            <g>
+              <g>
+                <path d="m499.4,250.8c-51-86.3-143.6-140.4-243.4-140.4s-192.5,54.1-243.4,140.4c-2.1,3.1-2.1,7.3 5.32907e-15,10.4 51,86.3 143.6,140.4 243.4,140.4s192.5-54.1 243.4-140.4c2.1-3.1 2.1-7.3 0-10.4zm-243.4,130c-90.5,0-174.8-47.8-221.6-124.8 46.8-77 131.1-124.8 221.6-124.8s174.8,47.8 221.6,124.8c-46.8,77-131.1,124.8-221.6,124.8z"></path>
+                <path d="m256,162.4c-52,0-93.6,41.6-93.6,93.6 0,52 41.6,93.6 93.6,93.6s93.6-41.6 93.6-93.6c0-52-41.6-93.6-93.6-93.6zm0,166.4c-40.6,0-72.8-32.3-72.8-72.8s32.3-72.8 72.8-72.8 72.8,32.3 72.8,72.8-32.2,72.8-72.8,72.8z"></path>
+                <path d="m256,214.4v20.8c11.4,0 20.8,9.4 20.8,20.8s-9.4,20.8-20.8,20.8-20.8-9.4-20.8-20.8h-20.8c0,22.9 18.7,41.6 41.6,41.6 22.9,0 41.6-18.7 41.6-41.6s-18.7-41.6-41.6-41.6z"></path>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <span>
+          {{request.user.hits.count}}
+        </span>
+      </div>
+      <div class="user-profile__inline-details">
+        <svg class="user-profile__icon" viewBox="0 0 24 24">
+          <g stroke-width="0"></g>
+          <g stroke-linecap="round" stroke-linejoin="round"></g>
+          <g>
+            <path d="M11.5245 3.46353C11.6741 3.00287 12.3259 3.00287 12.4755 3.46353L14.1329 8.56434C14.1998 8.77035 14.3918 8.90983 14.6084 8.90983H19.9717C20.4561 8.90983 20.6575 9.52964 20.2656 9.81434L15.9266 12.9668C15.7514 13.0941 15.678 13.3198 15.745 13.5258L17.4023 18.6266C17.552 19.0873 17.0248 19.4704 16.6329 19.1857L12.2939 16.0332C12.1186 15.9059 11.8814 15.9059 11.7061 16.0332L7.3671 19.1857C6.97524 19.4704 6.448 19.0873 6.59768 18.6266L8.25503 13.5258C8.32197 13.3198 8.24864 13.0941 8.07339 12.9668L3.73438 9.81434C3.34253 9.52964 3.54392 8.90983 4.02828 8.90983H9.39159C9.6082 8.90983 9.80018 8.77035 9.86712 8.56434L11.5245 3.46353Z"></path>
+          </g>
+        </svg>
+        <span>
+          {{request.user.score}}
+        </span>
+      </div>
+    </div>
 
+    <hr class="line">
 
-<p>موجودی : {{request.user.balance}}</p>
-<a href="{% url 'Authentication:UserWords' request.user.username %}">مشاهده کلمات</a>
-<a href="{% url 'Authentication:UserQuestions' request.user.username%}">مشاهده سوالات</a>
-<a href="{% url 'Authentication:UserSuggestions' request.user.username %}">مشاهده پیشنهادات</a>
-<h3>وضعیت اشتراک</h3>
-{% if subscription %}
-<p>پلن فعلی: <strong>{{ subscription.plan.name }}</strong></p>
-<p>تاریخ شروع: {{ subscription.start_date }}</p>
-{% if subscription.end_date %}
-    <p>تاریخ پایان: {{ subscription.end_date }}</p>
-{% else %}
-    <p>اشتراک رایگان (بدون محدودیت زمانی)</p>
-{% endif %}
-<p>وضعیت: {% if subscription.is_active %}فعال ✅{% else %}غیرفعال ❌{% endif %}</p>
-{% else %}
-<p>شما هیچ اشتراکی ندارید!</p>
-{% endif %}
+    <h2>
+      لینک های موجود
+    </h2>
 
-<a href="{% url 'Authentication:Charging' %}">مشاهده پلن‌ها</a>
-<h2><a href="{% url 'Authentication:password_change' %}">تغییر پسورد</a></h2>
-<h2><a href="{% url 'Authentication:update_profile' %}">به روزرسانی پروفایل</a></h2>
+    <a class="user-profile__link" href="{% url 'Authentication:AddWord' %}">
+      افزودن کلمه جدید
+    </a>
+    <a 
+      class="user-profile__link"
+      href="{% url 'Authentication:UserWords' request.user.username %}"
+    >
+      مشاهده کلمات
+    </a>
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:UserQuestions' request.user.username%}"
+    >
+      مشاهده سوالات
+    </a>
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:UserSuggestions' request.user.username %}"
+    >
+      مشاهده پیشنهادات
+    </a>
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:Charging' %}"
+    >
+      مشاهده پلن‌ها
+    </a>
 
-<h2><a href="{% url 'Authentication:password_reset' %}">Reset Password</a></h2>
-<h2><a href="{% url 'Authentication:delete_account' %}">Delete Account</a></h2>
-{% endblock main %} 
+    <hr class="line">
+
+    <h2>وضعیت اشتراک</h2>
+
+    <p>
+      موجودی حساب: 
+      {{ request.user.balance|default:"0" }} هزار تومان
+    </p>
+
+    {% if subscription %}
+      <p>
+        پلن فعلی: 
+        <strong>
+          {{ subscription.plan.name }}
+        </strong>
+      </p>
+      <p>تاریخ شروع: {{ subscription.start_date }}</p>
+
+      {% if subscription.is_active %}
+        <p>وضعیت اشتراک: فعال</p>
+      {% else %}
+        <p>وضعیت اشتراک: غیر فعال</p>
+      {% endif %}
+
+      {% if subscription.end_date %}
+        <p>تاریخ پایان: {{ subscription.end_date }}</p>
+      {% else %}
+        <p>اشتراک رایگان (بدون محدودیت زمانی)</p>
+      {% endif %}
+    {% endif %}
+
+    <hr class="line">
+
+    <h2>تنظیمات حساب</h2>
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:password_change' %}"
+    >
+      تغییر گذرواژه
+    </a>
+
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:update_profile' %}"
+    >
+      به روزرسانی پروفایل
+    </a>
+
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:password_reset' %}"
+    >
+      بازیابی رمزعبور
+    </a>
+
+    <a
+      class="user-profile__link"
+      href="{% url 'Authentication:delete_account' %}"
+    >حذف حساب</a>
+  </div>
+{% endblock route-content %} 

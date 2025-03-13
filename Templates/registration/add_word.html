@@ -1,39 +1,63 @@
+{% extends "../Base/UserBase.html" %}
 
-{% block content %}
-<div class="container">
-    <h2>نوشتن کلمه جدید</h2>
-    <form method="POST">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="word">کلمه:</label>
-            <input type="text" id="word" name="word" class="form-control" required>
-        </div>
+{% block route-head %}
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زبانزد - افزودن کلمه جدید</title>
+{% endblock route-head %}
 
-        <div class="form-group">
-            <label for="meaning">معنی:</label>
-            <textarea id="meaning" name="meaning" class="form-control" rows="3" required></textarea>
-        </div>
+{% block route-content %}
+  <form class="form center" method="POST" novalidate>
+    <h2 class="text-center">نوشتن کلمه جدید</h2>
+    {% csrf_token %}
 
-        <div class="form-group">
-            <label for="example">مثال:</label>
-            <textarea id="example" name="example" class="form-control" rows="2"></textarea>
-        </div>
+    <fieldset class="form__field">
+      <label class="form__label" for="word-input">کلمه مورد نظر</label>
+      <input
+        type="text"
+        name="word"
+        id="word-input"
+        class="form__input"
+        placeholder="کلمه خود را وارد نمایید"
+        autocomplete="off"
+        required>
+    </fieldset>
+    <fieldset class="form__field">
+      <label class="form__label" for="meaning-input">معنی کلمه</label>
+      <input
+        type="text"
+        name="meaning"
+        id="meaning-input"
+        class="form__input"
+        placeholder="معنی کلمه را وارد نمایید"
+        autocomplete="off"
+        required>
+    </fieldset>
+    <fieldset class="form__field">
+      <label class="form__label" for="example-input">مثال کلمه</label>
+      <input
+        type="text"
+        name="meaning"
+        id="example-input"
+        class="form__input"
+        placeholder="یک مثال برای کلمه بزنید"
+        autocomplete="off"
+        required>
+    </fieldset>
 
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                <ul>
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+    <button type="submit" class="form__submitter">افزودن کلمه</button>
+  </form>
+{% endblock route-content %}
 
-        <button type="submit" class="btn btn-success">افزودن کلمه</button>
-        <a href="{% url 'Authentication:UserWords' request.user.username %}" class="btn btn-secondary">بازگشت</a>
-    </form>
-</div>
-{% endblock %}
+{% comment %} {% if form.errors %}
+  <div class="alert alert-danger">
+  <ul>
+  {% for field, errors in form.errors.items %}
+  {% for error in errors %}
+  <li>{{ error }}</li>
+  {% endfor %}
+  {% endfor %}
+  </ul>
+  </div>
+  {% endif %} {% endcomment %}

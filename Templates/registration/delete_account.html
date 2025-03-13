@@ -1,10 +1,40 @@
-{% load static %}
+{% extends '../Base/UserBase.html' %}
 
-{% block content %}
-  <h2>حذف حساب کاربری</h2>
-  <p style="color: red;">⚠ این عمل غیرقابل بازگشت است. در صورت تأیید، حساب شما برای همیشه حذف خواهد شد.</p>
+{% block route-head %}
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زبانزد - حذف حساب</title>
+{% endblock route-head %}
 
-  {% if messages %}
+{% block route-content %}
+  <form class="form center" method="post" novalidate>
+    <h2 class="text-center">حذف حساب کاربری</h2>
+    <p class="text-center">
+      این عمل غیرقابل بازگشت است. در صورت تأیید، حساب شما برای همیشه حذف خواهد شد.
+    </p>
+
+    <fieldset class="form__field">
+      <label class="form__label" for="user-password">
+        گذرواژه
+      </label>
+      <input
+        type="password"
+        name="password"
+        id="user-password"
+        class="form__input"
+        placeholder="گذرواژه خود را وارد نمایید"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}"
+        autocomplete="current-password"
+        spellcheck="false"
+        required>
+    </fieldset>
+
+    <button type="submit" class="form__submitter">حذف حساب</button>
+  </form>
+{% endblock route-content %}
+
+{% comment %} {% if messages %}
     <ul>
       {% for message in messages %}
         <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
@@ -12,14 +42,4 @@
         </li>
       {% endfor %}
     </ul>
-  {% endif %}
-
-  <form method="post">
-    {% csrf_token %}
-    <label for="password">رمز عبور خود را وارد کنید:</label>
-    <input type="password" name="password" id="password" required>
-    <br><br>
-    <button type="submit" style="background-color: red; color: white;">بله، حساب من را حذف کن</button>
-    <a href="{% url 'Home:Home' %}" style="margin-left: 10px;">لغو</a>
-  </form>
-{% endblock %}
+  {% endif %} {% endcomment %}

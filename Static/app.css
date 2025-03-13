@@ -220,7 +220,7 @@ img {
 
 svg,
 svg * {
-  fill: inherit;
+  fill: var(--app-fill-clr);
   transition: fill 150ms ease;
 }
 
@@ -670,6 +670,58 @@ textarea:focus {
 
 .form.need-validation > .form__submitter {
   display: none;
+}
+
+.user-profile {
+  --user-profile-max-width: 28.15rem;
+  max-width: var(--user-profile-max-width);
+  padding: 1.5rem;
+  border: .0625rem solid var(--blur-fill-clr);
+  margin: 1.5rem auto;
+  background-color: var(--component-bg-clr);
+  border-radius: 4px;
+}
+
+.user-profile__avatar {
+  display: block;
+  width: 100%;
+  max-width: 15rem;
+  border: .0625rem solid var(--gray);
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.user-profile__inline-details {
+  display: flex;
+  gap: .75rem;
+}
+
+.user-profile__icon {
+  width: 1.8rem;
+}
+
+.user-profile__link {
+  display: block;
+  width: max-content;
+  margin: .75rem 0 0 auto;
+  transition: color 150ms ease;
+}
+
+.user-profile__link:hover {
+  color: var(--gray);
+}
+
+.line {
+  width: 90%;
+  height: .0625rem;
+  border: none;
+  background-color: var(--app-fill-clr);
+}
+
+.user-profile__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 @media (prefers-reduce-motion: reduce) {
