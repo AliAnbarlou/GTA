@@ -594,8 +594,8 @@ textarea:focus {
 
 .form {
   max-width: var(--width);
-  padding: 1.5rem 1.5rem;
-  margin-top: 4rem;
+  padding: 1.5rem;
+  margin: 4rem auto;
   background-color: var(--component-bg-clr);
   border: .1rem solid var(--blur-fill-clr);
   border-radius: 4px;
@@ -617,19 +617,20 @@ textarea:focus {
   margin: 0;
 }
 
-.form.need-validation > .form__field:invalid + .form__field {
-  display: none;
-}
-
-.form.need-validation:valid .form__submitter {
-  display: inline-block;
+.form__label {
+  cursor: pointer;
 }
 
 .form > :first-child {
   margin-top: 0;
 }
 
-.form__input {
+.form > :last-child {
+  margin-bottom: 0;
+}
+
+.form__input,
+.form__textarea {
   display: block;
   width: 100%;
   padding: .75rem;
@@ -639,19 +640,12 @@ textarea:focus {
   transition: box-shadow 150ms ease;
 }
 
-.form__input:focus {
+.form__input:focus,
+.form__textarea:focus {
   box-shadow: 0 0 0 .35rem rgba(var(--primary-rgb), .35);
 }
 
-.form.need-validation > .form__input:invalid ~ * {
-  display: none;
-}
-
-.form.need-validation > .form__input--username:invalid + .form__err-hint {
-  display: block;
-}
-
-.form__err-hint {
+.form__hint {
   display: none;
   color: var(--gray);
   font-size: .9rem;
@@ -666,10 +660,6 @@ textarea:focus {
   background-color: var(--primary);
   border-radius: 4px;
   user-select: none;
-}
-
-.form.need-validation > .form__submitter {
-  display: none;
 }
 
 .user-profile {
@@ -722,6 +712,44 @@ textarea:focus {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.edit-avatar {
+  width: 5rem;
+  height: 5rem;
+  position: relative;
+}
+
+.edit-avatar__img {
+  width: 100%;
+  height: 100%;
+  border: .0625rem solid var(--gray);
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.edit-avatar:hover > .edit-avatar__overlay {
+  opacity: 1;
+}
+
+.edit-avatar__overlay {
+  display: grid;
+  place-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000080;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.edit-avatar__icon {
+  width: 3rem;
+  height: 3rem;
+  fill: var(--app-fill-clr);
 }
 
 @media (prefers-reduce-motion: reduce) {

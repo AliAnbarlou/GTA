@@ -1,27 +1,38 @@
-{% load static %}
+{% extends '../Base/UserBase.html' %}
+
+{% block route-head %}
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="توضیح کوتاه درباره محتوای صفحه - حداکثر 160 کاراکتر">
+  <meta name="keywords" content="کلمه کلیدی 1, کلمه کلیدی 2, کلمه کلیدی 3">
+  <title>زبانزد - کلمات کاربر</title>
+{% endblock route-head %}
+
+{% block route-content %}
 {% if can_add_word %}
-    <a href="{% url 'Authentication:AddWord' %}" class="btn btn-primary">+ نوشتن کلمه جدید</a>
+<a href="{% url 'Authentication:AddWord' %}" class="btn btn-primary">+ نوشتن کلمه جدید</a>
 {% endif %}
 
 <!-- registration/user_words.html -->
 <h1>کلمات من</h1>
 {% if words %}
-    <ul>
-        {% for word in words %}
-        {% if word.status == "d" or word.status == "r" %}
-            <li>
-                    <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
-            </li>
-        {% else %}
-        <a href="{% url 'Word:word_detail' word.slug %}">
-            <li>
-                <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
-            </li>
-        </a>
-        {% endif %}
-        {% endfor %}
-    
-    </ul>
+<ul>
+  {% for word in words %}
+  {% if word.status == "d" or word.status == "r" %}
+    <li>
+        <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
+    </li>
+  {% else %}
+  <a href="{% url 'Word:word_detail' word.slug %}">
+    <li>
+      <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
+    </li>
+  </a>
+  {% endif %}
+  {% endfor %}
+
+</ul>
 {% else %}
-    <p>شما هیچ کلمه‌ای ندارید.</p>
+<p>شما هیچ کلمه‌ای ندارید.</p>
 {% endif %}
+
+{% endblock route-content %}
