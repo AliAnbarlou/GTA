@@ -8,7 +8,7 @@
 {% endblock route-head %}
 
 {% block route-content %}
-  <form class="form center" method="post" novalidate>
+  <form class="form center" method="post">
     <h2 class="text-center">ورود</h2>
     <a 
       href="{% url 'Authentication:signup' %}"
@@ -17,7 +17,7 @@
       حساب ندارید؟ ثبت نام
     </a>
     {% csrf_token %}
-    <fieldset class="form__field need-validation">
+    <fieldset class="form__field">
       <label class="form__label" for="username">
         نام کاربری
       </label>
@@ -27,14 +27,7 @@
         id="username"
         class="form__input form__input--username"
         placeholder="نام کاربری خود را وارد نمایید"
-        pattern="^[a-zA-Z]{3,16}$"
-        autocomplete="username"
-        minlength="3"
-        maxlength="16"
         required>
-      <span class="form__err-hint">
-        نام کاربری فقط باید شامل حروف انگلیسی و بین ۲ تا ۱۷ حرف باشد
-      </span>
     </fieldset>
     <fieldset class="form__field">
       <label class="form__label" for="user-password">
@@ -46,25 +39,21 @@
         id="user-password"
         class="form__input form__input--password"
         placeholder="رمز عبور خود را وارد نمایید"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}"
         autocomplete="current-password"
         spellcheck="false"
-        minlength="8"
-        maxlength="32"
         required>
-        <span class="form__err-hint form__err-hint--password">
-          گذرواژه باید انگلیسی، دارای حروف بزرگ و کوچک، حروف خاص مانند $ و حداقل بین ۸ تا ۳۲ حرف باشد
-        </span>
     </fieldset>
+
+    <div class="form__err-wrapper">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="form__err">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
     <button type="submit" class="form__submitter">
       ارسال
     </button>
   </form>
-  {% if messages %}
-  <ul>
-      {% for message in messages %}
-          <li style="color: red;">{{ message }}</li>
-      {% endfor %}
-  </ul>
-{% endif %}
 {% endblock route-content %}

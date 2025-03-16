@@ -1,18 +1,24 @@
-{% load static %}
+{% extends '../Base/UserBase.html' %}
 
-<h1>پیشنهادات من</h1>
+{% block route-head %}
 
-{% if suggestions %}
+{% endblock route-head %}
+
+{% block route-content %}
+  <h1>پیشنهادات من</h1>
+
+  {% if suggestions %}
     <ul>
-        {% for suggestion in suggestions %}
-            <li>
-                <strong>{{ suggestion.text }}</strong> - وضعیت: {{ suggestion.get_status_display }}
-                {% if suggestion.suggested_to %}
-                    (برای کلمه: <a href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}">{{ suggestion.suggested_to.word }}</a>)
-                {% endif %}
-            </li>
-        {% endfor %}
+      {% for suggestion in suggestions %}
+        <li>
+          <strong>{{ suggestion.text }}</strong> - وضعیت: {{ suggestion.get_status_display }}
+            {% if suggestion.suggested_to %}
+              (برای کلمه: <a href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}">{{ suggestion.suggested_to.word }}</a>)
+            {% endif %}
+        </li>
+      {% endfor %}
     </ul>
-{% else %}
+  {% else %}
     <p>شما هیچ پیشنهادی ندارید.</p>
-{% endif %}
+  {% endif %}
+{% endblock %}

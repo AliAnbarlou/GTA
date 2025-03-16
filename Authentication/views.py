@@ -112,6 +112,7 @@ def delete_account(request):
 """
 User profile update
 """
+
 @login_required
 def update_profile(request):
     user = request.user  # کاربر فعلی
@@ -128,12 +129,12 @@ def update_profile(request):
             validate_email(email)
         except ValidationError:
             messages.error(request, "ایمیل وارد شده معتبر نیست.")
-            return redirect("Authentication:update_profile")
+            return render(request, "registration/update_profile.html", {"user": user})
 
         # بررسی اینکه ایمیل تکراری نباشد (اگر تغییر کرده باشد)
         if User.objects.exclude(id=user.id).filter(email=email).exists():
             messages.error(request, "این ایمیل قبلاً استفاده شده است.")
-            return redirect("Authentication:update_profile")
+            return render(request, "registration/update_profile.html", {"user": user})
 
         # ذخیره اطلاعات جدید
         user.first_name = first_name
@@ -144,7 +145,7 @@ def update_profile(request):
         user.save()
 
         messages.success(request, "پروفایل شما با موفقیت بروزرسانی شد.")
-        return redirect("Authentication:update_profile")
+        return redirect("Authentication:UserHome")
 
     return render(request, "registration/update_profile.html", {"user": user})
 @login_required

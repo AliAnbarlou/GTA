@@ -8,7 +8,7 @@
 {% endblock route-head %}
 
 {% block route-content %}
-  <form class="form center" method="post" novalidate>
+  <form class="form center" method="post">
     <h2 class="text-center">حذف حساب کاربری</h2>
     <p class="text-center">
       این عمل غیرقابل بازگشت است. در صورت تأیید، حساب شما برای همیشه حذف خواهد شد.
@@ -29,6 +29,14 @@
         spellcheck="false"
         required>
     </fieldset>
+
+    <div class="form__err-wrapper">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="form__err">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
 
     <button type="submit" class="form__submitter">حذف حساب</button>
   </form>

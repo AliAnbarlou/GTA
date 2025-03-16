@@ -1,29 +1,31 @@
-{% extends '../Base/Base.html' %}
+{% extends '../Base/UserBase.html' %}
 
 {% block route-head %}
 
 {% endblock route-head %}
 
-{% load static %}
-{% block content %}
-  <h2>شارژ حساب و خرید اشتراک</h2>
-
-  {% if messages %}
-    {% for message in messages %}
-      <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}orange{% endif %};">
-        {{ message }}
-      </p>
-    {% endfor %}
-  {% endif %}
-
-  <form method="POST">
+{% block route-content %}
+  <form class="form" method="POST">
+    <h2 class="text-center">شارژ حساب و خرید اشتراک</h2>
     {% csrf_token %}
-    <label for="plan">انتخاب پلن:</label>
-    <select name="plan_id" required>
-      {% for plan in plans %}
-        <option value="{{ plan.id }}">{{ plan.name }} - {{ plan.price }} تومان</option>
-      {% endfor %}
-    </select>
-    <button type="submit">پرداخت و فعال‌سازی</button>
+    
+    <fieldset class="form__field">
+      <label class="form__label" for="plans-select">انتخاب پلن:</label>
+      <select id="plans-select" name="plan_id" class="form__select" required>
+        {% for plan in plans %}
+          <option value="{{ plan.id }}">{{ plan.name }} - {{ plan.price }} تومان</option>
+        {% endfor %}
+      </select>
+    </fieldset>
+
+    <div class="form__err-wrapper">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="form__err">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <button class="form__submitter" type="submit">پرداخت و فعال‌سازی</button>
   </form>
 {% endblock %}

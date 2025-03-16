@@ -385,28 +385,14 @@ textarea:focus {
   width: 3rem;
 }
 
-.search-container {
-  --gap-size: 0.75rem;
-  position: relative;
-  margin-top: 4rem;
-  margin-bottom: 0.75rem;
-  max-width: var(--width);
-}
-
 .search-form {
-  position: relative;
   display: flex;
-  gap: var(--gap-size);
-  padding: 0 var(--gap-size);
-  margin: var(--gap-size) auto;
+  gap: .75rem;
+  width: var(--width);
+  padding: 0 .75rem;
+  margin: .75rem auto;
   border: 0.0625rem solid var(--gray);
   border-radius: 8px;
-}
-
-.search-container.showing-results > .search-form {
-  border-bottom-color: transparent;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .search-form > * {
@@ -417,11 +403,6 @@ textarea:focus {
   flex-grow: 1;
   height: 4rem;
   color: var(--gray);
-  border: 1px solid red;
-}
-
-.search-form__input:focus {
-  border: 1px solid red;
 }
 
 .search-form__input:focus {
@@ -438,68 +419,7 @@ textarea:focus {
 
 .search-form__icon {
   width: 2rem;
-  fill: var(--gray);
-}
-
-.search-container.showing-results > .suggestions {
-  list-style-type: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: auto;
-  max-height: 40rem;
-  overflow-y: auto;
-  background-color: var(--app-bg-clr);
-  border: 0.0625rem solid var(--gray);
-  border-top: none;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-.suggestions {
-  padding: 0;
-  margin: 0;
-  height: 0;
-  overflow-y: hidden;
-}
-
-.suggestions__error {
-  text-align: center;
-}
-
-.suggestions__loading-spinner {
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  border: 0.25rem solid var(--app-fill-clr);
-  border-right-color: transparent;
-  margin: var(--gap-size) auto;
-  border-radius: 50%;
-  animation: spinner-border 0.75s linear infinite;
-}
-
-@keyframes spinner-border {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.suggestions__link {
-  display: block;
-  padding: var(--gap-size);
-  cursor: pointer;
-  background-color: var(--app-bg-clr);
-}
-
-.suggestions__item.active > .suggestions__link,
-.suggestions__link:hover {
-  background-color: var(--component-bg-clr);
-}
-
-.suggestions__item:last-child {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  fill: var(--app-fill-clr);
 }
 
 .meaning__title {
@@ -635,36 +555,52 @@ textarea:focus {
 }
 
 .form__input,
-.form__textarea {
+.form__textarea,
+.form__select {
   display: block;
   width: 100%;
-  padding: 0.75rem;
-  border: 0.0625rem solid var(--blur-fill-clr);
-  margin: 0.75rem 0;
+  padding: .75rem;
+  border: .0625rem solid var(--blur-fill-clr);
+  margin: .75rem 0;
   border-radius: 4px;
   transition: box-shadow 150ms ease;
 }
 
+.form__select {
+  appearance: none;
+  outline: none;
+  color: var(--app-fill-clr);
+  background-color: transparent;
+}
+
 .form__input:focus,
-.form__textarea:focus {
+.form__textarea:focus,
+.form__select:focus {
   box-shadow: 0 0 0 0.35rem rgba(var(--primary-rgb), 0.35);
 }
 
-.form__hint {
-  display: none;
+.form__err {
+  display: block;
   color: var(--gray);
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
 }
 
-.form__submitter {
+.form__submitter,.btn {
   display: inline-block;
-  width: 100%;
-  margin-top: 0.75rem;
+  margin-top: .5rem;
   color: var(--white);
   background-color: var(--primary);
   border-radius: 4px;
   user-select: none;
+}
+
+.form__submitter {
+  width: 100%;
+}
+
+.btn {
+  padding: .75rem 1.5rem;
 }
 
 .user-profile {

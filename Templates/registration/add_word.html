@@ -8,10 +8,10 @@
 {% endblock route-head %}
 
 {% block route-content %}
-  <form class="form center" method="POST" novalidate>
+  <form class="form center" method="POST">
     <h2 class="text-center">نوشتن کلمه جدید</h2>
     {% csrf_token %}
-
+    
     <fieldset class="form__field">
       <label class="form__label" for="word-input">کلمه مورد نظر</label>
       <input
@@ -23,6 +23,7 @@
         autocomplete="off"
         required>
     </fieldset>
+
     <fieldset class="form__field">
       <label class="form__label" for="meaning-input">معنی کلمه</label>
       <input
@@ -34,11 +35,12 @@
         autocomplete="off"
         required>
     </fieldset>
+
     <fieldset class="form__field">
       <label class="form__label" for="example-input">مثال کلمه</label>
       <input
         type="text"
-        name="meaning"
+        name="example"
         id="example-input"
         class="form__input"
         placeholder="یک مثال برای کلمه بزنید"
@@ -46,18 +48,14 @@
         required>
     </fieldset>
 
+    <div class="form__err-wrapper">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="form__err">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+
     <button type="submit" class="form__submitter">افزودن کلمه</button>
   </form>
 {% endblock route-content %}
-
-{% comment %} {% if form.errors %}
-  <div class="alert alert-danger">
-  <ul>
-  {% for field, errors in form.errors.items %}
-  {% for error in errors %}
-  <li>{{ error }}</li>
-  {% endfor %}
-  {% endfor %}
-  </ul>
-  </div>
-  {% endif %} {% endcomment %}
