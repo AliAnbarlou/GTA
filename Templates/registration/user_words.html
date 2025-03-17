@@ -8,9 +8,6 @@
 {% endblock route-head %}
 
 {% block route-content %}
-{% if can_add_word %}
-  <a href="{% url 'Authentication:AddWord' %}" class="btn">+ نوشتن کلمه جدید</a>
-{% endif %}
 
 <!-- registration/user_words.html -->
 <h1>کلمات من</h1>
@@ -33,6 +30,10 @@
 </ul>
 {% else %}
 <p>شما هیچ کلمه‌ای ندارید.</p>
+{% endif %}
+
+{% if can_add_word %}
+  <a href="{% url 'Authentication:AddWord' %}" class="btn">+ نوشتن کلمه جدید</a>
 {% endif %}
 
 {% endblock route-content %}

@@ -13,7 +13,7 @@
     <p class="text-center">
       این عمل غیرقابل بازگشت است. در صورت تأیید، حساب شما برای همیشه حذف خواهد شد.
     </p>
-
+    {% csrf_token %}
     <fieldset class="form__field">
       <label class="form__label" for="user-password">
         گذرواژه
@@ -24,7 +24,6 @@
         id="user-password"
         class="form__input"
         placeholder="گذرواژه خود را وارد نمایید"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}"
         autocomplete="current-password"
         spellcheck="false"
         required>

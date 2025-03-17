@@ -32,13 +32,19 @@
   <section class="section">
     <h2>پیشنهادات مرتبط:</h2>
     {% if suggestions %}
-      <ul>
-        {% for suggestion in suggestions %}
-          {% if suggestion.status == "p" %}
-            <li>{{ suggestion.text }} - توسط: {{ suggestion.user }}</li>
-          {% endif %}
-        {% endfor %}
-      </ul>
+      {% for suggestion in suggestions %}
+        {% if suggestion.status == "p" %}
+          <a class="nested-profile" href="{% url 'Authentication:UserProfile' username=suggestion.user.username %}">
+            <img
+              class="nested-profile__avatar"
+              src="{{ suggestion.gravatar_url  | default:'/Static/imgs/default-profile-picture.webp' }}"
+              alt="Author Photo"
+            >
+            <span>{{ suggestion.user.username }}</span>
+          </a>
+          <p>{{ suggestion.text }}</p>
+        {% endif %}
+      {% endfor %}
     {% else %}
       <p>هنوز پیشنهادی ثبت نشده است.</p>
     {% endif %}
@@ -70,42 +76,50 @@
   <section class="section">
     <h2>سوالات مرتبط:</h2>
     {% for question in word.ask_set.all %}
-      <div class="question">
-        <a href="" class="question__asker">
-          <img class="question__asker-avatar"
-            width="448"
-            height="448"
-            loading="lazy"
-            src="{% static 'imgs/default-profile-picture.webp' %}"
-            alt="Users Profile Picture">
-          <span class="question__asker-username">{{ question.user.username }}</span>
-        </a>
-        <p class="question__asked-question">{{question.question}}</p>
-        <span class="question__answers-toggler">نمایش جواب ها</span>
-        <div class="question__answers">
-          {% for response in question.response_set.all %}
-            <p>{{ response.user.username }}: {{ response.response }}</p>
-          {% empty %}
-            <p>هنوز پاسخی به این سوال داده نشده است.</p>
-          {% endfor %}
-          {% if user.is_authenticated %}
-            <h5>پاسخ دهید:</h5>
-            <form method="POST" action="{% url 'Home:add_response' question.id %}">
-            {% csrf_token %}
-              <textarea class="textarea"
-                name="response_text"
-                rows="1"
-                placeholder="متن پاسخ خود را بنویسید..."></textarea>
-                <button type="submit" class="submit-btn">ارسال پاسخ</button>
-            </form>
-          {% else %}
-            <p>
-              برای ارسال پاسخ <a href="{% url 'Authentication:login' %}">وارد حساب کاربری</a> شوید.
-            </p>
-          {% endif %}
-        </div>
-      </div>
-    {% endfor %}
+  <div class="question">
+    <a href="{% url 'Authentication:UserProfile' username=question.user.username %}" class="nested-profile">
+      <img class="nested-profile__avatar"
+          src = "{{ question.gravatar_url | default:'/Static/imgs/default-profile-picture.webp' }}"
+           width="448"
+           height="448"
+           loading="lazy"
+           alt="Users Profile Picture">
+      <span class="nested-profile-username">{{ question.user.username }}</span>
+    </a>
+    <p class="question__asked-question">{{ question.question }}</p>
+    <span class="question__answers-toggler">نمایش جواب ها</span>
+    <div class="question__answers">
+      {% for response in question.response_set.all %}
+        <p>
+          <a href="{% url 'Authentication:UserProfile' username=response.user.username %}">
+            {{ response.user.username }}
+          </a>: 
+          {{ response.response }}
+        </p>
+      {% empty %}
+        <p>هنوز پاسخی به این سوال داده نشده است.</p>
+      {% endfor %}
+      {% if user.is_authenticated %}
+        <h5>پاسخ دهید:</h5>
+        <form method="POST" action="{% url 'Home:add_response' question.id %}">
+          {% csrf_token %}
+          <textarea class="textarea"
+                    name="response_text"
+                    rows="1"
+                    placeholder="متن پاسخ خود را بنویسید..."></textarea>
+          <button type="submit" class="submit-btn">ارسال پاسخ</button>
+        </form>
+      {% else %}
+        <p>
+          برای ارسال پاسخ <a href="{% url 'Authentication:login' %}">وارد حساب کاربری</a> شوید.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+
+
+
     {% if user.is_authenticated %}
       <h3>سوال بپرسید:</h3>
       <form method="POST"

@@ -63,15 +63,14 @@
       <h2>پیشنهادات</h2>
 
       {% for suggestion in suggestions %}
-        {% if suggestion.status != "d" %}
-          <h3>{{ suggestion.text }}</h3>
+        {% if suggestion.status == "p" %}
+          <h3 class="profile__subtitle">{{ suggestion.suggested_to.word }}</h3>
+          <p>{{ suggestion.text|slice:":25" }}...</p>
+          
           <a
-            href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}"
-          >
-            مشاهده کلمه: {{ suggestion.suggested_to.word }}
-          </a> |
-          <a
-            href="{% url 'Word:word_detail' suggestion.suggested_to.slug %}"
+          href="{% url 'Home:search_words' %}?q={{ suggestion.suggested_to.word }}"
+
+
           >مشاهده پیشنهاد</a>
         {% endif %}
       {% endfor %}
@@ -86,9 +85,9 @@
         {% for question in questions %}
           <li>
             <a
-              href="{% url 'Word:word_detail' question.ask_to.slug %}"
+              href="{% url 'Home:search_words' %}?q={{ question.ask_to.slug }}"
             >
-              {{ question.question }}:
+              {{ question.question }} - 
               مربوط به کلمه {{ question.ask_to.word }}
             </a>
           </li>

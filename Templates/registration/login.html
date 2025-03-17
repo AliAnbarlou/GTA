@@ -45,11 +45,20 @@
     </fieldset>
 
     <div class="form__err-wrapper">
-      {% if messages %}
-        {% for message in messages %}
-          <p class="form__err">{{ message }}</p>
+      <div class="form__err-wrapper">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <p class="form__err">{{ error }}</p>
+          {% endfor %}
         {% endfor %}
-      {% endif %}
+      
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <p class="form__err">{{ error }}</p>
+          {% endfor %}
+        {% endif %}
+      </div>
+      
     </div>
 
     <button type="submit" class="form__submitter">

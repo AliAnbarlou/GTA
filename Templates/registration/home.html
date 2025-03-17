@@ -8,27 +8,36 @@
 {% endblock route-head %}
 
 {% block route-content %}
+<form method="post" action="{% url 'Authentication:logout' %}">
+  {% csrf_token %}
+  <button type="submit">خروج</button>
+</form>
+
   <div class="user-profile">
     <img
       class="user-profile__avatar"
       src="{{ avatar|default:'/static/images/default-avatar.jpg' }}"
       alt="Author Photo">
 
-    <h2 class="user-profile__username">
+    {% if request.user.get_full_name %}
+    <h2 class="user-profile__fullname">
       {{ request.user.get_full_name }}
     </h2>
+    {% endif %}
     <h2 class="user-profile__username">
       {{request.user.username}}
     </h2>
 
+    {% if request.user.bio %}
     <p class="user-profile__bio">
       {{request.user.bio}}
     </p>
+    {% endif %}
     <p class="user-profile__joined-date">
       شروع فعالیت از {{request.user.date_joined}}
     </p>
     <p class="user-profile__email">
-      anbarloo2@protonmail.com    
+      {{request.user.email}}  
     </p>
 
     <div class="user-profile__inline-details">

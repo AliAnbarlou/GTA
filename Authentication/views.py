@@ -103,7 +103,7 @@ def delete_account(request):
             user.delete()
             logout(request)
             messages.success(request, "حساب کاربری شما با موفقیت حذف شد. این عمل غیرقابل بازگشت است.")
-            return redirect("home")  # تغییر مسیر به صفحه اصلی یا هر جای دیگر
+            return redirect("Home:Home")  # تغییر مسیر به صفحه اصلی یا هر جای دیگر
         else:
             messages.error(request, "رمز عبور اشتباه است. لطفاً دوباره امتحان کنید.")
             return redirect("Authentication:delete_account")
@@ -365,7 +365,7 @@ def signup(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return HttpResponse('لینک فعال سازی به ایمیل شما ارسال شد.')
     else:
         form = SignupForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -380,7 +380,16 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return redirect('Home:Home')
     else:
         return HttpResponse('Activation link is invalid!')
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+
+class CustomPasswordChangeView(PasswordChangeView):
+    success_url = reverse_lazy('Authentication:password_change_done')  # مسیر را مشخص کنید
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+
+class CustomPasswordResetView(PasswordResetView):
+    success_url = reverse_lazy('password_reset_done')

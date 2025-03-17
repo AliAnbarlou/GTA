@@ -118,3 +118,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # احراز هویت پیش‌فرض
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+from django.urls import reverse_lazy
+
+PASSWORD_CHANGE_REDIRECT_URL = reverse_lazy('Authentication:password_change_done')

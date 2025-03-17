@@ -22,14 +22,8 @@
         id="username"
         class="form__input"
         placeholder="نام کاربری خود را وارد نمایید"
-        pattern="^[a-zA-Z]{3,16}$"
         autocomplete="username"
-        minlength="3"
-        maxlength="16"
         required>
-        <span class="form__err-hint">
-          نام کاربری فقط باید شامل حروف انگلیسی و بین ۲ تا ۱۷ حرف باشد
-        </span>
     </fieldset>
     <fieldset class="form__field">
       <label class="form__label" for="user-email">
@@ -42,11 +36,7 @@
         class="form__input"
         placeholder="ایمیل خود را وارد کنید" 
         autocomplete="email"
-        pattern="^(?!.*\.\.)[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,253}\.[a-zA-Z]{2,63}$"
         required>
-        <span class="form__err-hint">
-          ایمیل معیتبر وارد نمایید
-        </span>
     </fieldset>
     <fieldset class="form__field">
       <label class="form__label" for="user-password">
@@ -59,13 +49,7 @@
         class="form__input"
         placeholder="گذرواژه خود را وارد نمایید" 
         autocomplete="new-password"
-        minlength="8"
-        maxlength="32"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$"
         required>
-        <span class="form__err-hint">
-          گذرواژه باید انگلیسی، دارای حروف بزرگ و کوچک، حروف خاص مانند $ و حداقل بین ۸ تا ۳۲ حرف باشد
-        </span>
     </fieldset>
     <fieldset class="form__field">
       <label class="form__label" for="confirm-password">
@@ -78,9 +62,6 @@
         class="form__input"
         placeholder="گذرواژه خود را دوباره وارد نمایید" 
         autocomplete="new-password"
-        minlength="8"
-        maxlength="32"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$"
         required>
     </fieldset>
 

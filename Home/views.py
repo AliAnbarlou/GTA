@@ -118,16 +118,20 @@ def add_response(request, question_id):
 
         return redirect(f"{reverse('Home:search_words')}?q={question.ask_to.word}")
 
+from Authentication.utils import get_gravatar_url
+
 def search_words(request):
     query = request.GET.get('q', '').strip()
     context = {
         'results': [],
         'exact_match': None,
         'query': query,
+        
     }
 
     if not query:
         return render(request, 'Search/search_results.html', context)
+    
     context['query'] = query
     exact_match = Words.objects.filter(word__iexact=query).first()
     results = Words.objects.filter(word__icontains=query)
@@ -135,15 +139,24 @@ def search_words(request):
     if exact_match:
         suggestions = Suggestion.objects.filter(suggested_to=exact_match, status='p')
         questions = Ask.objects.filter(ask_to=exact_match)
-        context.update({'dict':GrandTheftAPI(query),})
+        context.update({'dict': GrandTheftAPI(query),})
         context.update({'word': exact_match, 'suggestions': suggestions, 'questions': questions})
     else:
         if not results:
-            context.update({'dict':GrandTheftAPI(query),})
+            context.update({'dict': GrandTheftAPI(query),})
             NewWords.objects.get_or_create(word=query)
             return render(request, 'Search/no_results.html', context)
         else:
             context['results'] = results
             return render(request, 'Search/search_results.html', context)
+
+    # Adding gravatar URL to each suggestion and question, with default image if not available
+    DEFAULT_AVATAR_URL = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=100'
+
+    for suggestion in context.get('suggestions', []):
+        suggestion.gravatar_url = get_gravatar_url(suggestion.user.email) if suggestion.user.email else DEFAULT_AVATAR_URL
+
+    for question in context.get('questions', []):
+        question.gravatar_url = get_gravatar_url(question.user.email) if question.user.email else DEFAULT_AVATAR_URL
 
     return render(request, 'Search/search_results.html', context)

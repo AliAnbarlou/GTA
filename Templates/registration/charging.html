@@ -1,7 +1,7 @@
 {% extends '../Base/UserBase.html' %}
 
 {% block route-head %}
-
+<title>زبانزد - خرید اشتراک</title>
 {% endblock route-head %}
 
 {% block route-content %}
@@ -11,7 +11,8 @@
     
     <fieldset class="form__field">
       <label class="form__label" for="plans-select">انتخاب پلن:</label>
-      <select id="plans-select" name="plan_id" class="form__select" required>
+      <select id="plans-select" name="plan_id" class="form__select" required>4
+        <option selected hidden>پلن خود را انتخاب کنید</option>
         {% for plan in plans %}
           <option value="{{ plan.id }}">{{ plan.name }} - {{ plan.price }} تومان</option>
         {% endfor %}
