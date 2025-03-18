@@ -8,11 +8,6 @@
 {% endblock route-head %}
 
 {% block route-content %}
-<form method="post" action="{% url 'Authentication:logout' %}">
-  {% csrf_token %}
-  <button type="submit">خروج</button>
-</form>
-
   <div class="user-profile">
     <img
       class="user-profile__avatar"
@@ -166,5 +161,10 @@
       class="user-profile__link"
       href="{% url 'Authentication:delete_account' %}"
     >حذف حساب</a>
+
+    <form method="post" action="{% url 'Authentication:logout' %}">
+      {% csrf_token %}
+      <button class="logout" type="submit">خروج</button>
+    </form>
   </div>
 {% endblock route-content %} 

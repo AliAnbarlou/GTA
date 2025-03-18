@@ -31,13 +31,20 @@ def UserProfile(request, username):
         user.hits.add(ip_address)
 
     # گرفتن کلمات کاربر
-    words = Words.objects.filter(user=user)
+    # گرفتن آخرین 2 کلمه
+    words = Words.objects.filter(user=user).order_by('-id')[:2]
+
+    # گرفتن آخرین 2 پیشنهاد
+    suggestions = Suggestion.objects.filter(user=user).order_by('-id')[:2]
+
+    # گرفتن آخرین 2 سوال
+    questions = Ask.objects.filter(user=user).order_by('-id')[:2]
+    num_words = Words.objects.filter(user=user).count()
 
     # گرفتن پیشنهادات کاربر
-    suggestions = Suggestion.objects.filter(user=user)
-
+    num_suggestions = Suggestion.objects.filter(user=user).count()
     # گرفتن سوالات کاربر
-    questions = Ask.objects.filter(user=user)
+    num_questions = Ask.objects.filter(user=user).count()
 
     # آماده کردن داده‌ها برای ارسال به قالب
     return render(request, 'registration/profile.html', context={
@@ -47,6 +54,9 @@ def UserProfile(request, username):
         'words': words,
         'suggestions': suggestions,
         'questions': questions,
+        'num_words': num_words,
+        'num_suggestions': num_suggestions,
+        'num_questions': num_questions
     })
 
 @login_required

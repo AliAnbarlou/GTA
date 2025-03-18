@@ -1,18 +1,27 @@
 {% extends "Base/SearchLayout.html" %}
-{% block route_head %}
-
+{% block head %}
+{% if not dict.خطا %}
+    {% for key, value in dict.items %}
+    <title>زبانزد - {{ query }}</title>
+    {% empty %}
+    <title>زبانزد - نتیجه ای یافت نشد</title>
+    {% endfor %}
+  {% else %}
+  <p>{{ dict.خطا }}</p>
+  {% endif %}
 {% endblock %}
 {% block route-content %}
 
 {% if not dict.خطا %}
   {% for key, value in dict.items %}
   <div class="meaning__section">
-    <h3 class="meaning__title">{{ key }}</h3>
+    <h3 class="meaning__title">{{ key }} - {{query}}</h3>
     <p>{{ value|safe }}</p>
   </div>
   {% empty %}
     <h2 class="text-center">کلمه مورد نظر یافت نشد.</h2>
   {% endfor %}
+  <p style="color:gray;font-size:0.8rem;">این کلمه به صورت سیستمی نمایش داده شده و در دیتای سایت موجود نیست. با افزودن آن، به بزرگ‌تر شدن جامعه زبانزد کمک کنید و سهمی در گسترش واژگان داشته باشید!</p>
 {% else %}
 <p>{{ dict.خطا }}</p>
 {% endif %}

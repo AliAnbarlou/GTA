@@ -19,7 +19,7 @@
         <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
     </li>
   {% else %}
-  <a href="{% url 'Word:word_detail' word.slug %}">
+  <a href="{% url 'Home:search_words' %}?q={{ word.word }}">
     <li>
       <strong>{{ word.word }}</strong>: {{ word.meaning }} - وضعیت: {{ word.get_status_display }}
     </li>

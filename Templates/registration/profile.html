@@ -17,7 +17,7 @@
     <h2 class="user-profile__username">
       {{ request.user.get_full_name }}
     </h2>
-    <h2 class="user-profile__username">
+    <h2 class="user-profile__username" style="font-size: 1.5rem; color:gray;">
       {{request.user.username}}
     </h2>
 
@@ -37,62 +37,63 @@
         </g>
       </svg>
       <span>
-        {{request.user.score}}
+        امتیاز : {{request.user.score}}
       </span>
     </div>
 
-    {% if words %}
-      <hr class="line">
+    <div class="user-profile__wrapper">
+      {% if words %}
+      <div class="profile__item">
 
-      <h2>کلمات ثبت شده</h2>
+        <h2>کلمات ثبت شده ({{num_words}})</h2>
 
-      <ul class="user-profile__list">
-        {% for word in words %}
-          <li class="submitted-words__word">
-            <a href="{% url 'Word:word_detail' word.slug %}">
-              {{ word.word }}: {{ word.meaning }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+        <ul class="user-profile__list">
+          {% for word in words %}
+            <li class="submitted-words__word">
+              <a href="{% url 'Home:search_words' %}?q={{ word.word }}">
+                {{ word.word }}: {{ word.meaning }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
 
-    {% if suggestions %}
-      <hr class="line">
+      {% if suggestions %}
+      <div class="profile__item">
+        <h2>پیشنهادات ({{num_suggestions}})</h2>
 
-      <h2>پیشنهادات</h2>
-
-      {% for suggestion in suggestions %}
-        {% if suggestion.status == "p" %}
-          <h3 class="profile__subtitle">{{ suggestion.suggested_to.word }}</h3>
-          <p>{{ suggestion.text|slice:":25" }}...</p>
+        {% for suggestion in suggestions %}
+          {% if suggestion.status == "p" %}
+            <h3 class="profile__subtitle">{{ suggestion.suggested_to.word }}</h3>
+            <p>{{ suggestion.text|slice:":25" }}...</p>
           
-          <a
-          href="{% url 'Home:search_words' %}?q={{ suggestion.suggested_to.word }}"
-
-
-          >مشاهده پیشنهاد</a>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-
-    {% if questions %}
-      <hr class="line">
-
-      <h2>سوالات:</h2>
-
-      <ul class="user-profile__list">
-        {% for question in questions %}
-          <li>
             <a
-              href="{% url 'Home:search_words' %}?q={{ question.ask_to.slug }}"
-            >
-              {{ question.question }} - 
-              مربوط به کلمه {{ question.ask_to.word }}
-            </a>
-          </li>
+              href="{% url 'Home:search_words' %}?q={{ suggestion.suggested_to.word }}"
+            >مشاهده پیشنهاد</a>
+          {% endif %}
         {% endfor %}
-      </ul>
-    {% endif %}
+      </div>
+      {% endif %}
+
+      {% if questions %}
+      <div class="profile__item">
+        <h2>سوالات ({{num_questions}})</h2>
+
+        <ul class="user-profile__list">
+          {% for question in questions %}
+            <li>
+              <a
+                href="{% url 'Home:search_words' %}?q={{ question.ask_to.slug }}"
+              >
+                {{ question.question }} - 
+                مربوط به کلمه {{ question.ask_to.word }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
   </div>
 {% endblock route-content %}

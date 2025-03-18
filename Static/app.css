@@ -209,7 +209,7 @@ button {
 }
 
 a {
-  color: inherit;
+  color: dodgerblue;
   text-decoration: none;
 }
 
@@ -298,57 +298,33 @@ h6 {
 
 h1 {
   --title-margin: 1.5rem;
-  font-size: clamp(
-    2rem,
-    5vw,
-    2.5rem
-  );
+  font-size: clamp(2rem, 5vw, 2.5rem);
 }
 
 h2 {
   --title-margin: 1.35rem;
-  font-size: clamp(
-    1.75rem,
-    4.5vw,
-    2.25rem
-  );
+  font-size: clamp(1.75rem, 4.5vw, 2.25rem);
 }
 
 h3 {
   --title-margin: 1.1rem;
-  font-size: clamp(
-    1.5rem,
-    4vw,
-    2rem
-  );
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
 h4,
 .profile__subtitle {
   --title-margin: 0.9rem;
-  font-size: clamp(
-    1.25rem,
-    3.5vw,
-    1.75rem
-  );
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
 }
 
 h5 {
   --title-margin: 0.7rem;
-  font-size: clamp(
-    1.125rem,
-    3vw,
-    1.5rem
-  );
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
 }
 
 h6 {
   --title-margin: 0.5rem;
-  font-size: clamp(
-    1rem,
-    2.5vw,
-    1.25rem
-  );
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
 }
 
 p {
@@ -414,7 +390,12 @@ textarea:focus {
 .header__icon {
   width: 1.75rem;
   height: 1.75rem;
-  fill: var(--white);
+}
+
+.header__icon,
+.header__icon * {
+  fill: var(--white) !important;
+  stroke: var(--white);
 }
 
 .search-form {
@@ -617,7 +598,8 @@ textarea:focus {
 }
 
 .form__submitter,
-.btn {
+.btn,
+.logout {
   display: inline-block;
   margin-top: 0.5rem;
   color: var(--white);
@@ -638,13 +620,30 @@ textarea:focus {
 }
 
 .user-profile {
-  --user-profile-max-width: 28.15rem;
+  --user-profile-max-width: 60rem;
   max-width: var(--user-profile-max-width);
   padding: 1.5rem;
   border: 0.0625rem solid var(--blur-fill-clr);
   margin: 1.5rem auto;
   background-color: var(--component-bg-clr);
   border-radius: 4px;
+}
+
+.user-profile__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.profile__item {
+  padding: 0.75rem;
+  background-color: var(--blur-fill-clr);
+  border-radius: 4px;
+}
+
+.profile__item > :first-child {
+  margin-top: 0;
 }
 
 .user-profile__avatar {
