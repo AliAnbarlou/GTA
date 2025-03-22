@@ -31,3 +31,17 @@ class SocialMedia(models.Model):
 
     def __str__(self):
         return f"{self.choice} - {self.link}"
+    
+class StaticPages(models.Model):
+    STATUS_CHOICES = [
+        ('a','درباره ما'),
+        ('c','ارتباط با ما'),
+        ('p','حریم خصوصی'),
+        ('f','سوالات متداول'),
+        ('m','ماموریت و چشم انداز'),
+    ]
+    page = models.CharField(max_length=1 , choices=STATUS_CHOICES)
+    context = models.TextField()
+
+    def __str__(self):
+        return f"{self.page} - {self.context[:20]}..."

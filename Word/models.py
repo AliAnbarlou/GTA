@@ -2,6 +2,7 @@ from django.db import models
 from Authentication.models import User
 from django.utils.text import slugify
 from unidecode import unidecode  # تبدیل حروف فارسی به لاتین
+from django.utils.timezone import now
 
 from django.utils.text import slugify
 class Words(models.Model):
@@ -78,4 +79,19 @@ class NewWords(models.Model):
 
     def __str__(self):
         return self.word
+    
+class SearchHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    search_word = models.CharField(max_length=100)
+    date = models.DateField(default=now)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.search_word}"
+
+class UserFavorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favorite_word = models.ForeignKey(Words , on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.favorite_word.word}"
     
