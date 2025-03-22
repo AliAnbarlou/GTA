@@ -11,3 +11,23 @@ class IPAddress(models.Model):
 
     def __str__(self) -> str:
         return self.ipAddr
+
+class ShowAds(models.Model):
+    user = models.ForeignKey('Authentication.User' , on_delete=models.CASCADE)
+    show = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.show}"
+    
+class SocialMedia(models.Model):
+    STATUS_CHOICES = [
+        ('i','اینستاگرام'),
+        ('t','تلگرام'),
+        ('f','فیسبوک'),
+        ('w','واتساپ'),
+    ]
+    choice = models.CharField(max_length=1 , choices=STATUS_CHOICES)
+    link = models.URLField()
+
+    def __str__(self):
+        return f"{self.choice} - {self.link}"
