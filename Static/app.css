@@ -358,24 +358,33 @@ textarea:focus {
   padding: 0.35rem 0;
   color: var(--white);
   fill: var(--white);
-  background-color: var(--primary);
+  background-image: linear-gradient(#01c9cc, #301d6e);
 }
 
 .header__wrapper,
 .header__brand {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
+}
+
+.header__title {
+  color: #fff;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .header__logo {
-  width: 5rem;
-  height: 5rem;
+  width: 3.5rem;
+  aspect-ratio: 1/1;
 }
 
-[data-theme="dark"] .header__logo {
-  filter: invert(0.85);
-  transition: filter 150ms ease;
+.skjs {
+  display: block;
+  width: 8rem;
+  aspect-ratio: 1/1;
+  margin: 1rem auto;
 }
 
 .header__icons {
@@ -396,6 +405,18 @@ textarea:focus {
 .header__icon * {
   fill: var(--white) !important;
   stroke: var(--white);
+}
+
+.searching .search-form {
+  display: none;
+}
+
+.search-form--header {
+  display: none !important;
+}
+
+.searching .search-form--header {
+  display: flex !important;
 }
 
 .search-form {
@@ -735,6 +756,11 @@ textarea:focus {
 @media (min-width: 475px) {
   .container {
     max-width: 475px;
+  }
+
+  .header__logo {
+    width: 5rem;
+    height: 5rem;
   }
 
   .header__icon {

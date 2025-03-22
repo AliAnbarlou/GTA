@@ -1,5 +1,7 @@
 {% extends "Base/RootLayout.html" %}
 
+{% load static %}
+
 {% block head %}
   <meta name="robots" content="index, follow" />
   <meta property="og:title" content="ssss" />
@@ -12,8 +14,9 @@
 {% endblock head %}
 
 {% block main-content %}
+  <img class="skjs" src="{% static 'imgs/kir-khar-to-koon-ali.png' %%}" width="200" height="200" alt="لوگوی زبانزد">
   <form
-    class="search-form"
+    class="search-form search-form--kir"
     action="{% url 'Home:search_words' %}"
     method="GET"
     novalidate
@@ -47,4 +50,13 @@
     {% block route-content %}
     {% endblock route-content %} 
   </div>
+  <script>
+    document.querySelector('.search-form--kir').addEventListener(
+      'click',
+      function() {
+        document.body.classList.add('searching')
+      },
+      { once:true }
+    )
+  </script>
 {% endblock main-content %}
