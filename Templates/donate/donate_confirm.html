@@ -1,0 +1,26 @@
+{% extends "../Base/UserBase.html" %}
+{% load humanize %}
+
+{% block route-content %}
+<section class="section">
+  <div class="container">
+    <h2 class="text-center">تأیید دونیت</h2>
+
+    {% if error %}
+      <p class="form__err text-center">{{ error }}</p>
+    {% endif %}
+
+    <div class="form text-center">
+      <p>شما قصد دارید مبلغ <strong>{{ amount|intcomma }}</strong> تومان دونیت کنید.</p>
+      <p>آیا تأیید می‌کنید؟</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="form__submitter">تأیید و ادامه</button>
+      </form>
+
+      <a href="{% url 'Donate:donate' %}" class="form__link">بازگشت و تغییر مبلغ</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

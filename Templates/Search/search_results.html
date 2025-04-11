@@ -6,6 +6,26 @@
   <meta name="keywords" content="{{word.word}}">
   <title>{{word.word}} - معنی در دیکشنری زبانزد</title>
   <script>var __CURRENT_WORD__ = '{{ word.word }}';</script>
+  <style>
+    .translation-section {
+        background-color: #f9f9f9;
+        padding: 1rem;
+        margin-top: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+    .translation-section h2 {
+        margin-bottom: 0.5rem;
+    }
+    .translation-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .translation-section li {
+        margin-bottom: 0.3rem;
+    }
+    </style>
+    
 {% endblock route-head %}
 
 {% block route-content %}
@@ -23,6 +43,7 @@
       {% else %}
         <p>{{ dict.خطا }}</p>
       {% endif %}
+
       <div class="meaning__section">
         <h3 class="meaning__title">مثال:</h3>
         <p class="meaning__example">{{ word.example }}</p>

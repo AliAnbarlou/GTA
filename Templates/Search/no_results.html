@@ -19,7 +19,20 @@
     <p>{{ value|safe }}</p>
   </div>
   {% empty %}
-    <h2 class="text-center">کلمه مورد نظر یافت نشد.</h2>
+  {% if translations %}
+  <div class="translation-section">
+      <h2>Translations</h2>
+      <ul>
+          {% for language, translated_text in translations.items %}
+              <li><strong>{{ language }}:</strong> {{ translated_text }}</li>
+          {% endfor %}
+      </ul>
+  </div>
+  {% else %}
+  <h2 class="text-center">کلمه مورد نظر یافت نشد.</h2>
+
+  {% endif %}
+  
   {% endfor %}
   <p style="color:gray;font-size:0.8rem;">این کلمه به صورت سیستمی نمایش داده شده و در دیتای سایت موجود نیست. با افزودن آن، به بزرگ‌تر شدن جامعه زبانزد کمک کنید و سهمی در گسترش واژگان داشته باشید!</p>
 {% else %}

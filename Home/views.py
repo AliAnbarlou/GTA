@@ -9,6 +9,7 @@ from Word.models import(
 )
 import requests
 from django.contrib import messages
+from googletrans import Translator
 
 DICTIONARY_CACHE = {}
 
@@ -19,7 +20,7 @@ def GrandTheftAPI(word):
     if word in DICTIONARY_CACHE:
         return DICTIONARY_CACHE[word]
 
-    url = f"https://engine2.vajehyab.com/search?q={word}&type=exact&filter=dehkhoda,moein,amid,sareh,name,en2fa,fa2en"
+    url = f"https://engine.vajehyab.com/search?q={word}&type=exact&filter=dehkhoda,moein,amid,sareh,name,en2fa,fa2en"
 
     try:
         response = requests.get(url, timeout=5)
@@ -120,18 +121,39 @@ def add_response(request, question_id):
 
 from Authentication.utils import get_gravatar_url
 
+
 def search_words(request):
     query = request.GET.get('q', '').strip()
     context = {
         'results': [],
         'exact_match': None,
         'query': query,
-        
     }
 
     if not query:
         return render(request, 'Search/search_results.html', context)
     
+    # If the query is longer than 30 characters, translate it into various languages
+    if len(query) > 30:
+        translator = Translator()
+        languages = {
+            'English': 'en',
+            'German': 'de',
+            'Russian': 'ru',
+            'Japanese': 'ja',
+            'Spanish': 'es',
+            'Italian': 'it',
+            'French': 'fr',
+            'Dutch': 'nl'
+        }
+        translations = {}
+        # Translate query to each target language.
+        for lang_name, lang_code in languages.items():
+            # translator.translate returns a Translated object with a .text attribute
+            translations[lang_name] = translator.translate(query, dest=lang_code).text
+        # Save translations to context
+        context['translations'] = translations
+
     context['query'] = query
     exact_match = Words.objects.filter(word__iexact=query).first()
     results = Words.objects.filter(word__icontains=query)
