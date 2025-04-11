@@ -10,7 +10,7 @@ from Word.models import(
 import requests
 from django.contrib import messages
 from googletrans import Translator
-
+from .models import *
 DICTIONARY_CACHE = {}
 
 def HomePage(request):
@@ -182,3 +182,16 @@ def search_words(request):
         question.gravatar_url = get_gravatar_url(question.user.email) if question.user.email else DEFAULT_AVATAR_URL
 
     return render(request, 'Search/search_results.html', context)
+
+
+def aboutus(request):
+    about_page = get_object_or_404(StaticPages, page='a')
+    return render(request, 'static/static.html', {'content': about_page.context , 'page':'درباره ما'})
+def privacy(request):
+    pass
+def Contactus(request):
+    pass
+def faq(request):
+    pass
+def mission(request):
+    pass
