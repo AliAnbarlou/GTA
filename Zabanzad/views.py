@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Prefetch
 from django.urls import reverse
 from Word.models import *
-from django.contrib.auth.decorators import login_required ,user_passes_test
+
 from Authentication.utils import get_gravatar_url
 from django.utils.timezone import now
 from django.db.models import Count
@@ -37,25 +37,7 @@ def Discussion(request):
 
     return render(request, 'Word/discussion.html', {'questions': questions_with_avatars_and_words})
 
-def admin_required(user):
-    return user.is_superuser
 
-
-"""
-
-Admin Dashboard
-
-"""
-@user_passes_test(admin_required)
-@login_required
-def AdminDashboard(request):
-    total_words = Words.objects.all().count()
-    total_users = User.objects.all().count()
-    context = {
-        "total_words":total_words,
-        "total_users":total_users,
-    }
-    return render(request, 'Admin/Home.html', context)
 
 
 def daily_visits(request):

@@ -14,7 +14,7 @@
 {% endblock head %}
 
 {% block main-content %}
-  <img class="skjs" src="{% static 'imgs/kir-khar-to-koon-ali.png' %%}" width="200" height="200" alt="لوگوی زبانزد">
+  <img id="main-img" class="skjs" src="{% static 'imgs/kir-khar-to-koon-ali.png' %%}" width="200" height="200" alt="لوگوی زبانزد">
   <form
     class="search-form search-form--kir"
     action="{% url 'Home:search_words' %}"
@@ -54,7 +54,8 @@
     document.querySelector('.search-form--kir').addEventListener(
       'click',
       function() {
-        document.body.classList.add('searching')
+        document.body.classList.add('searching');
+        document.getElementById('main-img').remove();
       },
       { once:true }
     )
