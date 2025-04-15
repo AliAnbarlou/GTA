@@ -7,9 +7,7 @@ HTML_ELEMENT.dataset.theme =
 function handleClick(ev) {
   ev.stopPropagation();
 
-  const currentTheme =
-    JSON.parse(localStorage.getItem("current-theme")) ||
-    HTML_ELEMENT.dataset.theme;
+  const currentTheme = JSON.parse(localStorage.getItem("current-theme")) || HTML_ELEMENT.dataset.theme;
 
   HTML_ELEMENT.dataset.theme = currentTheme === "light" ? "dark" : "light";
 
@@ -20,3 +18,10 @@ function handleClick(ev) {
 }
 
 themeToggler.addEventListener("click", handleClick);
+////////////////////////////////////////////////////////////////
+const nav = document.querySelector(".header__nav")
+let isNavOpen = false
+const collapseNav = () => {
+  isNavOpen = !isNavOpen
+  nav.style.right = isNavOpen ?  "0" : "-350px"
+}
