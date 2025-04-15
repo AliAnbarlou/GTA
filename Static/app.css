@@ -393,6 +393,7 @@ textarea:focus {
   padding: .85rem;
   max-width: 100%;
   background-color: #1E293B;
+  z-index: 999;
 }
 
 /*0A2647*/
@@ -512,7 +513,7 @@ textarea:focus {
   stroke: var(--white);
 }
 
-.searching .search-form {
+/* .searching .search-form {
   display: none;
 }
 
@@ -522,6 +523,23 @@ textarea:focus {
 
 .searching .search-form--header {
   display: flex !important;
+} */
+.searching {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  width: 250px;
+  transform: translateX(-70%);
+  border-color: white !important;
+  z-index: 0;
+
+  input {
+    border-color: white !important;
+
+    &::placeholder {
+      color: white;
+    }
+  }
 }
 
 .search-form {
@@ -872,11 +890,21 @@ textarea:focus {
     width: 3rem;
     height: 3rem;
   }
+
+  .searching {
+    width: 300px;
+    transform: translateX(-79%);
+  }
 }
 
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
+  }
+
+  .searching {
+    width: 420px;
+    transform: translateX(-70%);
   }
 }
 
@@ -884,11 +912,22 @@ textarea:focus {
   .container {
     max-width: 768px;
   }
+
+  .searching {
+    transform: translateX(-40%);
+    width: 300px;
+  }
+
 }
 
 @media (min-width: 1024px) {
   .container {
     max-width: 1024px;
+  }
+
+  .searching {
+    width: 400px;
+    transform: translateX(-50%);
   }
 }
 
@@ -901,5 +940,11 @@ textarea:focus {
 @media (min-width: 1536px) {
   .container {
     max-width: 1536px;
+  }
+}
+
+@media only screen and (max-width : 768px) {
+  .brand-searching {
+    visibility: hidden;
   }
 }

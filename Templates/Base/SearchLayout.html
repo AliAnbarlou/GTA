@@ -20,6 +20,7 @@
     action="{% url 'Home:search_words' %}"
     method="GET"
     novalidate
+    onclick="moveInput(event)"
   >
     <input
       name="q"
@@ -50,14 +51,11 @@
     {% block route-content %}
     {% endblock route-content %} 
   </div>
-  <script>
+  <!-- <script>
     document.querySelector('.search-form--kir').addEventListener(
-      'click',
-      function() {
-        document.body.classList.add('searching');
+      'click', () => {
         document.getElementById('main-img').remove();
-      },
-      { once:true }
+      }
     )
-  </script>
+  </script> -->
 {% endblock main-content %}

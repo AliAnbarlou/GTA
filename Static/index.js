@@ -18,10 +18,17 @@ function handleClick(ev) {
 }
 
 themeToggler.addEventListener("click", handleClick);
-////////////////////////////////////////////////////////////////
+//////////////////////////navbar//////////////////////////////////////
 const nav = document.querySelector(".header__nav")
 let isNavOpen = false
 const collapseNav = () => {
   isNavOpen = !isNavOpen
   nav.style.right = isNavOpen ?  "0" : "-350px"
+}
+/////////////////////search input//////////////////////////////////////
+const form = document.querySelector(".search-form")
+const brand = document.querySelector(".header__brand")
+const moveInput = () => {
+  form.classList.add("searching")
+  brand.classList.add("brand-searching")
 }
