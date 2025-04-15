@@ -550,6 +550,7 @@ textarea:focus {
   margin: 0.75rem auto;
   border: 0.0625rem solid var(--gray);
   border-radius: 8px;
+  transition: 0.5s;
 }
 
 .search-form>* {
