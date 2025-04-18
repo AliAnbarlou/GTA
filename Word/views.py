@@ -65,7 +65,7 @@ from urllib.parse import quote  # استفاده از urllib.parse.quote
 
 def get_suggestion(request, word):
     encoded_query = quote(word)  # encode کردن کلمه
-    api_url = f"https://engine2.vajehyab.com/suggestion?q={encoded_query}"
+    api_url = f"https://engine.vajehyab.com/suggestion?q={encoded_query}"
 
     try:
         response = requests.get(api_url)
