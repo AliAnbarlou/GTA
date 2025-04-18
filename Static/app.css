@@ -378,6 +378,7 @@ textarea:focus {
 
 .header {
   position: sticky;
+  z-index: 1;
   top: 0;
   padding: 0.35rem 0;
   color: var(--white);
@@ -397,7 +398,7 @@ textarea:focus {
   padding: .85rem;
   max-width: 100%;
   background-color: #1E293B;
-  z-index: 999;
+  z-index: 99;
 }
 
 /*0A2647*/
@@ -529,7 +530,7 @@ textarea:focus {
   display: flex !important;
 } */
 .searching {
-  position: fixed;
+  position: absolute;
   top: 7px;
   left: 50%;
   width: 250px;
@@ -555,6 +556,7 @@ textarea:focus {
   border: 0.0625rem solid var(--gray);
   border-radius: 8px;
   transition: 0.5s;
+  z-index: 9;
 }
 
 .search-form>* {
