@@ -226,7 +226,7 @@ svg {
   --hello: rgb(59, 130, 246);
   --dark: #101827;
   --gray: #9f9f9f;
-  --white: #F1F5F9;
+  --white: #f6f8ff;
   --primary: rgb(var(--primary-rgb));
   --font-family: "Vazirmatn", Helvetica Neue Arabic-Arabic, system-ui,
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Noto Sans",
@@ -244,6 +244,7 @@ svg {
   --component-bg-clr: #fcfcfc;
   --footer-color: #334155;
   --footer-bg-color: #F1F5F9;
+  --underline: #E2E8F0;
 }
 
 [data-theme="dark"] {
@@ -254,6 +255,7 @@ svg {
   --component-bg-clr: #1E293B;
   --footer-color: #CBD5E1;
   --footer-bg-color: #0F172A;
+  --underline : #334155;
 }
 
 *,
@@ -559,8 +561,42 @@ textarea:focus {
   background-color: transparent;
 }
 
-.search-form__input {
+.search-form-input-div {
   flex-grow: 1;
+  position: relative;
+
+  .suggestions {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: var(--component-bg-clr);
+    height: 0;
+    transition: 0.5s;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 9px 25px -9px rgba(0, 0, 0, 0.542);
+    overflow: hidden;
+
+    .suggestions-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .suggestions-list-item {
+        padding: 10px 10px 10px 0;
+        margin: 0 10px 0 10px;
+        border-bottom: 2px solid var(--underline);
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+      }
+    }
+  }
+}
+
+
+.search-form__input {
+  width: 100%;
   height: 4rem;
   color: var(--gray);
 }

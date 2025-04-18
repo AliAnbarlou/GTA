@@ -22,14 +22,13 @@
     novalidate
     onclick="moveInput(event)"
   >
-    <input
-      name="q"
-      class="search-form__input"
-      type="text"
-      placeholder="واژه خود را وارد کنید"
-      autocomplete="off"
-      inputmode="search"
-    >
+    <div class="search-form-input-div">
+      <input name="q" class="search-form__input" type="text" placeholder="واژه خود را وارد کنید" autocomplete="off"
+        inputmode="search" oninput="debounce(this.value)">
+        <div class="suggestions">
+          <ul class="suggestions-list"></ul>
+        </div>
+    </div>
     <button class="search-form__button" type="submit">
       <svg class="search-form__icon" viewBox="0 0 488.4 488.4">
         <g stroke-width="0"></g>
