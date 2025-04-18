@@ -33,11 +33,16 @@ const moveInput = () => {
   brand.classList.add("brand-searching")
 }
 //////////////////////suggestions/////////////////////////////////////
+const searchInput = document.querySelector(".search-form__input")
 const suggestionsDiv = document.querySelector(".suggestions")
 const suggestionsList = document.querySelector(".suggestions-list")
-let suggestions = []
-let timeout;
-const debounce = (search) => {
+const rtlPattern = /[\u0600-\u06FF]/;
+let timeout , suggestions;
+const debounce = (search) => { 
+  ///////jahat dehi///////////
+  searchInput.style.direction = rtlPattern.test(search) ? "rtl" : "ltr"
+  form.style.direction = search && !rtlPattern.test(search) ? "ltr" : "rtl"
+  ///////////////////////////
   clearTimeout(timeout);
   timeout = setTimeout(() => {
     if (search.trim().length >= 2) {
@@ -46,7 +51,7 @@ const debounce = (search) => {
     else if (search.trim().length == 0) {
       suggestionsDiv.style.height = 0
     }
-  }, 300);
+  }, 150);
 }
 const getSuggestions = async (search) => {
   await axios.get(`${window.location.origin}/word/api/${search}`).then((res) => {
@@ -58,7 +63,7 @@ const getSuggestions = async (search) => {
   if (suggestions.length >= 1){
     suggestions.forEach((item, index) => {
       if (index <= 4) {
-        suggestionsList.innerHTML += `<li class="suggestions-list-item">${item.title}</li>`
+        suggestionsList.innerHTML += `<li class="suggestions-list-item" dir="${rtlPattern.test(search) ? "rtl" : "ltr"}" align="${rtlPattern.test(search) ? "right" : "left"}">${item.title}</li>`
       }
     })
   }
