@@ -41,7 +41,7 @@ let timeout , suggestions;
 const debounce = (search) => { 
   ///////jahat dehi///////////
   searchInput.style.direction = rtlPattern.test(search) ? "rtl" : "ltr"
-  form.style.direction = search && !rtlPattern.test(search) ? "ltr" : "rtl"
+  // form.style.direction = search && !rtlPattern.test(search) ? "ltr" : "rtl"
   ///////////////////////////
   clearTimeout(timeout);
   timeout = setTimeout(() => {
@@ -60,15 +60,20 @@ const getSuggestions = async (search) => {
     console.error(err);
   })
   suggestionsList.innerHTML = ""
-  if (suggestions.length >= 1){
+
+  if (suggestions.length >= 1 && !searchInput.value.trim().length == 0){
     suggestions.forEach((item, index) => {
       if (index <= 4) {
-        suggestionsList.innerHTML += `<li class="suggestions-list-item" dir="${rtlPattern.test(search) ? "rtl" : "ltr"}" align="${rtlPattern.test(search) ? "right" : "left"}">${item.title}</li>`
+        suggestionsList.innerHTML += `<li class="suggestions-list-item" onclick="setValue(event)" dir="${rtlPattern.test(search) ? "rtl" : "ltr"}" align="${rtlPattern.test(search) ? "right" : "left"}">${item.title}</li>`
       }
     })
   }
-  else {
-    suggestionsList.innerHTML = `<li class="suggestions-list-item">موردی یافت نشد</li>`
+  else if (!searchInput.value.trim().length == 0) {
+    suggestionsList.innerHTML = `<li class="suggestions-list-item" align="right" dir="rtl">موردی یافت نشد</li>`
   }
   suggestionsDiv.style.height = `${suggestionsList.getBoundingClientRect().height}px`
+}
+const setValue = (event) => {
+  searchInput.value = event.target.textContent
+  form.submit()
 }
