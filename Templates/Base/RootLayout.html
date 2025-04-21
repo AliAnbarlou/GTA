@@ -168,6 +168,35 @@
           </a>
         </li>
       </ul>
+      <!--New bullshits -->
+      <!-- ایکون اکانتی کیر خری چیزی-->
+       {% if request.user.is_authenticated %}
+       <h3>تاریخچه جست و جو</h3>
+       <a href="#"><p>مشاهده سابقه</p></a>
+       {% for search in search_history %}
+       <ul>
+         <li>{{search}}</li>
+       </ul>
+       {% empty %}
+       <p>هنوز چیزی جست و جو نکردید =) </p>
+       {% endfor %}
+
+       <h3>کلمات مورد علاقه</h3>
+       <a href="#"><p>مشاهده تمامی کلمات</p></a>
+       {% for liked in favorite_words %}
+       <ul>
+         <li>{{liked}}</li>
+       </ul>
+       {% empty %}
+       <p>هنوز کلمه ای را نپسندید</p>
+       {% endfor %}
+       {% else %}
+       <p>ورود به حساب کاربری برای مشاهده این بخش ضروری است</p>
+       <a href="{% url 'Authentication:login' %}">
+        <button>ورود</button>
+       </a>
+       {% endif %}
+
     </aside>
     <div class="container">
       {% block main-content %}

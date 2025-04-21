@@ -2,6 +2,8 @@ from django.shortcuts import render , get_object_or_404 , redirect
 from django.urls import reverse
 from Word.models import(
     Words ,
+    SearchHistory,
+    UserFavorite,
     Suggestion,
     Ask ,
     NewWords ,
@@ -122,6 +124,7 @@ def add_response(request, question_id):
 from Authentication.utils import get_gravatar_url
 
 
+
 def search_words(request):
     query = request.GET.get('q', '').strip()
     context = {
@@ -133,7 +136,15 @@ def search_words(request):
     if not query:
         return render(request, 'Search/search_results.html', context)
     
-    # If the query is longer than 30 characters, translate it into various languages
+    # ← اینجا: اگر کاربر لاگین بود، تاریخچه را ثبت کن
+    if request.user.is_authenticated:
+        SearchHistory.objects.get_or_create(
+            user=request.user,
+            search_word=query,
+        )
+    # ← اینجا: اگر کاربر لاگین بود، تاریخچه را ثبت کن
+
+    # اگر طول عبارت بیش از ۳۰ کاراکتر بود، ترجمه کن...
     if len(query) > 30:
         translator = Translator()
         languages = {
@@ -147,39 +158,42 @@ def search_words(request):
             'Dutch': 'nl'
         }
         translations = {}
-        # Translate query to each target language.
         for lang_name, lang_code in languages.items():
-            # translator.translate returns a Translated object with a .text attribute
             translations[lang_name] = translator.translate(query, dest=lang_code).text
-        # Save translations to context
         context['translations'] = translations
 
-    context['query'] = query
     exact_match = Words.objects.filter(word__iexact=query).first()
     results = Words.objects.filter(word__icontains=query)
 
     if exact_match:
         suggestions = Suggestion.objects.filter(suggested_to=exact_match, status='p')
         questions = Ask.objects.filter(ask_to=exact_match)
-        context.update({'dict': GrandTheftAPI(query),})
-        context.update({'word': exact_match, 'suggestions': suggestions, 'questions': questions})
+        context.update({'dict': GrandTheftAPI(query)})
+        context.update({
+            'word': exact_match,
+            'suggestions': suggestions,
+            'questions': questions
+        })
     else:
         if not results:
-            context.update({'dict': GrandTheftAPI(query),})
+            context.update({'dict': GrandTheftAPI(query)})
             NewWords.objects.get_or_create(word=query)
             return render(request, 'Search/no_results.html', context)
-        else:
-            context['results'] = results
-            return render(request, 'Search/search_results.html', context)
+        context['results'] = results
+        return render(request, 'Search/search_results.html', context)
 
-    # Adding gravatar URL to each suggestion and question, with default image if not available
+    # اضافه کردن آواتار گراواتار...
     DEFAULT_AVATAR_URL = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=100'
-
     for suggestion in context.get('suggestions', []):
-        suggestion.gravatar_url = get_gravatar_url(suggestion.user.email) if suggestion.user.email else DEFAULT_AVATAR_URL
-
+        suggestion.gravatar_url = (
+            get_gravatar_url(suggestion.user.email)
+            if suggestion.user.email else DEFAULT_AVATAR_URL
+        )
     for question in context.get('questions', []):
-        question.gravatar_url = get_gravatar_url(question.user.email) if question.user.email else DEFAULT_AVATAR_URL
+        question.gravatar_url = (
+            get_gravatar_url(question.user.email)
+            if question.user.email else DEFAULT_AVATAR_URL
+        )
 
     return render(request, 'Search/search_results.html', context)
 
@@ -195,3 +209,5 @@ def faq(request):
     pass
 def mission(request):
     pass
+
+
