@@ -3,6 +3,7 @@ from django.utils import timezone
 from Word.models import mostsearchedwords
 from django.db.models import Count
 def account_data(request):
+    
     now = timezone.now()
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     today_end = now.replace(hour=23, minute=59, second=59)

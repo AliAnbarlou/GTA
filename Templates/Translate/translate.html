@@ -1,13 +1,22 @@
+{% extends "Base/SearchLayout.html" %}
+{% load static %}
+
+{% block route-head %}
+  <title>زبانزد | ترجمه</title>
+{% endblock route-head %}
+
+{% block route-content %}
 <form method="POST">
     {% csrf_token %}
-    <textarea type="text" name="text" placeholder="متن را وارد کنید">
-        {{text}}
-    </textarea>
+    <textarea name="text" placeholder="متن را وارد کنید">{{ text }}</textarea>
     <select name="lang">
-        <option value="en">انگلیسی</option>
-        <option value="fr">فرانسوی</option>
-        <option value="de">آلمانی</option>
-        <!-- زبان‌های دیگر -->
+        <option value="en" {% if lang == "en" %}selected{% endif %}>انگلیسی</option>
+        <option value="fr" {% if lang == "fr" %}selected{% endif %}>فرانسوی</option>
+        <option value="de" {% if lang == "de" %}selected{% endif %}>آلمانی</option>
+        <option value="ja" {% if lang == "ja" %}selected{% endif %}>ژاپنی</option>
+        <option value="fa" {% if lang == "fa" %}selected{% endif %}>فارسی</option>
+        <option value="es" {% if lang == "es" %}selected{% endif %}>اسپانیایی</option>
+        <option value="it" {% if lang == "it" %}selected{% endif %}>ایتالیایی</option>
     </select>
     <button type="submit">ترجمه</button>
 </form>
@@ -15,3 +24,4 @@
 {% if translated_text %}
     <p>ترجمه: {{ translated_text }}</p>
 {% endif %}
+{% endblock %}

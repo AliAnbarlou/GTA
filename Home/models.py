@@ -25,6 +25,7 @@ class SocialMedia(models.Model):
         ('t','تلگرام'),
         ('f','فیسبوک'),
         ('w','واتساپ'),
+        ('e','ایمیل'),
     ]
     choice = models.CharField(max_length=1 , choices=STATUS_CHOICES)
     link = models.URLField()

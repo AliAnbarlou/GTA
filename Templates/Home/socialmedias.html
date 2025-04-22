@@ -1,0 +1,26 @@
+{% extends "Base/SearchLayout.html" %}
+{% load static %}
+
+{% block route-head %}
+  <title>زبانزد | ارتباط با ما</title>
+{% endblock route-head %}
+
+{% block route-content %}
+    {% for item in socialmedia %}
+        <ul>
+         <li><a href="{{item.link}}">        {% if item.choice == 'i' %}
+            اینستاگرام
+          {% elif item.choice == 't' %}
+            تلگرام
+          {% elif item.choice == 'f' %}
+            فیسبوک
+          {% elif item.choice == 'w' %}
+            واتساپ
+          {% elif item.choice == 'e' %}
+            ایمیل
+          {% endif %}</a></li>
+        </ul>
+    {% empty %}
+    <h2 style="text-align:center;">در حال حاضر این اطلاعات در دسترس نیست</h2>
+    {% endfor %}
+{% endblock %}

@@ -18,4 +18,5 @@ urlpatterns = [
     path('mission/',mission,name="mission"),
     path('search_history/',searchhistory , name="SearchHistory"),
     path('favorite/',favoritewords,name="Favorite"),
+    path('social-media/',socialmedia,name="SocialMedia"),
 ]

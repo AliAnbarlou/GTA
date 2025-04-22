@@ -272,3 +272,7 @@ def searchhistory(request):
 def favoritewords(request):
     data = UserFavorite.objects.filter(user=request.user)
     return render(request, "Home/UserFavorite.html",{'data':data,})
+
+def socialmedia(request):
+    all = SocialMedia.objects.all()
+    return render(request , 'Home/socialmedias.html',{'socialmedia':all})
