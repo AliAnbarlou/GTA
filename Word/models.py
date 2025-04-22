@@ -88,10 +88,13 @@ class SearchHistory(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.search_word}"
 
+# models.py
 class UserFavorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    favorite_word = models.ForeignKey(Words , on_delete=models.CASCADE)
+    favorite_word = models.ForeignKey(Words, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'favorite_word')
 
     def __str__(self):
         return f"{self.user.username} - {self.favorite_word.word}"
-    

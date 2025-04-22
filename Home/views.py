@@ -121,10 +121,49 @@ def add_response(request, question_id):
 
         return redirect(f"{reverse('Home:search_words')}?q={question.ask_to.word}")
 
-from Authentication.utils import get_gravatar_url
+# views.py
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, HttpResponseBadRequest
 
+# views.py
+import json
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+@login_required
+@require_POST
+def toggle_favorite(request):
+    # گزینه ۱: اگر می‌خوای json بفرستی، از این استفاده کن:
+    try:
+        data = json.loads(request.body)
+        word_id = data.get('word_id')
+    except json.JSONDecodeError:
+        # fallback به form-encoded
+        word_id = request.POST.get('word_id')
 
+    if not word_id:
+        return JsonResponse({'error': 'word_id missing'}, status=400)
 
+    try:
+        word = Words.objects.get(pk=word_id)
+    except Words.DoesNotExist:
+        return JsonResponse({'error': 'word not found'}, status=404)
+
+    fav, created = UserFavorite.objects.get_or_create(
+        user=request.user,
+        favorite_word=word
+    )
+    if not created:
+        fav.delete()
+        action = 'removed'
+    else:
+        action = 'added'
+
+    return JsonResponse({'action': action, 'word_id': word_id})
+
+from django.views.decorators.csrf import ensure_csrf_cookie
+@ensure_csrf_cookie
 def search_words(request):
     query = request.GET.get('q', '').strip()
     context = {
@@ -164,7 +203,14 @@ def search_words(request):
 
     exact_match = Words.objects.filter(word__iexact=query).first()
     results = Words.objects.filter(word__icontains=query)
+    
+    favorite_ids = set()
+    if request.user.is_authenticated:
+        favorite_ids = set(
+            UserFavorite.objects.filter(user=request.user, favorite_word__in=results if not exact_match else [exact_match]).values_list('favorite_word_id', flat=True)
+        )
 
+    context['favorite_ids'] = favorite_ids
     if exact_match:
         suggestions = Suggestion.objects.filter(suggested_to=exact_match, status='p')
         questions = Ask.objects.filter(ask_to=exact_match)

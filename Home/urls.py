@@ -13,5 +13,7 @@ urlpatterns = [
     path('privacy/',privacy , name="privacy"),
     path('Contact-us/',Contactus,name='Contactus'),
     path('faq/',faq,name="faq"),
+    path('toggle-favorite/', toggle_favorite, name='toggle_favorite'),
+
     path('mission/',mission,name="mission"),
 ]
