@@ -175,7 +175,7 @@
        <a href="#"><p>مشاهده سابقه</p></a>
        {% for search in search_history %}
        <ul>
-         <li>{{search}}</li>
+         <li><a href="#">{{search}}</a></li>
        </ul>
        {% empty %}
        <p>هنوز چیزی جست و جو نکردید =) </p>
@@ -185,7 +185,7 @@
        <a href="#"><p>مشاهده تمامی کلمات</p></a>
        {% for liked in favorite_words %}
        <ul>
-         <li>{{liked}}</li>
+         <li><a href="">{{liked}}</a></li>
        </ul>
        {% empty %}
        <p>هنوز کلمه ای را نپسندید</p>
@@ -196,7 +196,15 @@
         <button>ورود</button>
        </a>
        {% endif %}
-
+       {% for item in top_words %}
+        <ul>
+          <li>
+            {{item.word }} - {{ item.search_count }} times</li>
+          </li>
+        </ul>
+        {% empty %}
+        <p>هیچ واژه ای امروز جست و جو نشده :(</p>
+       {% endfor %}
     </aside>
     <div class="container">
       {% block main-content %}
@@ -206,12 +214,12 @@
   <footer class="footer">
     <nav class="footer__nav">
       <ul class="footer__list">
-        <li>درباره ما</li>
-        <li>ارتباط با ما</li>
-        <li>حریم خصوصی</li>
-        <li>سوالات متداول</li>
-        <li>چشم انداز</li>
-        <li>حمایت مالی</li>
+        <li><a href="{% url 'Home:about_us' %}">درباره ما</a></li>
+        <li><a href="{% url 'Home:Contactus' %}">ارتباط با ما</a></li>
+        <li><a href="{% url 'Home:privacy' %}">حریم خصوصی</a></li>
+        <li><a href="{%  url 'Home:faq' %}">سوالات متداول</a></li>
+        <li><a href="{% url 'Home:mission' %}">چشم انداز</a></li>
+        <li><a href="{% url 'Donate:donate' %}">حمایت مالی</a></li>
       </ul>
     </nav>
     <p class="footer__copyright">

@@ -2,3 +2,4 @@ django
 unidecode
 googletrans
 requests
+six

@@ -16,4 +16,6 @@ urlpatterns = [
     path('toggle-favorite/', toggle_favorite, name='toggle_favorite'),
 
     path('mission/',mission,name="mission"),
+    path('search_history/',searchhistory , name="SearchHistory"),
+    path('favorite/',favoritewords,name="Favorite"),
 ]

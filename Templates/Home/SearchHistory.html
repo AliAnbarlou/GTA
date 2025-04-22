@@ -1,0 +1,14 @@
+{% extends "Base/SearchLayout.html" %}
+{% load static %}
+
+{% block route-head %}
+  <title>زبانزد | سابقه جست و جو</title>
+{% endblock route-head %}
+
+{% block route-content %}
+    {% for item in data %}
+        <ul>
+                <li>{{item}}                            {{item.date}}</li>
+        </ul>
+    {% endfor %}
+{% endblock %}

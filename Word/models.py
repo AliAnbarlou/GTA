@@ -3,7 +3,8 @@ from Authentication.models import User
 from django.utils.text import slugify
 from unidecode import unidecode  # تبدیل حروف فارسی به لاتین
 from django.utils.timezone import now
-
+from django.utils import timezone
+from datetime import timedelta
 from django.utils.text import slugify
 class Words(models.Model):
     STATUS_CHOICES = [
@@ -82,19 +83,41 @@ class NewWords(models.Model):
     
 class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    search_word = models.CharField(max_length=100)
+    search_word = models.CharField(max_length=255)
     date = models.DateField(default=now)
 
     def __str__(self):
-        return f"{self.user.username} - {self.search_word}"
+        return f"{self.search_word}"
+    class Meta:
+        verbose_name = "سابقه جست و جو"
+        verbose_name_plural = verbose_name
 
 # models.py
 class UserFavorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    favorite_word = models.ForeignKey(Words, on_delete=models.CASCADE)
+    favorite_word = models.CharField(max_length=255)
 
     class Meta:
         unique_together = ('user', 'favorite_word')
+        verbose_name = "کلمه مورد علاقه کاربر"
+        verbose_name_plural = "کلمات مورد علاقه کاربر"
 
     def __str__(self):
-        return f"{self.user.username} - {self.favorite_word.word}"
+        return f"{self.user.username} - {self.favorite_word}"
+
+
+class mostsearchedwords(models.Model):
+    word = models.CharField(max_length=255)
+    searched_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.word
+
+    @classmethod
+    def delete_old_words(cls):
+        one_week_ago = timezone.now() - timedelta(days=7)
+        cls.objects.filter(searched_at__lt=one_week_ago).delete()
+
+    class Meta:
+        verbose_name = 'بیشترین جست و جو'
+        verbose_name_plural = 'بیشترین جست و جو ها'

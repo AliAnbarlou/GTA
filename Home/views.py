@@ -248,12 +248,27 @@ def aboutus(request):
     about_page = get_object_or_404(StaticPages, page='a')
     return render(request, 'static/static.html', {'content': about_page.context , 'page':'درباره ما'})
 def privacy(request):
-    pass
+    privacy_page = get_object_or_404(StaticPages, page='p')
+    return render(request, 'static/static.html', {'content': privacy_page.context , 'page':'حریم خصوصی'})
 def Contactus(request):
-    pass
+    Contactus_page = get_object_or_404(StaticPages, page='c')
+    return render(request, 'static/static.html', {'content': Contactus_page.context , 'page':'ارتباط با ما'})
 def faq(request):
-    pass
+    faq_page = get_object_or_404(StaticPages, page='f')
+    return render(request, 'static/static.html', {'content': faq_page.context , 'page':'سوالات متداول'})
 def mission(request):
-    pass
+    mission_page = get_object_or_404(StaticPages, page='m')
+    return render(request, 'static/static.html', {'content':  mission_page.context , 'page':'ماموریت و چشم انداز'})
 
 
+
+
+@login_required
+def searchhistory(request):
+    data = SearchHistory.objects.filter(user=request.user)
+    return render(request, "Home/SearchHistory.html",{'data':data,})
+
+@login_required
+def favoritewords(request):
+    data = UserFavorite.objects.filter(user=request.user)
+    return render(request, "Home/UserFavorite.html",{'data':data,})
