@@ -175,15 +175,12 @@ def search_words(request):
     if not query:
         return render(request, 'Search/search_results.html', context)
     
-    # ← اینجا: اگر کاربر لاگین بود، تاریخچه را ثبت کن
     if request.user.is_authenticated:
         SearchHistory.objects.get_or_create(
             user=request.user,
             search_word=query,
         )
-    # ← اینجا: اگر کاربر لاگین بود، تاریخچه را ثبت کن
 
-    # اگر طول عبارت بیش از ۳۰ کاراکتر بود، ترجمه کن...
     if len(query) > 30:
         translator = Translator()
         languages = {
@@ -203,14 +200,7 @@ def search_words(request):
 
     exact_match = Words.objects.filter(word__iexact=query).first()
     results = Words.objects.filter(word__icontains=query)
-    
-    favorite_ids = set()
-    if request.user.is_authenticated:
-        favorite_ids = set(
-            UserFavorite.objects.filter(user=request.user, favorite_word__in=results if not exact_match else [exact_match]).values_list('favorite_word_id', flat=True)
-        )
 
-    context['favorite_ids'] = favorite_ids
     if exact_match:
         suggestions = Suggestion.objects.filter(suggested_to=exact_match, status='p')
         questions = Ask.objects.filter(ask_to=exact_match)
@@ -228,7 +218,6 @@ def search_words(request):
         context['results'] = results
         return render(request, 'Search/search_results.html', context)
 
-    # اضافه کردن آواتار گراواتار...
     DEFAULT_AVATAR_URL = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=100'
     for suggestion in context.get('suggestions', []):
         suggestion.gravatar_url = (
@@ -242,7 +231,6 @@ def search_words(request):
         )
 
     return render(request, 'Search/search_results.html', context)
-
 
 def aboutus(request):
     about_page = get_object_or_404(StaticPages, page='a')
