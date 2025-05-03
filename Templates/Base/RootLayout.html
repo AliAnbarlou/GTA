@@ -34,7 +34,7 @@
         </h1>
       </div>
       <div class="header__icons">
-        <button class="header__icon-btn" onclick="collapseNav()">
+        <button class="header__icon-btn" onclick="collapseNav(event)">
           <svg class="header__icon" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
           </svg>
@@ -81,19 +81,19 @@
         {% endif %}
       </div>
     </div>
-      <!-- <div class="container">
-        <form
-        class="search-form search-form--header"
-        action="{% url 'Home:search_words' %}"
-        method="GET"
-        novalidate
-        >
-        <input
-        name="q"
-          class="search-form__input"
-          type="text"
-          placeholder="واژه خود را وارد کنید"
-          autocomplete="off"
+    <!-- <div class="container">
+      <form
+      class="search-form search-form--header"
+      action="{% url 'Home:search_words' %}"
+      method="GET"
+      novalidate
+      >
+      <input
+      name="q"
+      class="search-form__input"
+      type="text"
+      placeholder="واژه خود را وارد کنید"
+      autocomplete="off"
           inputmode="search"
         >
         <button class="search-form__button" type="submit">
@@ -104,34 +104,106 @@
                   <g>
                     <g>
                       <path
-                        d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"
+                      d="M0,203.25c0,112.1,91.2,203.2,203.2,203.2c51.6,0,98.8-19.4,134.7-51.2l129.5,129.5c2.4,2.4,5.5,3.6,8.7,3.6 s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-129.6-129.5c31.8-35.9,51.2-83,51.2-134.7c0-112.1-91.2-203.2-203.2-203.2 S0,91.15,0,203.25z M381.9,203.25c0,98.5-80.2,178.7-178.7,178.7s-178.7-80.2-178.7-178.7s80.2-178.7,178.7-178.7 S381.9,104.65,381.9,203.25z"
                       ></path>
                     </g>
                   </g>
                 </g>
               </svg>
-          </button>
-      </form>
-    </div> -->
-    <p><a href="{% url 'Translate:translate' %}">مترجم</a></p>
-  </header>
-  <main>
-    <aside class="header__nav">
-      <button onclick="collapseNav()" class="close-nav-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-x" viewBox="0 0 16 16">
-          <path
-            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-        </svg>
-      </button>
-      <div class="header__nav-title">
-        <span>
-          صفحات
-        </span>
+            </button>
+          </form>
+        </div> -->
+      </header>
+      <main>
+        <aside class="header__nav">
+          <div class="sidebar-nav">
+            <button onclick="collapseNav(event)" class="close-nav-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-x" viewBox="0 0 16 16">
+                <path
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+              </svg>
+            </button>
+            <div class="side-nav-links">
+              <a href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" class="bi bi-house homepage" viewBox="0 0 16 16">
+                  <path
+                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                </svg>
+              </a>
+              <a href="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" class="bi bi-person-fill profile" viewBox="0 0 16 16">
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <!-- <div class="header__nav-title">
+            <span>
+              صفحات
+            </span>
+          </div>
+          <ul class="header-pages">
+            <li>صفحه اصلی</li>
+            <li>پروفایل کاربری</li>
+          </ul> -->
+          <div class="translate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-translate"
+              viewBox="0 0 16 16">
+              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z" />
+              <path
+                d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31" />
+            </svg> 
+            <a href="{% url 'Translate:translate' %}">مترجم</a>
+          </div>
+          <!--New bullshits -->
+          <!-- ایکون اکانتی کیر خری چیزی-->
+       {% if request.user.is_authenticated %}
+       <h3>تاریخچه جست و جو</h3>
+       <a href="#"><p>مشاهده سابقه</p></a>
+       {% for search in search_history %}
+       <ul>
+         <li><a href="#">{{search}}</a></li>
+       </ul>
+       {% empty %}
+       <p>هنوز چیزی جست و جو نکردید =) </p>
+       {% endfor %}
+       
+       <h3>کلمات مورد علاقه</h3>
+       <a href="#"><p>مشاهده تمامی کلمات</p></a>
+       {% for liked in favorite_words %}
+       <ul>
+         <li><a href="">{{liked}}</a></li>
+        </ul>
+        {% empty %}
+        <p>هنوز کلمه ای را نپسندید</p>
+       {% endfor %}
+       <h3>پنل کاربری</h3>
+       <p><b>نام کاربری :  {{request.user.username}}</b></p>
+       <p>نام : {{request.user.first_name}}</p>
+       <p>نام خانوادگی : {{request.user.last_name}}</p>
+       <p>امتیاز : {{request.user.score}}</p>
+       <p>تعداد بازدید : {{request.user.hits}}</p>
+       <a href="{% url 'Authentication:UserHome' %}">
+        <button>مدیریت</button>
+      </a>
+      {% else %}
+      <div class="login-side">
+        <p>ورود به حساب کاربری برای مشاهده این بخش ضروری است</p>
+        <a href="{% url 'Authentication:login' %}">
+          <button class="login-button-aside">ورود</button>
+        </a>
       </div>
-      <ul class="header-pages">
-        <li>صفحه اصلی</li>
-        <li>پروفایل کاربری</li>
+      {% endif %}
+      <div class="header__nav-title">بیشترین واژگان جست و جو شده</div>
+      {% for item in top_words %}
+      <ul>
+        <li>
+          {{item.word }} - {{ item.search_count }} times</li>
+        </li>
       </ul>
+      {% empty %}
+      <p>هیچ واژه ای امروز جست و جو نشده :(</p>
+      {% endfor %}
       <div class="header__nav-title">
         <span>
           پلتفرم های ارتباطی
@@ -169,54 +241,6 @@
         </li>
         <pre><a href="{% url 'Home:SocialMedia' %}">ارتباط</a></pre>
       </ul>
-      <!--New bullshits -->
-      <!-- ایکون اکانتی کیر خری چیزی-->
-       {% if request.user.is_authenticated %}
-       <h3>تاریخچه جست و جو</h3>
-       <a href="#"><p>مشاهده سابقه</p></a>
-       {% for search in search_history %}
-       <ul>
-         <li><a href="#">{{search}}</a></li>
-       </ul>
-       {% empty %}
-       <p>هنوز چیزی جست و جو نکردید =) </p>
-       {% endfor %}
-
-       <h3>کلمات مورد علاقه</h3>
-       <a href="#"><p>مشاهده تمامی کلمات</p></a>
-       {% for liked in favorite_words %}
-       <ul>
-         <li><a href="">{{liked}}</a></li>
-       </ul>
-       {% empty %}
-       <p>هنوز کلمه ای را نپسندید</p>
-       {% endfor %}
-       <h3>پنل کاربری</h3>
-       <p><b>نام کاربری :  {{request.user.username}}</b></p>
-       <p>نام : {{request.user.first_name}}</p>
-       <p>نام خانوادگی : {{request.user.last_name}}</p>
-       <p>امتیاز : {{request.user.score}}</p>
-       <p>تعداد بازدید : {{request.user.hits}}</p>
-       <a href="{% url 'Authentication:UserHome' %}">
-        <button>مدیریت</button>
-       </a>
-       {% else %}
-       <p>ورود به حساب کاربری برای مشاهده این بخش ضروری است</p>
-       <a href="{% url 'Authentication:login' %}">
-        <button>ورود</button>
-       </a>
-       {% endif %}
-       <h3>بیشترین واژگان جست و جو شده</h3>
-       {% for item in top_words %}
-        <ul>
-          <li>
-            {{item.word }} - {{ item.search_count }} times</li>
-          </li>
-        </ul>
-        {% empty %}
-        <p>هیچ واژه ای امروز جست و جو نشده :(</p>
-       {% endfor %}
-
     </aside>
     <div class="container">
       {% block main-content %}

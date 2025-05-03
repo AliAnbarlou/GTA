@@ -245,6 +245,10 @@ svg {
   --footer-color: #334155;
   --footer-bg-color: #F1F5F9;
   --underline: #E2E8F0;
+  --button-color: #0EA5E9;
+  --button-hover: #2563EB;
+  --aside: #F1FAFE;
+  --cls: var(--dark);
 }
 
 [data-theme="dark"] {
@@ -255,7 +259,11 @@ svg {
   --component-bg-clr: #1E293B;
   --footer-color: #CBD5E1;
   --footer-bg-color: #0F172A;
-  --underline : #334155;
+  --underline: #334155;
+  --button-color: #38BDF8;
+  --button-hover: #0EA5E9;
+  --aside: #1E293B;
+  --cls: var(--white);
 }
 
 *,
@@ -397,8 +405,20 @@ textarea:focus {
   width: 350px;
   padding: .85rem;
   max-width: 100%;
-  background-color: #1E293B;
+  background-color: var(--aside);
   z-index: 99;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--underline) var(--aside);
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: var(--aside);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--underline);
+    border-radius: 50px;
+  }
 }
 
 /*0A2647*/
@@ -407,8 +427,33 @@ textarea:focus {
   font-size: 1.5rem;
   font-weight: 900;
   padding-bottom: .5rem;
-  border-bottom: .1rem solid #fff;
+  border-bottom: 3px solid var(--underline);
   margin-bottom: .75rem;
+}
+.sidebar-nav{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 3px solid var(--underline);
+  .side-nav-links{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-around;
+    fill: var(--cls);
+    a{
+      width: 35px;
+      height: 35px;
+      padding: 5px;
+      svg{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 
 .close-nav-btn {
@@ -418,11 +463,9 @@ textarea:focus {
   width: 35px;
   height: 35px;
   display: block;
-  margin-right: auto;
 
   svg {
-    fill: white !important;
-    color: white !important;
+    fill: var(--cls) !important;
     width: 100%;
     height: 100%;
   }
@@ -461,6 +504,7 @@ textarea:focus {
     }
   }
 }
+
 
 .inline {
   display: flex;
@@ -518,10 +562,56 @@ textarea:focus {
   stroke: var(--white);
 }
 
+.translate {
+  border-radius: 12px;
+  transition: 0.25s;
+  width: 100%;
+  overflow: hidden;
+  padding-right: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  margin: 5px 0 5px 0;
+  gap: 5px;
+  &:hover {
+    background-color: var(--underline);
+  }
+  
+  a {
+    display: block;
+    padding: 0.75rem 0 0.75rem 0.75rem;
+    width: 100%;
+    height: 100%;
+    color: var(--app-fill-clr);
+    background-color: transparent;
+  }
+}
+.login-side{
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 0 20px 0;
+  border-top: 3px solid var(--underline);
+  p{
+    margin: 0;
+  }
+}
+.login-button-aside {
+  color: #1E293B;
+  width: 100%;
+  border-radius: 12px;
+  transition: 0.2s;
+  background-color: var(--button-color);
+
+  &:hover {
+    background-color: var(--button-hover);
+  }
+}
 /* .searching .search-form {
   display: none;
-}
-
+  }
+  
 .search-form--header {
   display: none !important;
 }
@@ -588,6 +678,7 @@ textarea:focus {
         margin: 0 10px 0 10px;
         border-bottom: 2px solid var(--underline);
         cursor: pointer;
+
         &:last-child {
           border-bottom: none !important;
         }
@@ -710,7 +801,7 @@ textarea:focus {
   margin: 4rem auto;
   background-color: var(--component-bg-clr);
   border: 0.1rem solid var(--blur-fill-clr);
-  border-radius: 4px;
+  border-radius: 34px;
 }
 
 .form__link {
@@ -747,9 +838,9 @@ textarea:focus {
   display: block;
   width: 100%;
   padding: 0.75rem;
-  border: 0.0625rem solid var(--blur-fill-clr);
+  border: 0.0625rem solid #94A3B8;
   margin: 0.75rem 0;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: box-shadow 150ms ease;
 }
 
@@ -768,7 +859,7 @@ textarea:focus {
 .form__input:focus,
 .form__textarea:focus,
 .form__select:focus {
-  box-shadow: 0 0 0 0.35rem rgba(var(--primary-rgb), 0.35);
+  border: 0.0625rem solid #0EA5E9;
 }
 
 .form__err {
@@ -784,9 +875,13 @@ textarea:focus {
   display: inline-block;
   margin-top: 0.5rem;
   color: var(--white);
-  background-color: var(--primary);
-  border-radius: 4px;
+  background-color: var(--button-color);
+  border-radius: 10px;
   user-select: none;
+
+  &:hover {
+    background-color: var(--button-hover);
+  }
 }
 
 .form__submitter {
@@ -807,7 +902,7 @@ textarea:focus {
   border: 0.0625rem solid var(--blur-fill-clr);
   margin: 1.5rem auto;
   background-color: var(--component-bg-clr);
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .user-profile__wrapper {
@@ -820,7 +915,7 @@ textarea:focus {
 .profile__item {
   padding: 0.75rem;
   background-color: var(--blur-fill-clr);
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .profile__item> :first-child {
