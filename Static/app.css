@@ -290,19 +290,6 @@ body {
   transition: color 150ms ease, background-color 150ms ease;
 }
 
-.footer {
-  padding: 1.5rem;
-  margin-top: auto;
-  background-color: var(--footer-bg-color);
-  color: var(--footer-color);
-}
-
-.footer__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-bottom: 1rem;
-}
 
 .center {
   display: block;
@@ -452,6 +439,7 @@ textarea:focus {
       svg{
         width: 100%;
         height: 100%;
+        fill: var(--cls);
       }
     }
   }
@@ -489,7 +477,7 @@ textarea:focus {
   list-style: none;
   padding: 0;
   margin: 1rem 0 .75rem 0;
-
+  
   .social-media {
     width: 40px;
     height: 40px;
@@ -623,7 +611,7 @@ textarea:focus {
 
 .searching .search-form--header {
   display: flex !important;
-} */
+  } */
 .searching {
   position: absolute;
   top: 7px;
@@ -632,7 +620,7 @@ textarea:focus {
   transform: translateX(-70%);
   border-color: white !important;
   z-index: 0;
-
+  
   input {
     border-color: white !important;
 
@@ -883,7 +871,7 @@ textarea:focus {
   background-color: var(--button-color);
   border-radius: 10px;
   user-select: none;
-
+  
   &:hover {
     background-color: var(--button-hover);
   }
@@ -1006,6 +994,38 @@ textarea:focus {
   height: 3rem;
   fill: var(--app-fill-clr);
 }
+.footer {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  background-color: var(--footer-bg-color);
+  color: var(--footer-color);
+  .footer-img{
+    width: 8.5rem;
+    text-align: center;
+    img{
+      width: 100%;
+    }
+  }
+  .footer__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    li{
+      a{
+        color: white !important;
+      }
+    }
+  }
+}
+
 
 @media (prefers-reduce-motion: reduce) {
   * {
@@ -1017,7 +1037,7 @@ textarea:focus {
   .container {
     max-width: 475px;
   }
-
+  
   .header__logo {
     width: 5rem;
     height: 5rem;
@@ -1033,6 +1053,7 @@ textarea:focus {
     transform: translateX(-79%);
   }
 }
+
 
 @media (min-width: 640px) {
   .container {

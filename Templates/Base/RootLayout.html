@@ -250,7 +250,10 @@
     </div>
   </main>
   <footer class="footer">
-    <nav class="footer__nav">
+    <div class="footer-img">
+      <img src="{% static 'imgs/kir-khar-to-koon-ali.png' %%}" alt="logo">
+    </div>
+    <div class="footer-links">
       <ul class="footer__list">
         <li><a href="{% url 'Home:about_us' %}">درباره ما</a></li>
         <li><a href="{% url 'Home:Contactus' %}">ارتباط با ما</a></li>
@@ -259,7 +262,7 @@
         <li><a href="{% url 'Home:mission' %}">چشم انداز</a></li>
         <li><a href="{% url 'Donate:donate' %}">حمایت مالی</a></li>
       </ul>
-    </nav>
+    </div>
     <p class="footer__copyright">
       زبانزد ©, تمامی حقوق محفوظ است.
     </p>
