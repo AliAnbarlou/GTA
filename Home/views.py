@@ -213,6 +213,8 @@ def search_words(request):
     else:
         if not results:
             context.update({'dict': GrandTheftAPI(query)})
+            for i,j in GrandTheftAPI(query).items():
+                print(f"{j} : {i}")
             NewWords.objects.get_or_create(word=query)
             return render(request, 'Search/no_results.html', context)
         context['results'] = results
