@@ -576,6 +576,39 @@ textarea:focus {
     background-color: transparent;
   }
 }
+.search-history , .user-pannel , .favorites{
+  margin:0 0 25px 0 ;
+}
+.side-bar-list{
+  padding: 0;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  .side-bar-list-item{
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: start;
+    border-radius: 12px;
+    transition: .25s;
+    gap: 5px;
+    padding: .75rem;
+    &:hover{
+      background-color: var(--underline);
+    }
+    a{
+      color: var(--cls);
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    svg{
+      fill: var(--cls);
+    }
+  }
+}
 .login-side{
   display: flex;
   flex-direction: column;
@@ -599,7 +632,7 @@ textarea:focus {
   }
 }
 .searchs{
-  margin: 0 0 25px 0;
+  margin: 20px 0;
 }
 /* .searching .search-form {
   display: none;
