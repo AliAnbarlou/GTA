@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'Home',
     'Word',
     'Translate',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

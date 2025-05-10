@@ -13,8 +13,6 @@
 
 {% endblock %}
 {% block route-content %}
-<div id="search-config" data-toggle-url="{% url 'Home:toggle_favorite' %}"></div>
-<script src="{% static 'favorite.js' %}"></script>
 
 {% if not dict.خطا %}
   {% for key, value in dict.items %}
@@ -22,18 +20,7 @@
     <h3 class="meaning__title">{{ key }} - {{query}}</h3>
     <p>{{ value|safe }}</p>
   </div>
-  <button
-  class="favorite-btn"
-  data-word-id="{{ word.id }}"
-  aria-pressed="{% if word.id in favorite_ids %}true{% else %}false{% endif %}"
->
-  {% if word.id in favorite_ids %}
-    ❤️
-  {% else %}
-    🤍
-  {% endif %}
-</button>
-
+  
   {% empty %}
   {% if translations %}
   <div class="translation-section">
