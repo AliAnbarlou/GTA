@@ -13,7 +13,9 @@ urlpatterns = [
     path('delete-user/<int:user_id>/', DeleteUser, name="DeleteUser"),
     path('edit-word/<int:word_id>/', EditWord, name="EditWord"),
     path('edit-user/<int:user_id>/', EditUser, name="EditUser"),
+
     path('add-word/', AddWord, name="AddWord"),
+    path('allpublished-words/', AllPublishedWords, name="AllPublishedWords"),
     path('alldonate/', AllDonate, name="AllDonate"),
     path('donate/<int:donate_id>/', Donate, name="Donate"),
 
