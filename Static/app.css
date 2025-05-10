@@ -426,16 +426,17 @@ textarea:focus {
 .header__nav-title {
   font-size: 1.5rem;
   font-weight: 900;
-  padding-bottom: .5rem;
-  border-bottom: 3px solid var(--underline);
-  margin-bottom: .75rem;
+  padding: 1.2rem 0 0.75rem 0;
+  border-top: 3px solid var(--underline);
+  border-bottom: 3px dashed #3341558f;
+  /* margin-bottom: .75rem; */
 }
 .sidebar-nav{
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 5px 10px 5px;
   border-bottom: 3px solid var(--underline);
   .side-nav-links{
     flex-grow: 1;
@@ -487,7 +488,7 @@ textarea:focus {
   justify-content: space-around;
   list-style: none;
   padding: 0;
-  margin: 0 0 .75rem 0;
+  margin: 1rem 0 .75rem 0;
 
   .social-media {
     width: 40px;
@@ -591,10 +592,11 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 10px 0 20px 0;
+  margin: 0 0 20px 0;
+  padding: 30px 0 20px 0;
   border-top: 3px solid var(--underline);
   p{
-    margin: 0;
+    margin: 0 0 5px 0;
   }
 }
 .login-button-aside {
@@ -607,6 +609,9 @@ textarea:focus {
   &:hover {
     background-color: var(--button-hover);
   }
+}
+.searchs{
+  margin: 0 0 25px 0;
 }
 /* .searching .search-form {
   display: none;

@@ -194,16 +194,18 @@
         </a>
       </div>
       {% endif %}
-      <div class="header__nav-title">بیشترین واژگان جست و جو شده</div>
-      {% for item in top_words %}
-      <ul>
-        <li>
-          {{item.word }} - {{ item.search_count }} times</li>
-        </li>
-      </ul>
-      {% empty %}
-      <p>هیچ واژه ای امروز جست و جو نشده :(</p>
-      {% endfor %}
+      <div class="searchs">
+        <div class="header__nav-title">بیشترین واژگان جست و جو شده</div>
+        {% for item in top_words %}
+        <ul>
+          <li>
+            {{item.word }} - {{ item.search_count }} times</li>
+          </li>
+        </ul>
+        {% empty %}
+        <p>هیچ واژه ای امروز جست و جو نشده :(</p>
+        {% endfor %}
+      </div>
       <div class="header__nav-title">
         <span>
           پلتفرم های ارتباطی
